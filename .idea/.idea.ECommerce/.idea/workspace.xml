@@ -5,91 +5,14 @@
     <projectFile profileName="IIS Express">src/API/ECommerce.API/ECommerce.API.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95d40877-e148-4372-a286-ac79b93892c2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ECommerce.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Controllers/WeatherForecastController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/ECommerce.API.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/WeatherForecast.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/appsettings.Development.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/appsettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.csproj.AssemblyReference.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/ECommerce.API.csproj.nuget.dgspec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/ECommerce.API.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/ECommerce.API.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/project.nuget.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/project.packagespec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/rider.project.restore.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/Class1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/ECommerce.Application.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/Debug/net6.0/ECommerce.Application.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/Debug/net6.0/ECommerce.Application.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/Debug/net6.0/ECommerce.Application.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/Debug/net6.0/ECommerce.Application.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/Debug/net6.0/ECommerce.Application.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/ECommerce.Application.csproj.nuget.dgspec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/ECommerce.Application.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/ECommerce.Application.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/project.nuget.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/project.packagespec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Application/ECommerce.Application/obj/rider.project.restore.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/Class1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/ECommerce.Domain.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/Debug/net6.0/ECommerce.Domain.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/Debug/net6.0/ECommerce.Domain.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/Debug/net6.0/ECommerce.Domain.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/Debug/net6.0/ECommerce.Domain.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/Debug/net6.0/ECommerce.Domain.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/ECommerce.Domain.csproj.nuget.dgspec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/ECommerce.Domain.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/ECommerce.Domain.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/project.nuget.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/project.packagespec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Domain/ECommerce.Domain/obj/rider.project.restore.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/Class1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/ECommerce.Infrastructure.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/Debug/net6.0/ECommerce.Infrastructure.AssemblyInfo.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/Debug/net6.0/ECommerce.Infrastructure.AssemblyInfoInputs.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/Debug/net6.0/ECommerce.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/Debug/net6.0/ECommerce.Infrastructure.GlobalUsings.g.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/Debug/net6.0/ECommerce.Infrastructure.assets.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/ECommerce.Infrastructure.csproj.nuget.dgspec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/ECommerce.Infrastructure.csproj.nuget.g.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/ECommerce.Infrastructure.csproj.nuget.g.targets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/project.assets.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/project.nuget.cache" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/project.packagespec.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/obj/rider.project.restore.info" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Application.Tests/ECommerce.Application.Tests.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Application.Tests/UnitTest1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Application.Tests/Usings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Domain.Tests/ECommerce.Domain.Tests.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Domain.Tests/UnitTest1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Domain.Tests/Usings.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Infrastructure.Tests/ECommerce.Infrastructure.Tests.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Infrastructure.Tests/UnitTest1.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/ECommerce.Infrastructure.Tests/Usings.cs" afterDir="false" />
+    <list default="true" id="95d40877-e148-4372-a286-ac79b93892c2" name="Changes" comment="solution setup">
+      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Services/IWeatherForecastService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Services/WeatherForecastService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ECommerce/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ECommerce.API/Controllers/WeatherForecastController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Controllers/WeatherForecastController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ECommerce.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ECommerce.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/src/API/ECommerce.API/obj/Debug/net6.0/ECommerce.API.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/Class1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Infrastructure/ECommerce.Infrastructure/Class1.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,21 +30,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;GitIgnore&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "GitIgnore"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.ECommerce.API">
     <configuration name="ECommerce.API" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/src/API/ECommerce.API/ECommerce.API.csproj" />
@@ -163,8 +87,16 @@
       <option name="presentableId" value="Default" />
       <updated>1664526772019</updated>
       <workItem from="1664526774439" duration="1780000" />
-      <workItem from="1664528592836" duration="343000" />
+      <workItem from="1664528592836" duration="2391000" />
     </task>
+    <task id="LOCAL-00001" summary="solution setup">
+      <created>1664529044681</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1664529044681</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,5 +118,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="solution setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="solution setup" />
   </component>
 </project>
