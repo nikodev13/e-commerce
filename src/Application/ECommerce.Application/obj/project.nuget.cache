@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "8UM3tCp2vwJ9wUzJM8Z7mkzx+z67yV3o0Nd9Q9SapI0nLaZjnlf5fHNZFdnyYKmZSSqbygiT/FYT8dqPTHMx9g==",
+  "dgSpecHash": "qwmlqTy9YDK6GdNcAxbYunOYDxa4M6vTsLlhCBs6irCEev5YyctVxt/REFcf1UjDzpIUqIf9lO5z4dFRwrS0Jw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Macie\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\Macie\\.nuget\\packages\\fluentvalidation\\11.2.2\\fluentvalidation.11.2.2.nupkg.sha512",
+    "C:\\Users\\Macie\\.nuget\\packages\\mediatr\\11.0.0\\mediatr.11.0.0.nupkg.sha512",
+    "C:\\Users\\Macie\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",
+    "C:\\Users\\Macie\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
   "logs": []
 }
