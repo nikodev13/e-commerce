@@ -9,7 +9,5 @@ namespace ECommerce.Application.Contracts.Persistence
     public interface IAsyncRepository<T>
     {
         Task<T?> GetById(Guid id);
-
-        T
     }
 }

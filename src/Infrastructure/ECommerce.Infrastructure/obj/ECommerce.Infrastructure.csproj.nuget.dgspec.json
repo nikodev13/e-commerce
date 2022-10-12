@@ -1,40 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {}
+    "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj": {
+    "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj",
+        "projectUniqueName": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj",
         "projectName": "ECommerce.Application",
-        "projectPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj",
-        "packagesPath": "C:\\Users\\Macie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\obj\\",
+        "projectPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj",
+        "packagesPath": "C:\\Users\\nikod\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Macie\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\nikod\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj": {
-                "projectPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj"
+              "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj": {
+                "projectPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj"
               }
             }
           }
@@ -78,33 +71,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj": {
+    "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj",
         "projectName": "ECommerce.Domain",
-        "projectPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj",
-        "packagesPath": "C:\\Users\\Macie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Domain\\ECommerce.Domain\\obj\\",
+        "projectPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Domain\\ECommerce.Domain\\ECommerce.Domain.csproj",
+        "packagesPath": "C:\\Users\\nikod\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Domain\\ECommerce.Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Macie\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\nikod\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -138,41 +124,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {
+    "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
         "projectName": "ECommerce.Infrastructure",
-        "projectPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Macie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Infrastructure\\ECommerce.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Infrastructure\\ECommerce.Infrastructure\\ECommerce.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\nikod\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Infrastructure\\ECommerce.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Macie\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\nikod\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj": {
-                "projectPath": "C:\\Users\\Macie\\OneDrive\\Pulpit\\Projecs\\Ecommerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj"
+              "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj": {
+                "projectPath": "C:\\Users\\nikod\\Desktop\\projects\\e-commerce\\src\\Application\\ECommerce.Application\\ECommerce.Application.csproj"
               }
             }
           }
@@ -218,7 +197,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
