@@ -17,7 +17,7 @@ namespace ECommerce.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -59,7 +59,7 @@ namespace ECommerce.Infrastructure.Migrations
                     b.HasIndex("CustomerId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.CartItem", b =>
@@ -74,6 +74,9 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("ProductId1")
+                        .HasColumnType("decimal(20,0)");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -81,7 +84,7 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId1");
 
                     b.ToTable("CartItem");
                 });
@@ -122,54 +125,17 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasIndex("SecondAddressId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.Product", b =>
+            modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<ulong>("Id")
+                        .HasColumnType("decimal(20,0)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ECommerce.Domain.Entities.ProductOffer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductsOffers");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Cart", b =>
@@ -187,9 +153,9 @@ namespace ECommerce.Infrastructure.Migrations
                         .WithMany("Items")
                         .HasForeignKey("CartId");
 
-                    b.HasOne("ECommerce.Domain.Entities.Product", "Product")
+                    b.HasOne("ECommerce.Domain.Products.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -213,17 +179,6 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Navigation("SecondAddress");
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.ProductOffer", b =>
-                {
-                    b.HasOne("ECommerce.Domain.Entities.Product", "Product")
-                        .WithMany("ProductOffers")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ECommerce.Domain.Entities.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -233,11 +188,6 @@ namespace ECommerce.Infrastructure.Migrations
                 {
                     b.Navigation("Cart")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerce.Domain.Entities.Product", b =>
-                {
-                    b.Navigation("ProductOffers");
                 });
 #pragma warning restore 612, 618
         }

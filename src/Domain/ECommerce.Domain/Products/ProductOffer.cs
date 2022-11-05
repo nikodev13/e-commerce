@@ -20,4 +20,9 @@ public class ProductOffer
         Quantity = quantity;
         DateTime = DateTime.Now;
     }
+
+    public ProductOffer()
+    {
+
+    }
 }

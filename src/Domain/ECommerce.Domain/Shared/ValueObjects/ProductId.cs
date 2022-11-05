@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.Products.ValueObjects;
+﻿namespace ECommerce.Domain.Shared.ValueObjects;
 
 public class ProductId
 {

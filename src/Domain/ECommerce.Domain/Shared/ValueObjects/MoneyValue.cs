@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Domain.Shared.ValueObjects;
+﻿using ECommerce.Domain.Shared.Exceptions;
+
+namespace ECommerce.Domain.Shared.ValueObjects;
 
 public class MoneyValue
 {
@@ -6,6 +8,10 @@ public class MoneyValue
 
     public MoneyValue(decimal value)
     {
+        if (value <= 0)
+        {
+            throw new InvalidMoneyValueException();
+        }
         Value = value;
     }
     

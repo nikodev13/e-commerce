@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using ECommerce.Domain.Entities;
-using ECommerce.Domain.Products.ValueObjects;
+using ECommerce.Domain.Shared.ValueObjects;
 
 namespace ECommerce.Domain.Products;
 
@@ -10,10 +10,10 @@ public class Product
     public string Name { get; }
     public string Description { get; }
 
-    private readonly List<ProductOffer> _productOffers;
-    public IReadOnlyCollection<ProductOffer> ProductOffers => _productOffers;
+    //private readonly List<ProductOffer> _productOffers;
+    //public IReadOnlyCollection<ProductOffer> ProductOffers => _productOffers;
     
-    private Product(string name, string description)
+    internal Product(string name, string description)
     {
         Name = name;
         Description = description;
@@ -22,6 +22,11 @@ public class Product
     public void MakeOffer(decimal price, uint quantity)
     {
         var offer = new ProductOffer(Id, price, quantity);
-        _productOffers.Add(offer);
+        //_productOffers.Add(offer);
+    }
+
+    public Product()
+    {
+
     }
 }
