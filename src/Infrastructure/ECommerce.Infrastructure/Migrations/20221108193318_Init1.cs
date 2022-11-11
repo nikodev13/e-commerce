@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ECommerce.Infrastructure.Migrations
 {
-    public partial class init : Migration
+    /// <inheritdoc />
+    public partial class Init1 : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -27,7 +29,9 @@ namespace ECommerce.Infrastructure.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<ulong>(type: "decimal(20,0)", nullable: false)
+                    Id = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,6 +64,26 @@ namespace ECommerce.Infrastructure.Migrations
                         column: x => x.SecondAddressId,
                         principalTable: "Address",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductOffer",
+                columns: table => new
+                {
+                    Id = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    ProductId = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductOffer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductOffer_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,12 +155,21 @@ namespace ECommerce.Infrastructure.Migrations
                 name: "IX_Customer_SecondAddressId",
                 table: "Customer",
                 column: "SecondAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOffer_ProductId",
+                table: "ProductOffer",
+                column: "ProductId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "CartItem");
+
+            migrationBuilder.DropTable(
+                name: "ProductOffer");
 
             migrationBuilder.DropTable(
                 name: "Cart");

@@ -17,10 +17,10 @@ namespace ECommerce.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Address", b =>
                 {
@@ -74,7 +74,7 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("ProductId1")
+                    b.Property<ulong>("ProductId1")
                         .HasColumnType("decimal(20,0)");
 
                     b.Property<int>("Quantity")
@@ -133,6 +133,14 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Property<ulong>("Id")
                         .HasColumnType("decimal(20,0)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -177,6 +185,35 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Navigation("FirstAddress");
 
                     b.Navigation("SecondAddress");
+                });
+
+            modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
+                {
+                    b.OwnsMany("ECommerce.Domain.Entities.ProductOffer", "_productOffers", b1 =>
+                        {
+                            b1.Property<ulong>("Id")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<decimal>("Price")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<ulong>("ProductId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<uint>("Quantity")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId");
+
+                            b1.ToTable("ProductOffer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.Navigation("_productOffers");
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Cart", b =>

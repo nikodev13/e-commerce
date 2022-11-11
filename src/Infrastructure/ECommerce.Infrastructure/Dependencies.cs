@@ -6,12 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Infrastructure;
 
-public static class InfrastructureInstaller
+public static class Dependencies
 {
-    public static IServiceCollection InstallInfrastructure(this IServiceCollection serviceCollection,
+    public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
-        var connectionString = configuration["ConnectionString"];
+        var connectionString = configuration.GetConnectionString("Default");
 
         serviceCollection.AddDbContext<ECommerceDbContext>(options => options.UseSqlServer(connectionString));
 
