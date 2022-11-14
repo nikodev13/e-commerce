@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ECommerce.Domain.Products;
+using ECommerce.Domain.Products.Categories;
 using ECommerce.Domain.Products.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -27,6 +28,8 @@ namespace ECommerce.Infrastructure.Domain.Products
             product.Property(p => p.Description)
                 .HasConversion(x => x.Value, x => new Description(x));
 
+            product.HasOne(p => p.Category);
+            
             product.Ignore(p => p.ProductOffers);
             
             product.OwnsMany<ProductOffer>("_productOffers", offer =>

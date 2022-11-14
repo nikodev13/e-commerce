@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20221108193318_Init1")]
-    partial class Init1
+    [Migration("20221112195045_InitProduct")]
+    partial class InitProduct
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,10 +131,27 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("ECommerce.Domain.Products.Categories.Category", b =>
+                {
+                    b.Property<uint>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
             modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
                     b.Property<ulong>("Id")
                         .HasColumnType("decimal(20,0)");
+
+                    b.Property<uint>("CategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -145,6 +162,8 @@ namespace ECommerce.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -192,6 +211,12 @@ namespace ECommerce.Infrastructure.Migrations
 
             modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
+                    b.HasOne("ECommerce.Domain.Products.Categories.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsMany("ECommerce.Domain.Entities.ProductOffer", "_productOffers", b1 =>
                         {
                             b1.Property<ulong>("Id")
@@ -215,6 +240,8 @@ namespace ECommerce.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");
                         });
+
+                    b.Navigation("Category");
 
                     b.Navigation("_productOffers");
                 });
