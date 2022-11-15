@@ -1,6 +1,6 @@
 ﻿using ECommerce.Domain.Shared.ValueObjects;
 
-namespace ECommerce.Domain.Products;
+namespace ECommerce.Domain.Products.Repositories;
 
 public interface IProductRepository
 {

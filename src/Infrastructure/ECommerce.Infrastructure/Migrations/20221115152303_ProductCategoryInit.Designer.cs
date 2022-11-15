@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20221112195045_InitProduct")]
-    partial class InitProduct
+    [Migration("20221115152303_ProductCategoryInit")]
+    partial class ProductCategoryInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,8 +77,8 @@ namespace ECommerce.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<ulong>("ProductId1")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<Guid>("ProductId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -131,10 +131,10 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.Products.Categories.Category", b =>
+            modelBuilder.Entity("ECommerce.Domain.Products.Category", b =>
                 {
-                    b.Property<uint>("Id")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -142,16 +142,16 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
-                    b.Property<ulong>("Id")
-                        .HasColumnType("decimal(20,0)");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<uint>("CategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -165,7 +165,7 @@ namespace ECommerce.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Cart", b =>
@@ -211,7 +211,7 @@ namespace ECommerce.Infrastructure.Migrations
 
             modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
-                    b.HasOne("ECommerce.Domain.Products.Categories.Category", "Category")
+                    b.HasOne("ECommerce.Domain.Products.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -225,8 +225,8 @@ namespace ECommerce.Infrastructure.Migrations
                             b1.Property<decimal>("Price")
                                 .HasColumnType("decimal(18,2)");
 
-                            b1.Property<ulong>("ProductId")
-                                .HasColumnType("decimal(20,0)");
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<uint>("Quantity")
                                 .HasColumnType("bigint");

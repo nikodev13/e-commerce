@@ -1,4 +1,4 @@
-namespace ECommerce.Domain.Products.Categories.Exceptions;
+namespace ECommerce.Domain.Products.Exceptions;
 
 public class CategoryAlreadyExistsException : Exception
 {

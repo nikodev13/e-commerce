@@ -1,16 +1,21 @@
-using ECommerce.Domain.Products.Categories.Exceptions;
-using ECommerce.Domain.Products.Categories.ValueObjects;
+using ECommerce.Domain.Products.Exceptions;
+using ECommerce.Domain.Products.Services;
+using ECommerce.Domain.Products.ValueObjects;
 
-namespace ECommerce.Domain.Products.Categories;
+namespace ECommerce.Domain.Products;
 
 public class Category
 {
     public CategoryId Id { get; }
-    public CategoryName Name { get; }
+    public CategoryName Name { get; set; }
 
-    private Category(CategoryName name)
+    private Category()
     {
-        Id = new CategoryId(0);
+        Id = new CategoryId(Guid.NewGuid());
+    }
+    
+    private Category(CategoryName name) : this()
+    {
         Name = name;
     }
 

@@ -1,23 +1,18 @@
 ﻿using ECommerce.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.Categories;
 using ECommerce.Domain.Products.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ECommerce.Infrastructure.Domain.Products
+namespace ECommerce.Infrastructure.Domain.Products.Configurations
 {
     public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> product)
         {
+            product.ToTable("Products");
+            
             product.HasKey(p => p.Id);
             product.Property(x => x.Id)
                 .HasConversion(x => x.Value, x => new ProductId(x));

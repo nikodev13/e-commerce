@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ECommerce.Domain.Products.Categories;
-using ECommerce.Domain.Products.Categories.ValueObjects;
 using ECommerce.Domain.Products.ValueObjects;
 
 namespace ECommerce.Domain.Products

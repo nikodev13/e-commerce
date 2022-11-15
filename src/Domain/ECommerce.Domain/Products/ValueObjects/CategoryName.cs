@@ -1,4 +1,4 @@
-namespace ECommerce.Domain.Products.Categories.ValueObjects;
+namespace ECommerce.Domain.Products.ValueObjects;
 
 public class CategoryName
 {

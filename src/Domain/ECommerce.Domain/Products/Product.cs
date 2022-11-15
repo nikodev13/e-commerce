@@ -1,7 +1,5 @@
 using System.Collections.ObjectModel;
 using ECommerce.Domain.Entities;
-using ECommerce.Domain.Products.Categories;
-using ECommerce.Domain.Products.Categories.ValueObjects;
 using ECommerce.Domain.Products.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 
