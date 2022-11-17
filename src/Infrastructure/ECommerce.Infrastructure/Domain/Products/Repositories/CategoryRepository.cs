@@ -10,7 +10,6 @@ public class CategoryRepository : ICategoryRepository
 {
     private readonly ECommerceDbContext _dbContext;
 
-
     public CategoryRepository(ECommerceDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -18,26 +17,34 @@ public class CategoryRepository : ICategoryRepository
     
     public Task<List<Category>> GetAllAsync()
     {
-        return _dbContext.Categories.ToListAsync();
+        return _dbContext.Categories.AsNoTracking().ToListAsync();
     }
 
-    public Task<Category> GetByIdAsync(CategoryId id)
+    public Task<Category?> GetByIdAsync(CategoryId id)
     {
-        throw new NotImplementedException();
+        return _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Value == id.Value);
     }
 
     public Task<Category?> GetByNameAsync(CategoryName name)
     {
-        throw new NotImplementedException();
+        return _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Name.Value == name.Value);
     }
 
-    public Task AddAsync(Category category)
+    public async Task AddAsync(Category category)
     {
-        throw new NotImplementedException();
+        await _dbContext.Categories.AddAsync(category);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task Update(Category category)
+    public async Task UpdateAsync(Category category)
     {
-        throw new NotImplementedException();
+        _dbContext.Categories.Update(category);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Category category)
+    {
+        _dbContext.Categories.Remove(category);
+        await _dbContext.SaveChangesAsync();
     }
 }
