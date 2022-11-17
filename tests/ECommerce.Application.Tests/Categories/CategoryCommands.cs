@@ -33,14 +33,15 @@ public class CategoryCommands
 
         var result = await handler.Handle(new GetAllCategoriesQuery(), CancellationToken.None);
         
-        Assert.NotEmpty(result);
+        Assert.True(result.IsSuccess);
+        Assert.NotEmpty(result.Value!);
     }
 
     [Theory]
     [InlineData("Coffee")]
     [InlineData("Tea")]
     [InlineData("Sea")]
-    public async Task CreateCategory_ShouldBePerfect(string name)
+    public async Task CreateCategory_ReturnResult_ShouldBeSuccess(string name)
     {
         var mockRepositoryObject = _mockRepository.Object;
         var handler = new CreateCategoryCommandHandler(mockRepositoryObject, new CategoryUniquenessChecker(_mockRepository.Object));

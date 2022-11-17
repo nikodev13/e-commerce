@@ -22,12 +22,12 @@ public class CategoryRepository : ICategoryRepository
 
     public Task<Category?> GetByIdAsync(CategoryId id)
     {
-        return _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Value == id.Value);
+        return _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public Task<Category?> GetByNameAsync(CategoryName name)
     {
-        return _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Name.Value == name.Value);
+        return _dbContext.Categories.FirstOrDefaultAsync(x => x.Name == name);
     }
 
     public async Task AddAsync(Category category)

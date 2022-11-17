@@ -1,5 +1,6 @@
 using ECommerce.Application.Shared.Results;
 using ECommerce.Application.Shared.Results.Errors;
+using ECommerce.Domain.Products;
 using ECommerce.Domain.Products.Repositories;
 using MediatR;
 
@@ -7,6 +8,11 @@ namespace ECommerce.Application.Categories.Commands;
 
 public class DeleteCategoryCommand : IRequest<Result<None>>
 {
+    public DeleteCategoryCommand(Guid id)
+    {
+        Id = id;
+    }
+    
     public Guid Id { get; }
 }
 

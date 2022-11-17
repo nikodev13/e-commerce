@@ -6,18 +6,19 @@ public class Result<T>
 {
     public T? Value { get; }
     public ErrorBase? Error { get; }
+    public bool IsSuccess { get; }
     
     private Result(T value)
     {
         Value = value;
+        IsSuccess = true;
     }
 
     private Result(ErrorBase error)
     {
         Error = error;
+        IsSuccess = false;
     }
-
-    public bool IsSuccess => Value is not null;
 
     public R Match<R>(Func<T, R> successPredicate, Func<ErrorBase, R> failurePredicate)
     {
