@@ -13,6 +13,6 @@ public class CategoryName
         Value = name;
     }
 
-    public static implicit operator string(CategoryName id) => id.Value;
+    public static implicit operator string(CategoryName name) => name.Value;
     public static implicit operator CategoryName(string name) => new(name);
 }

@@ -28,9 +28,9 @@ public class Category
     /// <exception cref="CategoryAlreadyExistsException">Throws when category already exists</exception>
     public static async Task<Category> Create(CategoryName categoryName, ICategoryUniquenessChecker checker)
     {
-        var categoryAlreadyExists = await checker.IsUnique(categoryName);
+        var isUnique = await checker.IsUnique(categoryName);
         
-        if (categoryAlreadyExists)
+        if (!isUnique)
         {
             throw new CategoryAlreadyExistsException();
         }
