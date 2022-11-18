@@ -1,11 +1,10 @@
+using ECommerce.API.Products;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
-// Add services to the container.
-builder.Services.AddControllers();
 
 // adding and configuring clean architecture layers
 builder.Services.ConfigureApplicationServices();
@@ -31,8 +30,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.MapControllers();
+app.RegisterCategoryEndpoints();
 
 app.Run();

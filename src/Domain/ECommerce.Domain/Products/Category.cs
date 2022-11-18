@@ -26,6 +26,7 @@ public class Category
     /// <param name="checker">Service checking that category already exists</param>
     /// <returns>A new instance of product category</returns>
     /// <exception cref="CategoryAlreadyExistsException">Throws when category already exists</exception>
+    /// 
     public static async Task<Category> Create(CategoryName categoryName, ICategoryUniquenessChecker checker)
     {
         var isUnique = await checker.IsUnique(categoryName);
