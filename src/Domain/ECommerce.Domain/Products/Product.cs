@@ -1,9 +1,8 @@
-using System.Collections.ObjectModel;
-using ECommerce.Domain.Entities;
-using ECommerce.Domain.Products.ValueObjects;
+using ECommerce.Domain.Products;
+using ECommerce.Domain.ProductsContext.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 
-namespace ECommerce.Domain.Products;
+namespace ECommerce.Domain.ProductsContext;
 
 public class Product
 {

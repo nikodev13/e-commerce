@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Domain.Products.ValueObjects;
+﻿namespace ECommerce.Domain.ProductsContext.ValueObjects;
 
 public class ProductOfferId
 {

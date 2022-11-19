@@ -1,4 +1,3 @@
-using ECommerce.Infrastructure.Database;
 using Xunit;
 
 namespace ECommerce.Infrastructure.Tests.Database;

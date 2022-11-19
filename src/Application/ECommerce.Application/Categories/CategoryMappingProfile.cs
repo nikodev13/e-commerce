@@ -1,5 +1,6 @@
 using AutoMapper;
 using ECommerce.Domain.Products;
+using ECommerce.Domain.ProductsContext;
 
 namespace ECommerce.Application.Categories;
 

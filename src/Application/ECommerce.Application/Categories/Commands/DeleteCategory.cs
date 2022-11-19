@@ -1,39 +1,40 @@
+using ECommerce.Application.Interfaces;
 using ECommerce.Application.Shared.Results;
 using ECommerce.Application.Shared.Results.Errors;
-using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.Repositories;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Categories.Commands;
 
-public class DeleteCategoryCommand : IRequest<Result<None>>
+public class DeleteCategoryCommand : IRequest<Result>
 {
-    public DeleteCategoryCommand(Guid id)
+    public DeleteCategoryCommand(long id)
     {
         Id = id;
     }
     
-    public Guid Id { get; }
+    public long Id { get; }
 }
 
-public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result<None>>
+public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IApplicationDatabase _database;
 
-    public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository)
+    public DeleteCategoryCommandHandler(IApplicationDatabase database)
     {
-        _categoryRepository = categoryRepository;
+        _database = database;
     }
     
-    public async Task<Result<None>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByIdAsync(request.Id);
+        var category = await _database.Categories.FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
         if (category is null)
             return new NotFoundError($"Product category with id {category} not found.");
 
-        await _categoryRepository.DeleteAsync(category);
+        _database.Categories.Remove(category);
+        await _database.SaveChangesAsync(cancellationToken);
         
-        return None.Value;
+        return Result.Success();
     }
 }

@@ -1,14 +1,9 @@
 using Bogus;
+using ECommerce.Application.Shared.Services;
 using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.Services;
-using ECommerce.Domain.Products.ValueObjects;
-using ECommerce.Domain.Shared.ValueObjects;
-using ECommerce.Infrastructure.Database;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Internal;
+using ECommerce.Domain.ProductsContext.ValueObjects;
 
-namespace ECommerce.Infrastructure.Domain.Products.Seeders;
+namespace ECommerce.Infrastructure.Persistence.Seeders;
 
 internal static class ProductsSeeder
 {
@@ -22,9 +17,10 @@ internal static class ProductsSeeder
 
     private static async Task SeedCategories()
     {
+        var snowflakeService = new SnowflakeIdService();
+
         var fakeCategoryFactory = new Faker<Category>()
-            .CustomInstantiator(x => (Category)Activator.CreateInstance(typeof(Category), true)!)
-            .RuleFor(x => x.Name, x => new CategoryName(x.Commerce.Categories(1).First()));
+            .CustomInstantiator(x => Category.Create(new CategoryName(x.Commerce.Categories(1).First()), snowflakeService));
 
         var data = fakeCategoryFactory.Generate(10);
         await _dbContext.Categories.AddRangeAsync(data);

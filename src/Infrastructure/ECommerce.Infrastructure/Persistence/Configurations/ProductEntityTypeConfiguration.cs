@@ -1,11 +1,10 @@
-﻿using ECommerce.Domain.Entities;
-using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.ValueObjects;
+﻿using ECommerce.Domain.ProductsContext;
+using ECommerce.Domain.ProductsContext.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ECommerce.Infrastructure.Domain.Products.Configurations
+namespace ECommerce.Infrastructure.Persistence.Configurations
 {
     public class ProductEntityTypeConfiguration : IEntityTypeConfiguration<Product>
     {

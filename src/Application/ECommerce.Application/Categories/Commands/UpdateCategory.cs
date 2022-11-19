@@ -1,43 +1,48 @@
-using ECommerce.Application.Shared;
+using ECommerce.Application.Interfaces;
 using ECommerce.Application.Shared.Results;
 using ECommerce.Application.Shared.Results.Errors;
-using ECommerce.Domain.Products.Repositories;
-using ECommerce.Domain.Products.ValueObjects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Categories.Commands;
 
-public class UpdateCategoryCommand : IRequest<Result<None>>
+public class UpdateCategoryCommand : IRequest<Result>
 {
-    public Guid CategoryId { get; }
+    public long CategoryId { get; }
     public string CategoryName { get; }
 
-    public UpdateCategoryCommand(Guid categoryId, string categoryName)
+    public UpdateCategoryCommand(long categoryId, string categoryName)
     {
         CategoryId = categoryId;
         CategoryName = categoryName;
     }
 }
 
-public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result<None>>
+public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IApplicationDatabase _database;
 
-    public UpdateCategoryCommandHandler(ICategoryRepository categoryRepository)
+    public UpdateCategoryCommandHandler(IApplicationDatabase database)
     {
-        _categoryRepository = categoryRepository;
+        _database = database;
     }
     
-    public async Task<Result<None>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
+        if (await _database.Categories.AnyAsync(c => c.Name == request.CategoryName, cancellationToken))
+        {
+            return new AlreadyExistsError($"Category with name {request.CategoryName} already exists.");
+        }
+        
+        var category = await _database.Categories
+            .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
 
         if (category is null)
             return new NotFoundError($"Product category with id {category} not found.");
 
         category.Name = request.CategoryName;
-        await _categoryRepository.UpdateAsync(category);
+        await _database.SaveChangesAsync(cancellationToken);
             
-        return None.Value;
+        return Result.Success();
     }
 }

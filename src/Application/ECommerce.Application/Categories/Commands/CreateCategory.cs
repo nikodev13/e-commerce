@@ -1,14 +1,15 @@
+using AutoMapper;
+using ECommerce.Application.Interfaces;
 using ECommerce.Application.Shared.Results;
 using ECommerce.Application.Shared.Results.Errors;
 using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.Exceptions;
-using ECommerce.Domain.Products.Repositories;
-using ECommerce.Domain.Products.Services;
+using ECommerce.Domain.Shared.Services;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Categories.Commands;
 
-public class CreateCategoryCommand : IRequest<Result<Guid>>
+public class CreateCategoryCommand : IRequest<Result<CategoryDto>>
 {
     public CreateCategoryCommand(string categoryName)
     {
@@ -18,28 +19,31 @@ public class CreateCategoryCommand : IRequest<Result<Guid>>
     public string CategoryName { get; }
 }
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Result<Guid>>
+public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Result<CategoryDto>>
 {
-    private readonly ICategoryRepository _categoryRepository;
-    private readonly ICategoryUniquenessChecker _uniquenessChecker;
+    private readonly IApplicationDatabase _database;
+    private readonly ISnowflakeIdService _idService;
+    private readonly IMapper _mapper;
 
-    public CreateCategoryCommandHandler(ICategoryRepository categoryRepository, ICategoryUniquenessChecker uniquenessChecker)
+    public CreateCategoryCommandHandler(IApplicationDatabase database, ISnowflakeIdService idService, IMapper mapper)
     {
-        _categoryRepository = categoryRepository;
-        _uniquenessChecker = uniquenessChecker;
+        _database = database;
+        _idService = idService;
+        _mapper = mapper;
     }
     
-    public async Task<Result<Guid>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
-    {   
-        try
+    public async Task<Result<CategoryDto>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    {
+        if (await _database.Categories.AnyAsync(c => c.Name == request.CategoryName, cancellationToken))
         {
-            var category = await Category.Create(request.CategoryName, _uniquenessChecker);
-            await _categoryRepository.AddAsync(category);
-            return category.Id.Value;
+            return new AlreadyExistsError($"Category with name {request.CategoryName} already exists.");
         }
-        catch (CategoryAlreadyExistsException exception)
-        {
-            return new AlreadyExistsError(exception.Message);
-        }
+
+        var category = Category.Create(request.CategoryName, _idService);
+        await _database.Categories.AddAsync(category, cancellationToken);
+        await _database.SaveChangesAsync(cancellationToken);
+        
+        var result = _mapper.Map<CategoryDto>(category);
+        return result;
     }
 }

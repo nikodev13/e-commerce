@@ -1,9 +1,7 @@
-using System.Net;
-using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.ValueObjects;
+using ECommerce.Domain.ProductsContext.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 
-namespace ECommerce.Domain.Entities;
+namespace ECommerce.Domain.ProductsContext;
 
 public class ProductOffer
 {

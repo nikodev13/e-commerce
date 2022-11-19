@@ -1,6 +1,6 @@
 using System.Reflection;
-using ECommerce.Application.Categories.DomainServices;
-using ECommerce.Domain.Products.Services;
+using ECommerce.Application.Shared.Services;
+using ECommerce.Domain.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 
@@ -13,7 +13,7 @@ public static class Dependencies
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        services.AddScoped<ICategoryUniquenessChecker, CategoryUniquenessChecker>();
+        services.AddSingleton<ISnowflakeIdService, SnowflakeIdService>();
                     
         return services;
     }

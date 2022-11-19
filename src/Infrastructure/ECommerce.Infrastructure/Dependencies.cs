@@ -1,7 +1,6 @@
-using ECommerce.Domain.Products.Repositories;
-using ECommerce.Infrastructure.Database;
-using ECommerce.Infrastructure.Domain.Products.Repositories;
-using ECommerce.Infrastructure.Domain.Products.Seeders;
+using ECommerce.Application.Interfaces;
+using ECommerce.Infrastructure.Persistence;
+using ECommerce.Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,9 +18,7 @@ public static class Dependencies
 
         // seeder for ECommerceDbContext
         services.AddScoped<ECommerceDbSeeder>();
-        
-        // registering repositories
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IApplicationDatabase>(provider => provider.GetRequiredService<ECommerceDbContext>());
         
         return services;
     }

@@ -1,6 +1,4 @@
-using ECommerce.Infrastructure.Domain.Products.Seeders;
-
-namespace ECommerce.Infrastructure.Database;
+namespace ECommerce.Infrastructure.Persistence.Seeders;
 
 public class ECommerceDbSeeder
 {

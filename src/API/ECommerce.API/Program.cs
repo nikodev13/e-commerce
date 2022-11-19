@@ -1,7 +1,7 @@
 using ECommerce.API.Products;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
-using ECommerce.Infrastructure.Database;
+using ECommerce.Infrastructure.Persistence.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
