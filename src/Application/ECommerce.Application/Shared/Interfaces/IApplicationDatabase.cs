@@ -1,7 +1,8 @@
 using ECommerce.Domain.Products;
+using ECommerce.Domain.Products.Categories;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.Interfaces;
+namespace ECommerce.Application.Shared.Interfaces;
 
 public interface IApplicationDatabase
 {

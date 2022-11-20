@@ -1,8 +1,7 @@
 using AutoMapper;
-using ECommerce.Domain.Products;
-using ECommerce.Domain.ProductsContext;
+using ECommerce.Domain.Products.Categories;
 
-namespace ECommerce.Application.Categories;
+namespace ECommerce.Application.Products.Categories;
 
 public class CategoryMappingProfile : Profile
 {

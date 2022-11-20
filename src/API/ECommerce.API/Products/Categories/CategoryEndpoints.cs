@@ -1,13 +1,13 @@
 ﻿using ECommerce.API.Utilities;
-using ECommerce.Application.Categories;
-using ECommerce.Application.Categories.Commands;
-using ECommerce.Application.Categories.Queries;
+using ECommerce.Application.Products.Categories;
+using ECommerce.Application.Products.Categories.Features.Commands;
+using ECommerce.Application.Products.Categories.Features.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.API.Products
+namespace ECommerce.API.Products.Categories
 {
-    public static class CategoriesEndpoints
+    public static class CategoryEndpoints
     {
         private static async Task<IResult> GetAll([FromServices] IMediator mediator)
         {
@@ -47,26 +47,26 @@ namespace ECommerce.API.Products
 
         public static void RegisterCategoryEndpoints(this WebApplication app)
         {
-            app.MapGet("api/categories", GetAll)
+            app.MapGet("api/products/categories", GetAll)
                 .Produces<List<CategoryDto>>();
 
-            app.MapGet("api/categories/{id:long}", GetById)
+            app.MapGet("api/products/categories/{id:long}", GetById)
                 .Produces<CategoryDto>()
                 .Produces(StatusCodes.Status404NotFound);
 
-            app.MapGet("api/categories/{name}", GetByName)
+            app.MapGet("api/products/categories/{name}", GetByName)
                 .Produces<CategoryDto>()
                 .Produces(StatusCodes.Status404NotFound);
 
-            app.MapPost("api/categories", Create)
+            app.MapPost("api/products/categories", Create)
                 .Produces(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status409Conflict);
 
-            app.MapPut("api/categories/{id:long}", Update)
+            app.MapPut("api/products/categories/{id:long}", Update)
                  .Produces(StatusCodes.Status204NoContent)
                  .Produces(StatusCodes.Status404NotFound);
 
-            app.MapDelete("api/categories/{id:long}", Delete)
+            app.MapDelete("api/products/categories/{id:long}", Delete)
                  .Produces(StatusCodes.Status204NoContent)
                  .Produces(StatusCodes.Status404NotFound);
         }

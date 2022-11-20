@@ -1,10 +1,10 @@
-using ECommerce.Application.Interfaces;
+using ECommerce.Application.Shared.Interfaces;
 using ECommerce.Application.Shared.Results;
 using ECommerce.Application.Shared.Results.Errors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.Categories.Commands;
+namespace ECommerce.Application.Products.Categories.Features.Commands;
 
 public class DeleteCategoryCommand : IRequest<Result>
 {

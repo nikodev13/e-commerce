@@ -1,4 +1,4 @@
-namespace ECommerce.Application.Categories;
+namespace ECommerce.Application.Products.Categories;
 
 public class CategoryDto
 {

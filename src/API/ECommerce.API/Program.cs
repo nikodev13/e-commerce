@@ -1,4 +1,4 @@
-using ECommerce.API.Products;
+using ECommerce.API.Products.Categories;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Persistence.Seeders;

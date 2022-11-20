@@ -1,4 +1,4 @@
-namespace ECommerce.API.Products;
+namespace ECommerce.API.Products.Categories;
 
 public class CategoryNameRequest
 {

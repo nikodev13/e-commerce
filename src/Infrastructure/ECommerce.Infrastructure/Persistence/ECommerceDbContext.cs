@@ -1,6 +1,7 @@
 using System.Reflection;
-using ECommerce.Application.Interfaces;
+using ECommerce.Application.Shared.Interfaces;
 using ECommerce.Domain.Products;
+using ECommerce.Domain.Products.Categories;
 using ECommerce.Domain.ProductsContext;
 using Microsoft.EntityFrameworkCore;
 

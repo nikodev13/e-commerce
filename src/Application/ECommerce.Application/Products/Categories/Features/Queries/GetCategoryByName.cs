@@ -1,11 +1,11 @@
 using AutoMapper;
-using ECommerce.Application.Interfaces;
+using ECommerce.Application.Shared.Interfaces;
 using ECommerce.Application.Shared.Results;
 using ECommerce.Application.Shared.Results.Errors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.Categories.Queries;
+namespace ECommerce.Application.Products.Categories.Features.Queries;
 
 public class GetCategoryByNameQuery : IRequest<Result<CategoryDto>>
 {

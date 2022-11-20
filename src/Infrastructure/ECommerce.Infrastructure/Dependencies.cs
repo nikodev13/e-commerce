@@ -1,4 +1,4 @@
-using ECommerce.Application.Interfaces;
+using ECommerce.Application.Shared.Interfaces;
 using ECommerce.Infrastructure.Persistence;
 using ECommerce.Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +18,7 @@ public static class Dependencies
 
         // seeder for ECommerceDbContext
         services.AddScoped<ECommerceDbSeeder>();
+        // set application database
         services.AddScoped<IApplicationDatabase>(provider => provider.GetRequiredService<ECommerceDbContext>());
         
         return services;
