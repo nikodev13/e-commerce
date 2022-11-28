@@ -25,6 +25,7 @@ public class ECommerceDbSeeder
         {
             var categoriesSeedData = new CategoriesSeedDataProvider(_idService).GetData();
             await _dbContext.Categories.AddRangeAsync(categoriesSeedData);
+            await _dbContext.SaveChangesAsync();
         }
     }
     

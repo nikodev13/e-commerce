@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain.ProductsContext;
+﻿using ECommerce.Domain.Products;
+using ECommerce.Domain.ProductsContext;
 using ECommerce.Domain.ProductsContext.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;

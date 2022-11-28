@@ -1,11 +1,8 @@
 using Bogus;
-using ECommerce.Application.Shared.Services;
 using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.Categories;
-using ECommerce.Domain.Products.Categories.Services;
-using ECommerce.Domain.ProductsContext.ValueObjects;
+using ECommerce.Domain.Products.ValueObjects;
 using ECommerce.Domain.Shared.Services;
-using Microsoft.EntityFrameworkCore;
+using ECommerce.Domain.Shared.ValueObjects;
 
 namespace ECommerce.Infrastructure.Persistence.Seeders;
 
@@ -20,21 +17,10 @@ internal class CategoriesSeedDataProvider : IEntitySeedDataProvider<Category>
     
     public IEnumerable<Category> GetData()
     {
-        var uniquenessChecker = new CategoryAlwaysUniqueService();
         var fakeCategoryFactory = new Faker<Category>()
-            .CustomInstantiator(x => Category.Create(new CategoryName(x.Commerce.Categories(1).First()),
-                _idService,
-                uniquenessChecker));
+            .CustomInstantiator(x => new Category(x.UniqueIndex, x.Commerce.Categories(1).First()));
 
         var data = fakeCategoryFactory.Generate(10);
         return data;
-    }
-    
-    private class CategoryAlwaysUniqueService : ICategoryUniquenessChecker
-    {
-        public bool IsNotUnique(CategoryName name)
-        {
-            return true;
-        }
     }
 }

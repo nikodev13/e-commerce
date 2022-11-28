@@ -1,13 +1,13 @@
-using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.Categories;
+using ECommerce.Domain.ProductsContext;
 using ECommerce.Domain.ProductsContext.ValueObjects;
+using ECommerce.Domain.SeedWork;
 using ECommerce.Domain.Shared.ValueObjects;
 
-namespace ECommerce.Domain.ProductsContext;
+namespace ECommerce.Domain.Products;
 
-public class Product
+public class Product : Entity
 {
-    public ProductId Id { get; }
+    public ProductId Id { get; init; }
     public ProductName Name { get; set; }
     public Description Description { get; set; }
     public Category Category { get; set; }
@@ -20,13 +20,6 @@ public class Product
         _productOffers = new List<ProductOffer>();
     }
 
-    internal Product(ProductName name, Description description, Category category)
-    {
-        Name = name;
-        Description = description;
-        Category = category;
-    }
-    
     public void MakeOffer(MoneyValue price, Quantity quantity)
     {
         var offer = new ProductOffer(Id, price, quantity);

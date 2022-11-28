@@ -1,10 +1,8 @@
 using System.Reflection;
-using ECommerce.Application.Products.Categories;
-using ECommerce.Application.Products.Categories.Services;
-using ECommerce.Application.Shared.Services;
-using ECommerce.Domain.Products.Categories;
-using ECommerce.Domain.Products.Categories.Services;
+using ECommerce.Application.Common.Behaviours;
+using ECommerce.Application.Common.Services;
 using ECommerce.Domain.Shared.Services;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 
@@ -14,11 +12,14 @@ public static class Dependencies
 {
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
-        services.AddMediatR(Assembly.GetExecutingAssembly());
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        var assembly = Assembly.GetExecutingAssembly();
+        services.AddMediatR(assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        services.AddValidatorsFromAssembly(assembly);
+        ValidatorOptions.Global.LanguageManager.Enabled = false;
+        // services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         services.AddSingleton<ISnowflakeIdService, SnowflakeIdService>();
-        services.AddScoped<ICategoryUniquenessChecker, CategoryUniquenessChecker>();
                     
         return services;
     }

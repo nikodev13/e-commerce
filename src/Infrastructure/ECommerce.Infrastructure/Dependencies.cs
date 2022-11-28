@@ -1,4 +1,4 @@
-using ECommerce.Application.Shared.Interfaces;
+using ECommerce.Application.Common.Interfaces;
 using ECommerce.Infrastructure.Persistence;
 using ECommerce.Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
