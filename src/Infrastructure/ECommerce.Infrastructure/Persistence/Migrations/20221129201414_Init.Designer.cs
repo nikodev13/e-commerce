@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ECommerce.Infrastructure.Migrations
+namespace ECommerce.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ECommerceDbContext))]
-    [Migration("20221119221136_Init")]
+    [Migration("20221129201414_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -39,7 +39,7 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.ProductsContext.Product", b =>
+            modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -62,7 +62,7 @@ namespace ECommerce.Infrastructure.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce.Domain.ProductsContext.Product", b =>
+            modelBuilder.Entity("ECommerce.Domain.Products.Product", b =>
                 {
                     b.HasOne("ECommerce.Domain.Products.Category", "Category")
                         .WithMany()

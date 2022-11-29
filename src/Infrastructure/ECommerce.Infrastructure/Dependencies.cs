@@ -1,4 +1,5 @@
 using ECommerce.Application.Common.Interfaces;
+using ECommerce.Infrastructure.Logging;
 using ECommerce.Infrastructure.Persistence;
 using ECommerce.Infrastructure.Persistence.Seeders;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ public static class Dependencies
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Default");
-
+        services.ConfigureSerilog();
         services.AddDbContext<ECommerceDbContext>(options => options.UseSqlServer(connectionString));
 
         // seeder for ECommerceDbContext

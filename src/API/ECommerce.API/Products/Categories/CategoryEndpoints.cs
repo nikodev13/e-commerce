@@ -46,28 +46,35 @@ namespace ECommerce.API.Products.Categories
 
         public static void RegisterCategoryEndpoints(this WebApplication app)
         {
+            var groupName = "Product categories";
             app.MapGet("api/products/categories", GetAll)
+                .WithTags(groupName)
                 .Produces<List<CategoryDto>>();
 
             app.MapGet("api/products/categories/{id:long}", GetById)
+                .WithTags(groupName)
                 .Produces<CategoryDto>()
                 .Produces(StatusCodes.Status404NotFound);
 
             app.MapGet("api/products/categories/{name}", GetByName)
+                .WithTags(groupName)
                 .Produces<CategoryDto>()
                 .Produces(StatusCodes.Status404NotFound);
 
             app.MapPost("api/products/categories", Create)
+                .WithTags(groupName)
                 .Produces(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status409Conflict);
 
             app.MapPut("api/products/categories/{id:long}", Update)
-                 .Produces(StatusCodes.Status204NoContent)
-                 .Produces(StatusCodes.Status404NotFound);
+                .WithTags(groupName)
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound);
 
             app.MapDelete("api/products/categories/{id:long}", Delete)
-                 .Produces(StatusCodes.Status204NoContent)
-                 .Produces(StatusCodes.Status404NotFound);
+                .WithTags(groupName)
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound);
         }
     }
 }
