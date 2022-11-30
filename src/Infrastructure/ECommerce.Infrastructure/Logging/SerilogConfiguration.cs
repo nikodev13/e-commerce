@@ -12,10 +12,20 @@ internal static class SerilogConfiguration
     {
         services.AddLogging(builder =>
         {
+            var logTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}";
             builder.ClearProviders();
             var logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
-                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.Console(theme: AnsiConsoleTheme.Code,
+                    outputTemplate: logTemplate)
+                .WriteTo.File(path: "logs/logs",
+                    rollingInterval: RollingInterval.Day,
+                    outputTemplate: logTemplate)
+                .WriteTo.File(path: "logs/errors",
+                    rollingInterval: RollingInterval.Day, 
+                    restrictedToMinimumLevel: LogEventLevel.Error,
+                    outputTemplate: logTemplate)
                 .CreateLogger();
             builder.AddSerilog(logger);
         });

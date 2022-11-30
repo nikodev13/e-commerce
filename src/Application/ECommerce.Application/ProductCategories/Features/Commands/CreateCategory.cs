@@ -5,6 +5,7 @@ using ECommerce.Domain.Shared.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.ProductCategories.Features.Commands;
 
@@ -30,11 +31,13 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 {
     private readonly IApplicationDatabase _database;
     private readonly ISnowflakeIdService _idService;
+    private readonly ILogger<CreateCategoryCommand> _logger;
 
-    public CreateCategoryCommandHandler(IApplicationDatabase database, ISnowflakeIdService idService)
+    public CreateCategoryCommandHandler(IApplicationDatabase database, ISnowflakeIdService idService, ILogger<CreateCategoryCommand> logger)
     {
         _database = database;
         _idService = idService;
+        _logger = logger;
     }
     
     public async Task<CategoryDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
@@ -49,6 +52,8 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         
         await _database.Categories.AddAsync(category, cancellationToken);
         await _database.SaveChangesAsync(cancellationToken);
+        
+        _logger.LogInformation("Created new product category with id {@categoryId}", category.Id.Value);
         var result = CategoryDto.FromCategory(category);
         
         return result;
