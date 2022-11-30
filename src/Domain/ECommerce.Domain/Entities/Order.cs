@@ -1,3 +1,5 @@
+using ECommerce.Domain.ProductsContext;
+
 namespace ECommerce.Domain.Entities;
 
 public class Order

@@ -1,6 +1,4 @@
-﻿using ECommerce.Domain.Shared.Exceptions;
-
-namespace ECommerce.Domain.Shared.ValueObjects;
+﻿namespace ECommerce.Domain.Shared.ValueObjects;
 
 public class Quantity
 {
@@ -8,10 +6,6 @@ public class Quantity
     
     public Quantity(uint quantity)
     {
-        if (quantity < 0)
-        {
-            throw new InvalidQuantityException();
-        }
         Value = quantity;
     } 
     

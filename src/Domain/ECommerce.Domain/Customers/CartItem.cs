@@ -1,4 +1,5 @@
 using ECommerce.Domain.Products;
+using ECommerce.Domain.ProductsContext;
 
 namespace ECommerce.Domain.Entities;
 

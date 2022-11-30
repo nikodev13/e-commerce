@@ -1,6 +1,4 @@
-﻿using ECommerce.Domain.Shared.Exceptions;
-
-namespace ECommerce.Domain.Shared.ValueObjects;
+﻿namespace ECommerce.Domain.Shared.ValueObjects;
 
 public class MoneyValue
 {
@@ -10,7 +8,7 @@ public class MoneyValue
     {
         if (value <= 0)
         {
-            throw new InvalidMoneyValueException();
+            throw new ArgumentException("Money value must greater than zero.");
         }
         Value = value;
     }

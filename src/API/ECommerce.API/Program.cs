@@ -1,17 +1,23 @@
-using ECommerce.API.Services;
+using ECommerce.API.Middleware;
+using ECommerce.API.Products.Categories;
+using ECommerce.Application;
 using ECommerce.Infrastructure;
+using ECommerce.Infrastructure.Persistence.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 
-// Add services to the container.
+// adding and configuring clean architecture layers
+services.ConfigureApplicationServices();
+services.ConfigureInfrastructureServices(configuration);
 
-builder.Services.AddControllers();
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
-builder.Services.InstallInfrastructure(builder.Configuration);
+
+services.AddScoped<ExceptionMiddleware>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -20,12 +26,16 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    // seed sample data to the ECommerceDb 
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<ECommerceDbSeeder>();
+    await seeder.SeedSampleData();
 }
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
-app.MapControllers();
+app.UseMiddleware<ExceptionMiddleware>();
+app.RegisterCategoryEndpoints();
 
 app.Run();

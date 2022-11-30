@@ -1,32 +1,28 @@
-using System.Collections.ObjectModel;
-using ECommerce.Domain.Entities;
+using ECommerce.Domain.ProductsContext;
+using ECommerce.Domain.ProductsContext.ValueObjects;
+using ECommerce.Domain.SeedWork;
 using ECommerce.Domain.Shared.ValueObjects;
 
 namespace ECommerce.Domain.Products;
 
-public class Product
+public class Product : Entity
 {
-    public ProductId Id { get; }
-    public string Name { get; }
-    public string Description { get; }
+    public ProductId Id { get; init; }
+    public ProductName Name { get; set; }
+    public Description Description { get; set; }
+    public Category Category { get; set; }
 
-    //private readonly List<ProductOffer> _productOffers;
-    //public IReadOnlyCollection<ProductOffer> ProductOffers => _productOffers;
-    
-    internal Product(string name, string description)
+    private readonly List<ProductOffer> _productOffers;
+    public IEnumerable<ProductOffer> ProductOffers => _productOffers;
+
+    private Product()
     {
-        Name = name;
-        Description = description;
+        _productOffers = new List<ProductOffer>();
     }
-    
-    public void MakeOffer(decimal price, uint quantity)
+
+    public void MakeOffer(MoneyValue price, Quantity quantity)
     {
         var offer = new ProductOffer(Id, price, quantity);
-        //_productOffers.Add(offer);
-    }
-
-    public Product()
-    {
-
+        _productOffers.Add(offer);
     }
 }
