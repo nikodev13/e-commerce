@@ -16,10 +16,10 @@
 - Application
   - Interaction logic with domain entities
   - Commands and queries as use cases
-  Implementations of domain services
+  - Implements domain services
   - Application services interfaces, i.a. e-mails senders
 - Infrastructure
-  - Implementation of application services
+  - Implements application services
   - Provides logging, database access, e-mail communication
 - API
   - Provides HTTP endpoints
