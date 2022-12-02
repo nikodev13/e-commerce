@@ -1,12 +1,13 @@
-using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
+using ECommerce.Application.Common.Results;
+using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Features.Commands;
+namespace ECommerce.Application.ProductCategories.Commands;
 
-public class UpdateCategoryCommand : IRequest
+public class UpdateCategoryCommand : IRequest<Result>
 {
     public long CategoryId { get; }
     public string CategoryName { get; }
@@ -28,7 +29,7 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
 }
 
 
-public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand>
+public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result>
 {
     private readonly IApplicationDatabase _database;
 
@@ -37,22 +38,22 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         _database = database;
     }
     
-    public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
         // if category with this name already exists, return AlreadyExistsError
         if (await _database.Categories.AnyAsync(x => x.Name == request.CategoryName, cancellationToken))
         {
-            throw new AlreadyExistsException($"Category with name '{request.CategoryName}' already exists.");
+            return new AlreadyExistsError($"Category with name '{request.CategoryName}' already exists.");
         }
         
         var category = await _database.Categories
             .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
 
         if (category is null)
-            throw new NotFoundException($"Product category with id {category} not found.");
+            return new NotFoundError($"Product category with id {category} not found.");
 
         await _database.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+        return Result.Success();
     }
 }

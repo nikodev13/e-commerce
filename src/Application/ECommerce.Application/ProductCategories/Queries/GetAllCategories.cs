@@ -1,14 +1,15 @@
 using ECommerce.Application.Common.Interfaces;
+using ECommerce.Application.Common.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Features.Queries;
+namespace ECommerce.Application.ProductCategories.Queries;
 
-public class GetAllCategoriesQuery : IRequest<List<CategoryDto>> 
+public class GetAllCategoriesQuery : IRequest<Result<List<CategoryDto>>> 
 {
 }
 
-public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, List<CategoryDto>>
+public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, Result<List<CategoryDto>>>
 {
     private readonly IApplicationDatabase _database;
 
@@ -17,7 +18,7 @@ public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuer
         _database = database;
     }
     
-    public async Task<List<CategoryDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<CategoryDto>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
         var result = await _database.Categories.AsNoTracking()
             .Select(x => CategoryDto.FromCategory(x)).ToListAsync(cancellationToken);

@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using ECommerce.Application.Common.Identity;
 using ECommerce.Application.Common.Interfaces;
 
 namespace ECommerce.API.Configuration;

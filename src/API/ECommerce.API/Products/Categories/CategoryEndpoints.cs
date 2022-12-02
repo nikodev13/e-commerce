@@ -1,6 +1,7 @@
-﻿using ECommerce.Application.ProductCategories;
-using ECommerce.Application.ProductCategories.Features.Commands;
-using ECommerce.Application.ProductCategories.Features.Queries;
+using ECommerce.API.Utilities;
+using ECommerce.Application.ProductCategories;
+using ECommerce.Application.ProductCategories.Commands;
+using ECommerce.Application.ProductCategories.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,37 +12,38 @@ namespace ECommerce.API.Products.Categories
         private static async Task<IResult> GetAll([FromServices] IMediator mediator)
         {
             var result = await mediator.Send(new GetAllCategoriesQuery());
-            return Results.Ok(result);
+            return result.Resolve(Results.Ok);
         }
 
         private static async Task<IResult> GetById([FromServices] IMediator mediator, [FromRoute] long id)
         {
             var result = await mediator.Send(new GetCategoryByIdQuery(id));
-            return Results.Ok(result);
+            return result.Resolve(Results.Ok);
         }
 
         private static async Task<IResult> GetByName([FromServices] IMediator mediator, [FromRoute] string name)
         {
             var result = await mediator.Send(new GetCategoryByNameQuery(name));
-            return Results.Ok(result);
+            return result.Resolve(Results.Ok);
         }
 
         private static async Task<IResult> Create([FromServices] IMediator mediator, [FromBody] CategoryNameRequest nameRequest)
         {
             var result = await mediator.Send(new CreateCategoryCommand(nameRequest.CategoryName));
-            return Results.Created($"api/products/categories/{result.Id}", result);
+            return result.Resolve(x => Results.Created($"api/products/categories/{x.Id}", x));
         }
 
         private static async Task<IResult> Update([FromServices] IMediator mediator, [FromRoute] long id, [FromBody] CategoryNameRequest nameRequest)
         {
-            await mediator.Send(new UpdateCategoryCommand(id, nameRequest.CategoryName));
-            return Results.NoContent();
+            var result = await mediator.Send(new UpdateCategoryCommand(id, nameRequest.CategoryName));
+            return result.Resolve(Results.NoContent);
         }
 
         private static async Task<IResult> Delete([FromServices] IMediator mediator, [FromRoute] long id)
         {
-            await mediator.Send(new DeleteCategoryCommand(id));
-            return Results.NoContent();
+            var result = await mediator.Send(new DeleteCategoryCommand(id));
+            return result.Resolve(Results.NoContent);
+
         }
 
         public static void RegisterCategoryEndpoints(this WebApplication app)

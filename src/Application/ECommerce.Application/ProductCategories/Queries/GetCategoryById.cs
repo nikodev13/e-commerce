@@ -1,11 +1,12 @@
-using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
+using ECommerce.Application.Common.Results;
+using ECommerce.Application.Common.Results.Errors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Features.Queries;
+namespace ECommerce.Application.ProductCategories.Queries;
 
-public class GetCategoryByIdQuery : IRequest<CategoryDto>
+public class GetCategoryByIdQuery : IRequest<Result<CategoryDto>>
 {
     public GetCategoryByIdQuery(long categoryId)
     {
@@ -15,7 +16,7 @@ public class GetCategoryByIdQuery : IRequest<CategoryDto>
     public long CategoryId { get; }
 }
 
-public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, CategoryDto>
+public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Result<CategoryDto>>
 {
     private readonly IApplicationDatabase _database;
 
@@ -24,11 +25,11 @@ public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery,
         _database = database;
     }
     
-    public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<CategoryDto>> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var category = await _database.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
         if (category is null) 
-            throw new NotFoundException($"Category with ID {request.CategoryId} not found.");
+            return new NotFoundError($"Category with ID {request.CategoryId} not found.");
             
         var result = CategoryDto.FromCategory(category);
         return result;

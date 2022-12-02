@@ -1,8 +1,27 @@
 using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
-using ValidationException = ECommerce.Application.Common.Exceptions.ValidationException;
 
 namespace ECommerce.Application.Common.Behaviours;
+
+public class ValidationException : Exception
+{
+    public ValidationException()
+        : base("One or more validation failures have occurred.")
+    {
+        Errors = new Dictionary<string, string[]>();
+    }
+
+    public ValidationException(IEnumerable<ValidationFailure> failures)
+        : this()
+    {
+        Errors = failures
+            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
+            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+    }
+
+    public IDictionary<string, string[]> Errors { get; }
+}
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

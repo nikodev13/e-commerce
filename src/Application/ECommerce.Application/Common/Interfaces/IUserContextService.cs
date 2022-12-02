@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace ECommerce.Application.Common.Identity;
+namespace ECommerce.Application.Common.Interfaces;
 
 public interface IUserContextService
 {

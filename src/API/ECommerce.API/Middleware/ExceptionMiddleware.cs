@@ -1,4 +1,4 @@
-using ECommerce.Application.Common.Exceptions;
+using ECommerce.Application.Common.Behaviours;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Middleware;
@@ -17,16 +17,6 @@ public class ExceptionMiddleware : IMiddleware
         try
         {
             await next(context);
-        }
-        catch (NotFoundException ex)
-        {
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsync(ex.Message);
-        }
-        catch (AlreadyExistsException ex)
-        {
-            context.Response.StatusCode = StatusCodes.Status409Conflict;
-            await context.Response.WriteAsync(ex.Message);
         }
         catch (ValidationException ex)
         {

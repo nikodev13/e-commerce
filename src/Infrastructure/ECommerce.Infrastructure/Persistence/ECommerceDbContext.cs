@@ -1,5 +1,6 @@
 using System.Reflection;
 using ECommerce.Application.Common.Interfaces;
+using ECommerce.Application.Users.Models;
 using ECommerce.Domain.Products;
 using ECommerce.Domain.ProductsContext;
 using ECommerce.Domain.SeedWork;
@@ -9,8 +10,11 @@ namespace ECommerce.Infrastructure.Persistence;
 
 public class ECommerceDbContext : DbContext, IApplicationDatabase
 {
-    public DbSet<Product> Products => Set<Product>();
-    public DbSet<Category> Categories => Set<Category>();
+    // for authentication and authorization
+    public DbSet<User> Users => base.Set<User>();
+    //
+    public DbSet<Product> Products => base.Set<Product>();
+    public DbSet<Category> Categories => base.Set<Category>();
     public new DbSet<TEntity> Set<TEntity>() where TEntity : Entity
     {
         return base.Set<TEntity>();

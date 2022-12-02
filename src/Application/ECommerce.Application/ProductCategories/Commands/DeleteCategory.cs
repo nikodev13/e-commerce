@@ -1,11 +1,12 @@
-using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
+using ECommerce.Application.Common.Results;
+using ECommerce.Application.Common.Results.Errors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Features.Commands;
+namespace ECommerce.Application.ProductCategories.Commands;
 
-public class DeleteCategoryCommand : IRequest
+public class DeleteCategoryCommand : IRequest<Result>
 {
     public DeleteCategoryCommand(long id)
     {
@@ -15,7 +16,7 @@ public class DeleteCategoryCommand : IRequest
     public long Id { get; }
 }
 
-public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand>
+public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result>
 {
     private readonly IApplicationDatabase _database;
 
@@ -24,16 +25,16 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
         _database = database;
     }
     
-    public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _database.Categories.FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
         if (category is null)
-            throw new NotFoundException($"Product category with id {category} not found.");
+            return new NotFoundError($"Product category with id {category} not found.");
 
         _database.Categories.Remove(category);
         await _database.SaveChangesAsync(cancellationToken);
         
-        return Unit.Value;
+        return Result.Success();
     }
 }

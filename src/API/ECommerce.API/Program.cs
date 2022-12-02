@@ -1,5 +1,6 @@
 using ECommerce.API.Middleware;
 using ECommerce.API.Products.Categories;
+using ECommerce.API.Users;
 using ECommerce.Application;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Persistence.Seeders;
@@ -35,7 +36,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseMiddleware<ExceptionMiddleware>();
 app.RegisterCategoryEndpoints();
+app.RegisterUserEndpoints();
 
 app.Run();
