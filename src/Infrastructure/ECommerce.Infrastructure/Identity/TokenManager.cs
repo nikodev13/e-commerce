@@ -4,6 +4,7 @@ using System.Text;
 using ECommerce.Application.Users.Interfaces;
 using ECommerce.Application.Users.Models;
 using ECommerce.Infrastructure.Identity.Settings;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,9 +14,10 @@ public class JwtTokenProvider : ITokenProvider
 {
     private readonly JwtSettings _jwtSettings;
 
-    public JwtTokenProvider(IOptionsSnapshot<JwtSettings> snapshot)
+    public JwtTokenProvider(IConfiguration configuration)
     {
-        _jwtSettings = snapshot.Value;
+        _jwtSettings = new JwtSettings();
+        configuration.GetSection("JwtSettings").Bind(_jwtSettings);       
     }
     
     public string GenerateAccessToken(User user)
@@ -26,12 +28,12 @@ public class JwtTokenProvider : ITokenProvider
             new Claim(ClaimTypes.Role, user.Role.ToString()),
         };
         
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.JwtKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.Now.AddDays(_jwtSettings.JwtExpireMinutes);
+        var expires = DateTime.Now.AddMinutes(_jwtSettings.ExpireMinutes);
 
-        var token = new JwtSecurityToken(_jwtSettings.JwtIssuer,
-            _jwtSettings.JwtIssuer,
+        var token = new JwtSecurityToken(_jwtSettings.Issuer,
+            _jwtSettings.Issuer,
             claims,
             expires: expires,
             signingCredentials: cred);

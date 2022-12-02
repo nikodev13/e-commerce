@@ -1,7 +1,9 @@
+using ECommerce.API.Configuration;
 using ECommerce.API.Middleware;
 using ECommerce.API.Products.Categories;
 using ECommerce.API.Users;
 using ECommerce.Application;
+using ECommerce.Application.Common.Interfaces;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Persistence.Seeders;
 
@@ -13,7 +15,8 @@ var configuration = builder.Configuration;
 services.ConfigureApplicationServices();
 services.ConfigureInfrastructureServices(configuration);
 
-
+services.AddScoped<IUserContextService, UserContextService>();
+services.AddHttpContextAccessor();
 services.AddScoped<ExceptionMiddleware>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,10 +39,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseMiddleware<ExceptionMiddleware>();
 app.RegisterCategoryEndpoints();
 app.RegisterUserEndpoints();
 

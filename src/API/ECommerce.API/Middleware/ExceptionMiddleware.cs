@@ -11,7 +11,7 @@ public class ExceptionMiddleware : IMiddleware
     {
         _logger = logger;
     }
-    
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try

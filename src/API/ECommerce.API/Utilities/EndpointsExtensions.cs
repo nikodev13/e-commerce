@@ -21,6 +21,7 @@ public static class EndpointsExtensions
         {
             NotFoundError notFoundError => Results.NotFound(notFoundError.Message),
             AlreadyExistsError alreadyExistsError => Results.Conflict(alreadyExistsError.Message),
+            AuthenticationError authenticationError => Results.BadRequest(authenticationError.Message),
             _ => Results.StatusCode(StatusCodes.Status500InternalServerError)
         };
     }

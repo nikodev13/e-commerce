@@ -5,13 +5,13 @@ namespace ECommerce.API.Configuration;
 
 public class UserContextService : IUserContextService
 {
-    private readonly HttpContext _context;
+    private readonly IHttpContextAccessor _contextAccessor;
 
-    public UserContextService(HttpContext context)
+    public UserContextService(IHttpContextAccessor contextAccessor)
     {
-        _context = context;
+        _contextAccessor = contextAccessor;
     }
 
-    public ClaimsPrincipal User => _context.User;
-    public Guid? UserId => Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var guid) ? guid : null;
+    public ClaimsPrincipal? User => _contextAccessor.HttpContext?.User;
+    public Guid? UserId => Guid.TryParse(User?.FindFirstValue(ClaimTypes.NameIdentifier), out var guid) ? guid : null;
 }

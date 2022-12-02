@@ -43,9 +43,9 @@ public static class Dependencies
             cfg.SaveToken = true;
             cfg.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = jwtSettings.JwtIssuer,
-                ValidAudience = jwtSettings.JwtIssuer,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.JwtKey)),
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Issuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
             };
         });
         services.AddAuthorization();

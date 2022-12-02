@@ -51,6 +51,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         };
 
         await _database.Users.AddAsync(user, cancellationToken);
+        await _database.SaveChangesAsync(cancellationToken);
         
         return Result.Success();
     }
