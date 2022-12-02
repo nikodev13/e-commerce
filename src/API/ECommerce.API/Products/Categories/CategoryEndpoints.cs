@@ -3,47 +3,53 @@ using ECommerce.Application.ProductCategories;
 using ECommerce.Application.ProductCategories.Commands;
 using ECommerce.Application.ProductCategories.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Products.Categories
 {
     public static class CategoryEndpoints
     {
+        [AllowAnonymous]
         private static async Task<IResult> GetAll([FromServices] IMediator mediator)
         {
             var result = await mediator.Send(new GetAllCategoriesQuery());
             return result.Resolve(Results.Ok);
         }
-
+        
+        [AllowAnonymous]
         private static async Task<IResult> GetById([FromServices] IMediator mediator, [FromRoute] long id)
         {
             var result = await mediator.Send(new GetCategoryByIdQuery(id));
             return result.Resolve(Results.Ok);
         }
 
+        [AllowAnonymous]
         private static async Task<IResult> GetByName([FromServices] IMediator mediator, [FromRoute] string name)
         {
             var result = await mediator.Send(new GetCategoryByNameQuery(name));
             return result.Resolve(Results.Ok);
         }
 
+        [Authorize(Roles = "Administrator")]
         private static async Task<IResult> Create([FromServices] IMediator mediator, [FromBody] CategoryNameRequest nameRequest)
         {
             var result = await mediator.Send(new CreateCategoryCommand(nameRequest.CategoryName));
             return result.Resolve(x => Results.Created($"api/products/categories/{x.Id}", x));
         }
 
+        [Authorize(Roles = "Administrator")]
         private static async Task<IResult> Update([FromServices] IMediator mediator, [FromRoute] long id, [FromBody] CategoryNameRequest nameRequest)
         {
             var result = await mediator.Send(new UpdateCategoryCommand(id, nameRequest.CategoryName));
             return result.Resolve(Results.NoContent);
         }
 
+        [Authorize(Roles = "Administrator")]
         private static async Task<IResult> Delete([FromServices] IMediator mediator, [FromRoute] long id)
         {
             var result = await mediator.Send(new DeleteCategoryCommand(id));
             return result.Resolve(Results.NoContent);
-
         }
 
         public static void RegisterCategoryEndpoints(this WebApplication app)

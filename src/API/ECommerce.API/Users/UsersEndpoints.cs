@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using ECommerce.API.Utilities;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
@@ -29,7 +30,7 @@ public static class UsersEndpoints
     [AllowAnonymous]
     private static IResult CheckLogin([FromServices] IUserContextService contextService)
     {
-        return Results.Ok(contextService.UserId);
+        return Results.Ok(contextService.User?.FindFirst(ClaimTypes.Role)?.Value);
     }
 
     public static WebApplication RegisterUserEndpoints(this WebApplication app)
