@@ -21,7 +21,7 @@ public class Result
 
     public R Match<R>(Func<R> successPredicate, Func<ErrorBase, R> failurePredicate)
     {
-        return IsSuccess ? successPredicate.Invoke() : failurePredicate(Error!);
+        return IsSuccess ? successPredicate.Invoke() : failurePredicate.Invoke(Error!);
     }
     
     public static Result Success() => SuccessResult;

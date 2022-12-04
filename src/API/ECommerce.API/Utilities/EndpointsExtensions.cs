@@ -3,7 +3,7 @@ using ECommerce.Application.Common.Results.Errors;
 
 namespace ECommerce.API.Utilities;
 
-public static class EndpointsExtensions
+internal static class EndpointsExtensions
 {
     internal static IResult Resolve(this Result result, Func<IResult> httpResultFunc)
     {
@@ -19,9 +19,10 @@ public static class EndpointsExtensions
     {
         return error switch
         {
+            ValidationError validationError => Results.ValidationProblem(validationError.Errors),
+            BadRequestError badRequestError => Results.BadRequest(badRequestError.Message),
             NotFoundError notFoundError => Results.NotFound(notFoundError.Message),
             AlreadyExistsError alreadyExistsError => Results.Conflict(alreadyExistsError.Message),
-            AuthenticationError authenticationError => Results.BadRequest(authenticationError.Message),
             _ => Results.StatusCode(StatusCodes.Status500InternalServerError)
         };
     }

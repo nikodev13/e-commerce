@@ -2,10 +2,7 @@ namespace ECommerce.Application.Common.Results.Errors;
 
 public class NotFoundError : ErrorBase
 {
-    public override string Message { get; }
-
-    public NotFoundError(string message)
+    public NotFoundError(string message) : base(message)
     {
-        Message = message;
     }
 }

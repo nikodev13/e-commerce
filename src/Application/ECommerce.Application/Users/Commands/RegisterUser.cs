@@ -1,14 +1,15 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Users.Interfaces;
 using ECommerce.Application.Users.Models;
-using MediatR;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Users.Commands;
 
-public class RegisterUserCommand : IRequest<Result>
+public class RegisterUserCommand : ICommand
 {
     public string Email { get; }
     public string Password { get; }
@@ -22,7 +23,21 @@ public class RegisterUserCommand : IRequest<Result>
     }
 }
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
+public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+{
+    public RegisterUserCommandValidator()
+    {
+        RuleFor(x => x.Email)
+            .NotEmpty()
+            .EmailAddress();
+        RuleFor(x => x.Password)
+            .MinimumLength(8);
+        RuleFor(x => x.ConfirmPassword)
+            .MinimumLength(8);
+    }
+}
+
+public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand> 
 {
     private readonly IApplicationDatabase _database;
     private readonly IPasswordHasher _passwordHasher;

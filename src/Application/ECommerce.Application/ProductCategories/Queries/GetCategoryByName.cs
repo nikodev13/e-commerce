@@ -1,12 +1,14 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.ProductCategories.Queries;
 
-public class GetCategoryByNameQuery : IRequest<Result<CategoryDto>>
+public class GetCategoryByNameQuery : IQuery<CategoryDto>
 {
     public GetCategoryByNameQuery(string categoryName)
     {
@@ -15,7 +17,16 @@ public class GetCategoryByNameQuery : IRequest<Result<CategoryDto>>
     public string CategoryName { get; }
 }
 
-public class GetCategoryByNameQueryHandler : IRequestHandler<GetCategoryByNameQuery, Result<CategoryDto>>
+public class GetCategoryByNameQueryValidator : AbstractValidator<GetCategoryByNameQuery>
+{
+    public GetCategoryByNameQueryValidator()
+    {
+        RuleFor(x => x.CategoryName)
+            .MinimumLength(3);
+    }
+}
+
+public class GetCategoryByNameQueryHandler : IQueryHandler<GetCategoryByNameQuery, CategoryDto>
 {
     private readonly IApplicationDatabase _database;
 

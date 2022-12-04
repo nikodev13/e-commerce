@@ -2,5 +2,10 @@ namespace ECommerce.Application.Common.Results.Errors;
 
 public abstract class ErrorBase
 {
-    public abstract string Message { get; }
+    public string Message { get; }
+
+    protected ErrorBase(string message)
+    {
+        Message = message;
+    }
 }

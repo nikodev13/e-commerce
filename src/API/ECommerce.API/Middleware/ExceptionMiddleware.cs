@@ -18,11 +18,6 @@ public class ExceptionMiddleware : IMiddleware
         {
             await next(context);
         }
-        catch (ValidationException ex)
-        {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new ValidationProblemDetails(ex.Errors));
-        }
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);

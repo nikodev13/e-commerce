@@ -1,13 +1,14 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Users.Interfaces;
-using MediatR;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Users.Commands;
 
-public class LoginUserCommand : IRequest<Result<string>>
+public class LoginUserCommand : ICommand<string>
 {
     public string Email { get; }
     public string Password { get; }
@@ -19,7 +20,19 @@ public class LoginUserCommand : IRequest<Result<string>>
     }
 }
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<string>>
+public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
+{
+    public LoginUserCommandValidator()
+    {
+        RuleFor(x => x.Email)
+            .NotEmpty()
+            .EmailAddress();
+        RuleFor(x => x.Password)
+            .MinimumLength(8);
+    }
+}
+
+public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, string>
 {
     private readonly IApplicationDatabase _database;
     private readonly IPasswordHasher _passwordHasher;
@@ -40,14 +53,14 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
     public async Task<Result<string>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         if (_userContextService.UserId is not null)
-            return new AuthenticationError("You're already logged in.");
+            return new BadRequestError("You're already logged in.");
             
         var user = await _database.Users.FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken: cancellationToken);
         if (user is null)
-            return new AuthenticationError("Invalid email or password.");
+            return new BadRequestError("Invalid email or password.");
 
         if (!_passwordHasher.ValidatePassword(request.Password, user.PasswordHash))
-            return new AuthenticationError("Invalid email or password.");
+            return new BadRequestError("Invalid email or password.");
         
         var result =_tokenProvider.GenerateAccessToken(user);
         return result;

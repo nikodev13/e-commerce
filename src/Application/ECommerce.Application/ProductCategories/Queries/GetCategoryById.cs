@@ -1,12 +1,13 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
-using MediatR;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.ProductCategories.Queries;
 
-public class GetCategoryByIdQuery : IRequest<Result<CategoryDto>>
+public class GetCategoryByIdQuery : IQuery<CategoryDto>
 {
     public GetCategoryByIdQuery(long categoryId)
     {
@@ -16,7 +17,16 @@ public class GetCategoryByIdQuery : IRequest<Result<CategoryDto>>
     public long CategoryId { get; }
 }
 
-public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Result<CategoryDto>>
+public class GetCategoryByIdQueryValidator : AbstractValidator<GetCategoryByIdQuery>
+{
+    public GetCategoryByIdQueryValidator()
+    {
+        RuleFor(x => x.CategoryId)
+            .NotEmpty();
+    }
+}
+
+public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, CategoryDto>
 {
     private readonly IApplicationDatabase _database;
 

@@ -2,10 +2,7 @@ namespace ECommerce.Application.Common.Results.Errors;
 
 public class BadRequestError : ErrorBase
 {
-    public override string Message { get; }
-
-    public BadRequestError(string message)
+    public BadRequestError(string message) : base(message)
     {
-        Message = message;
     }
 }

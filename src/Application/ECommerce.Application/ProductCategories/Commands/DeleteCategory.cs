@@ -1,12 +1,14 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.ProductCategories.Commands;
 
-public class DeleteCategoryCommand : IRequest<Result>
+public class DeleteCategoryCommand : ICommand
 {
     public DeleteCategoryCommand(long id)
     {
@@ -16,7 +18,16 @@ public class DeleteCategoryCommand : IRequest<Result>
     public long Id { get; }
 }
 
-public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, Result>
+public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCommand>
+{
+    public DeleteCategoryCommandValidator()
+    {
+        RuleFor(x => x.Id)
+            .NotEmpty();
+    }
+}
+
+public class DeleteCategoryCommandHandler : ICommandHandler<DeleteCategoryCommand>
 {
     private readonly IApplicationDatabase _database;
 

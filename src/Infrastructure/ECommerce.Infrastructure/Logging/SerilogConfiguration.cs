@@ -17,7 +17,7 @@ internal static class SerilogConfiguration
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
-                .WriteTo.Console(theme: AnsiConsoleTheme.Code,
+                .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen,
                     outputTemplate: logTemplate)
                 .WriteTo.File(path: "logs/logs",
                     rollingInterval: RollingInterval.Day,

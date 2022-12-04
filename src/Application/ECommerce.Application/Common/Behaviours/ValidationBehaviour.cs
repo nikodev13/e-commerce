@@ -1,30 +1,14 @@
+using ECommerce.Application.Common.Results;
+using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
 namespace ECommerce.Application.Common.Behaviours;
 
-public class ValidationException : Exception
-{
-    public ValidationException()
-        : base("One or more validation failures have occurred.")
-    {
-        Errors = new Dictionary<string, string[]>();
-    }
-
-    public ValidationException(IEnumerable<ValidationFailure> failures)
-        : this()
-    {
-        Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
-    }
-
-    public IDictionary<string, string[]> Errors { get; }
-}
-
-public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public class ValidationBehaviour<TRequest, TResult> : IPipelineBehavior<TRequest, TResult>
+    where TRequest : IRequest<TResult>
+    where TResult : Result
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -33,18 +17,29 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
         _validators = validators;
     }
     
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken)
     {
-        var failures = _validators
+        var validationFailures = _validators
             .Select(x => x.Validate(request))
             .SelectMany(x => x.Errors)
             .ToList();
 
-        if (failures.Count != 0)
+        if (validationFailures.Count != 0)
         {
-            throw new ValidationException(failures);
+            return CreateValidationError(validationFailures);
         }
         
         return await next();
+    }
+    
+    private static TResult CreateValidationError(List<ValidationFailure> validationFailures)
+    {
+        if (typeof(TRequest) == typeof(Result))
+            return (TResult)new ValidationError(validationFailures);
+
+        var methodInfo = typeof(TResult).GetMethod("Failure")!;
+        var validationError = methodInfo.Invoke(null, new object[] { new ValidationError(validationFailures) })!;
+
+        return (TResult)validationError;
     }
 }

@@ -4,3 +4,4 @@ public class CategoryNameRequest
 {
     public string CategoryName { get; init; }
 }
+

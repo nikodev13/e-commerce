@@ -14,29 +14,28 @@ public class JwtTokenProvider : ITokenProvider
 {
     private readonly JwtSettings _jwtSettings;
 
-    public JwtTokenProvider(IConfiguration configuration)
+    public JwtTokenProvider(IOptions<JwtSettings> jwtSettings)
     {
-        _jwtSettings = new JwtSettings();
-        configuration.GetSection("JwtSettings").Bind(_jwtSettings);       
+        _jwtSettings = jwtSettings.Value;
     }
     
     public string GenerateAccessToken(User user)
     {
-        var claims = new List<Claim>()
+        var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Role, user.Role.ToString()),
         };
         
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var expires = DateTime.Now.AddMinutes(_jwtSettings.ExpireMinutes);
 
         var token = new JwtSecurityToken(_jwtSettings.Issuer,
             _jwtSettings.Issuer,
             claims,
             expires: expires,
-            signingCredentials: cred);
+            signingCredentials: signingCredentials);
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);

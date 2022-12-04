@@ -1,3 +1,4 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.ProductCategories.Commands;
 
-public class CreateCategoryCommand : IRequest<Result<CategoryDto>>
+public class CreateCategoryCommand : ICommand<CategoryDto>
 {
     public CreateCategoryCommand(string categoryName)
     {
@@ -28,7 +29,7 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     }
 }
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Result<CategoryDto>>
+public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, CategoryDto>
 {
     private readonly IApplicationDatabase _database;
     private readonly ISnowflakeIdService _idService;

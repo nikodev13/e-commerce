@@ -1,3 +1,4 @@
+using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.ProductCategories.Commands;
 
-public class UpdateCategoryCommand : IRequest<Result>
+public class UpdateCategoryCommand : ICommand 
 {
     public long CategoryId { get; }
     public string CategoryName { get; }
@@ -23,13 +24,14 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
 {
     public UpdateCategoryCommandValidator()
     {
-        RuleFor(x => x.CategoryId).NotEmpty();
-        RuleFor(x => x.CategoryName).MinimumLength(3);
+        RuleFor(x => x.CategoryId)
+            .NotEmpty();
+        RuleFor(x => x.CategoryName)
+            .MinimumLength(3);
     }
 }
 
-
-public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, Result>
+public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryCommand>
 {
     private readonly IApplicationDatabase _database;
 

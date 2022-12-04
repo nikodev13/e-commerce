@@ -2,50 +2,46 @@ using ECommerce.API.Utilities;
 using ECommerce.Application.ProductCategories;
 using ECommerce.Application.ProductCategories.Commands;
 using ECommerce.Application.ProductCategories.Queries;
+using ECommerce.Application.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AuthorizationPolicy = ECommerce.Infrastructure.Identity.AuthorizationPolicy;
 
 namespace ECommerce.API.Products.Categories
 {
     public static class CategoryEndpoints
     {
-        [AllowAnonymous]
         private static async Task<IResult> GetAll([FromServices] IMediator mediator)
         {
             var result = await mediator.Send(new GetAllCategoriesQuery());
             return result.Resolve(Results.Ok);
         }
         
-        [AllowAnonymous]
         private static async Task<IResult> GetById([FromServices] IMediator mediator, [FromRoute] long id)
         {
             var result = await mediator.Send(new GetCategoryByIdQuery(id));
             return result.Resolve(Results.Ok);
         }
 
-        [AllowAnonymous]
         private static async Task<IResult> GetByName([FromServices] IMediator mediator, [FromRoute] string name)
         {
             var result = await mediator.Send(new GetCategoryByNameQuery(name));
             return result.Resolve(Results.Ok);
         }
 
-        [Authorize(Roles = "Administrator")]
         private static async Task<IResult> Create([FromServices] IMediator mediator, [FromBody] CategoryNameRequest nameRequest)
         {
             var result = await mediator.Send(new CreateCategoryCommand(nameRequest.CategoryName));
             return result.Resolve(x => Results.Created($"api/products/categories/{x.Id}", x));
         }
 
-        [Authorize(Roles = "Administrator")]
         private static async Task<IResult> Update([FromServices] IMediator mediator, [FromRoute] long id, [FromBody] CategoryNameRequest nameRequest)
         {
             var result = await mediator.Send(new UpdateCategoryCommand(id, nameRequest.CategoryName));
             return result.Resolve(Results.NoContent);
         }
 
-        [Authorize(Roles = "Administrator")]
         private static async Task<IResult> Delete([FromServices] IMediator mediator, [FromRoute] long id)
         {
             var result = await mediator.Send(new DeleteCategoryCommand(id));
@@ -57,32 +53,39 @@ namespace ECommerce.API.Products.Categories
             var groupName = "Product categories";
             app.MapGet("api/products/categories", GetAll)
                 .WithTags(groupName)
-                .Produces<List<CategoryDto>>();
+                .Produces<List<CategoryDto>>()
+                .AllowAnonymous();
 
             app.MapGet("api/products/categories/{id:long}", GetById)
                 .WithTags(groupName)
                 .Produces<CategoryDto>()
-                .Produces(StatusCodes.Status404NotFound);
+                .Produces(StatusCodes.Status404NotFound)
+                .AllowAnonymous();
 
             app.MapGet("api/products/categories/{name}", GetByName)
                 .WithTags(groupName)
                 .Produces<CategoryDto>()
-                .Produces(StatusCodes.Status404NotFound);
+                .Produces(StatusCodes.Status404NotFound)
+                .AllowAnonymous();
 
             app.MapPost("api/products/categories", Create)
                 .WithTags(groupName)
                 .Produces(StatusCodes.Status201Created)
-                .Produces(StatusCodes.Status409Conflict);
+                .Produces(StatusCodes.Status409Conflict)
+                .RequireAuthorization(AuthorizationPolicy.Admin);
 
             app.MapPut("api/products/categories/{id:long}", Update)
                 .WithTags(groupName)
                 .Produces(StatusCodes.Status204NoContent)
-                .Produces(StatusCodes.Status404NotFound);
+                .Produces(StatusCodes.Status404NotFound)
+                .RequireAuthorization(AuthorizationPolicy.Admin);
 
             app.MapDelete("api/products/categories/{id:long}", Delete)
                 .WithTags(groupName)
                 .Produces(StatusCodes.Status204NoContent)
-                .Produces(StatusCodes.Status404NotFound);
+                .Produces(StatusCodes.Status404NotFound)
+                .RequireAuthorization(AuthorizationPolicy.Admin);
+
         }
     }
 }
