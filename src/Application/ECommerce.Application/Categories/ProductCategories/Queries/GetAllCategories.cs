@@ -1,10 +1,9 @@
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Queries;
+namespace ECommerce.Application.Categories.ProductCategories.Queries;
 
 public class GetAllCategoriesQuery : IQuery<List<CategoryDto>>
 {

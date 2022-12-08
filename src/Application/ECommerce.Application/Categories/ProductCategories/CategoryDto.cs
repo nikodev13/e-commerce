@@ -1,6 +1,6 @@
 using ECommerce.Domain.Products;
 
-namespace ECommerce.Application.ProductCategories;
+namespace ECommerce.Application.Categories.ProductCategories;
 
 public class CategoryDto
 {

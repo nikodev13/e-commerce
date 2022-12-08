@@ -3,10 +3,9 @@ using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Commands;
+namespace ECommerce.Application.Categories.ProductCategories.Commands;
 
 public class UpdateCategoryCommand : ICommand 
 {
@@ -27,6 +26,7 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
         RuleFor(x => x.CategoryId)
             .NotEmpty();
         RuleFor(x => x.CategoryName)
+            .NotEmpty()
             .MinimumLength(3);
     }
 }
@@ -54,6 +54,7 @@ public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryComman
         if (category is null)
             return new NotFoundError($"Product category with id {category} not found.");
 
+        category.Name = request.CategoryName;
         await _database.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

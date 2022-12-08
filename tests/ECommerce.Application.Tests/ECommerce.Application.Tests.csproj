@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.8.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
         <PackageReference Include="Moq" Version="4.18.2" />
         <PackageReference Include="xunit" Version="2.4.1" />
@@ -25,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Application\ECommerce.Application\ECommerce.Application.csproj" />
+      <ProjectReference Include="..\..\src\Infrastructure\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

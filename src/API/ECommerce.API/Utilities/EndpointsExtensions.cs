@@ -1,5 +1,6 @@
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
+using FluentValidation;
 
 namespace ECommerce.API.Utilities;
 
@@ -26,4 +27,6 @@ internal static class EndpointsExtensions
             _ => Results.StatusCode(StatusCodes.Status500InternalServerError)
         };
     }
+    
+    
 }

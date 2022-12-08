@@ -1,4 +1,4 @@
-using ECommerce.Application.Common.Behaviours;
+using ECommerce.Domain.SeedWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Middleware;
@@ -17,6 +17,12 @@ public class ExceptionMiddleware : IMiddleware
         try
         {
             await next(context);
+        }
+        catch (BusinessRuleValidationException ex)
+        {
+            _logger.LogError("[BusinessValidationException] {@message}", ex.Message);
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(ex.Message);
         }
         catch (Exception ex)
         {

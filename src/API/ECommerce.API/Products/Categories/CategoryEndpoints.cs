@@ -1,7 +1,7 @@
 using ECommerce.API.Utilities;
-using ECommerce.Application.ProductCategories;
-using ECommerce.Application.ProductCategories.Commands;
-using ECommerce.Application.ProductCategories.Queries;
+using ECommerce.Application.Categories.ProductCategories;
+using ECommerce.Application.Categories.ProductCategories.Commands;
+using ECommerce.Application.Categories.ProductCategories.Queries;
 using ECommerce.Application.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

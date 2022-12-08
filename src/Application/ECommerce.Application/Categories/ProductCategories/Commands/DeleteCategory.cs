@@ -3,10 +3,9 @@ using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.ProductCategories.Commands;
+namespace ECommerce.Application.Categories.ProductCategories.Commands;
 
 public class DeleteCategoryCommand : ICommand
 {

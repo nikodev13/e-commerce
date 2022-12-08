@@ -5,11 +5,10 @@ using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Domain.Products;
 using ECommerce.Domain.Shared.Services;
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ECommerce.Application.ProductCategories.Commands;
+namespace ECommerce.Application.Categories.ProductCategories.Commands;
 
 public class CreateCategoryCommand : ICommand<CategoryDto>
 {
@@ -33,9 +32,9 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
 {
     private readonly IApplicationDatabase _database;
     private readonly ISnowflakeIdService _idService;
-    private readonly ILogger<CreateCategoryCommand> _logger;
+    private readonly ILogger<CreateCategoryCommandHandler> _logger;
 
-    public CreateCategoryCommandHandler(IApplicationDatabase database, ISnowflakeIdService idService, ILogger<CreateCategoryCommand> logger)
+    public CreateCategoryCommandHandler(IApplicationDatabase database, ISnowflakeIdService idService, ILogger<CreateCategoryCommandHandler> logger)
     {
         _database = database;
         _idService = idService;
