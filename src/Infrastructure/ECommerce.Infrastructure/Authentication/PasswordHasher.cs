@@ -1,6 +1,6 @@
 using ECommerce.Application.Users.Interfaces;
 
-namespace ECommerce.Infrastructure.Identity;
+namespace ECommerce.Infrastructure.Authentication;
 
 public class PasswordHasher : IPasswordHasher
 {

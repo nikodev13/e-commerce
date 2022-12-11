@@ -47,6 +47,7 @@
       <Content Include="obj\project.packagespec.json" />
       <Content Include="obj\rider.project.restore.info" />
       <Content Include="obj\staticwebassets.pack.sentinel" />
+      <Content Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -54,6 +55,15 @@
       <Compile Include="obj\Debug\net6.0\ECommerce.API.AssemblyInfo.cs" />
       <Compile Include="obj\Debug\net6.0\ECommerce.API.GlobalUsings.g.cs" />
       <Compile Include="obj\Debug\net6.0\ECommerce.API.MvcApplicationPartsAssemblyInfo.cs" />
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
     </ItemGroup>
 
 </Project>

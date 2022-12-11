@@ -1,12 +1,13 @@
 using ECommerce.API.Utilities;
-using ECommerce.Application.Categories.ProductCategories;
-using ECommerce.Application.Categories.ProductCategories.Commands;
-using ECommerce.Application.Categories.ProductCategories.Queries;
+using ECommerce.Application.Categories;
+using ECommerce.Application.Categories.Commands;
+using ECommerce.Application.Categories.Models;
+using ECommerce.Application.Categories.Queries;
 using ECommerce.Application.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using AuthorizationPolicy = ECommerce.Infrastructure.Identity.AuthorizationPolicy;
+using AuthorizationPolicy = ECommerce.Infrastructure.Authorization.AuthorizationPolicy;
 
 namespace ECommerce.API.Products.Categories
 {

@@ -1,4 +1,4 @@
-namespace ECommerce.Infrastructure.Identity;
+namespace ECommerce.Infrastructure.Authorization;
 
 public static class AuthorizationPolicy
 {

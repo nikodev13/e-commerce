@@ -1,3 +1,4 @@
+using ECommerce.Application.Categories.Models;
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
@@ -8,7 +9,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ECommerce.Application.Categories.ProductCategories.Commands;
+namespace ECommerce.Application.Categories.Commands;
 
 public class CreateCategoryCommand : ICommand<CategoryDto>
 {
@@ -24,7 +25,9 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
 {
     public CreateCategoryCommandValidator()
     {
-        RuleFor(x => x.CategoryName).MinimumLength(3);
+        RuleFor(x => x.CategoryName)
+            .NotEmpty()
+            .MinimumLength(3);
     }
 }
 

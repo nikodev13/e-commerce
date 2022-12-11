@@ -5,7 +5,7 @@ using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.Categories.ProductCategories.Commands;
+namespace ECommerce.Application.Categories.Commands;
 
 public class UpdateCategoryCommand : ICommand 
 {

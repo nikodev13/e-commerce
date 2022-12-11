@@ -1,4 +1,4 @@
-using ECommerce.Application.Categories.ProductCategories.Commands;
+using ECommerce.Application.Categories.Commands;
 using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Common.Services;
 using ECommerce.Application.Tests.Persistence;

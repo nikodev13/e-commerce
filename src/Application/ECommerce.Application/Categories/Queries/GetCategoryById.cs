@@ -1,3 +1,4 @@
+using ECommerce.Application.Categories.Models;
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
@@ -5,7 +6,7 @@ using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Application.Categories.ProductCategories.Queries;
+namespace ECommerce.Application.Categories.Queries;
 
 public class GetCategoryByIdQuery : IQuery<CategoryDto>
 {

@@ -6,7 +6,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace ECommerce.Infrastructure.Logging;
 
-internal static class SerilogConfiguration
+internal static class Configuration
 {
     public static void ConfigureSerilog(this IServiceCollection services)
     {
