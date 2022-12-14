@@ -27,6 +27,8 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseAuthentication();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -35,13 +37,11 @@ if (app.Environment.IsDevelopment())
     
     // seed sample data to the ECommerceDb 
     using var scope = app.Services.CreateScope();
-    var seeder = scope.ServiceProvider.GetRequiredService<ECommerceDbSeeder>();
+    var seeder = scope.ServiceProvider.GetRequiredService<ApplicationDbSeeder>();
     await seeder.SeedSampleData();
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.RegisterCategoryEndpoints();

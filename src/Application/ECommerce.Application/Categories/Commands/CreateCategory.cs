@@ -1,4 +1,4 @@
-using ECommerce.Application.Categories.Models;
+using ECommerce.Application.Categories.ReadModels;
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.Categories.Commands;
 
-public class CreateCategoryCommand : ICommand<CategoryDto>
+public class CreateCategoryCommand : ICommand<CategoryReadModel>
 {
     public CreateCategoryCommand(string categoryName)
     {
@@ -31,7 +31,7 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     }
 }
 
-public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, CategoryDto>
+public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, CategoryReadModel>
 {
     private readonly IApplicationDatabase _database;
     private readonly ISnowflakeIdService _idService;
@@ -44,7 +44,7 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
         _logger = logger;
     }
     
-    public async Task<Result<CategoryDto>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CategoryReadModel>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         // if category with this name already exists, return AlreadyExistsError
         if (await _database.Categories.AnyAsync(x => x.Name == request.CategoryName, cancellationToken))
@@ -58,7 +58,7 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
         await _database.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation("Created new product category with id {@categoryId}", category.Id.Value);
-        var result = CategoryDto.FromCategory(category);
+        var result = CategoryReadModel.FromCategory(category);
         
         return result;
     }

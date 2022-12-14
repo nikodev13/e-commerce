@@ -20,7 +20,6 @@ public class ExceptionMiddleware : IMiddleware
         }
         catch (BusinessRuleValidationException ex)
         {
-            _logger.LogError("[BusinessValidationException] {@message}", ex.Message);
             context.Response.StatusCode = 400;
             await context.Response.WriteAsync(ex.Message);
         }

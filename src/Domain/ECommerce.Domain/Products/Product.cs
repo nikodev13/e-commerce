@@ -15,7 +15,7 @@ public class Product : Entity
     private readonly List<ProductOffer> _productOffers;
     public IEnumerable<ProductOffer> ProductOffers => _productOffers;
 
-    private Product()
+    public Product()
     {
         _productOffers = new List<ProductOffer>();
     }

@@ -8,12 +8,12 @@ public interface IEntitySeedDataProvider<out TEntity>
     IEnumerable<TEntity> GetData();
 }
 
-public class ECommerceDbSeeder
+public class ApplicationDbSeeder
 {
-    private readonly ECommerceDbContext _dbContext;
+    private readonly ApplicationDbContext _dbContext;
     private readonly ISnowflakeIdService _idService;
 
-    public ECommerceDbSeeder(ECommerceDbContext dbContext, ISnowflakeIdService idService)
+    public ApplicationDbSeeder(ApplicationDbContext dbContext, ISnowflakeIdService idService)
     {
         _dbContext = dbContext;
         _idService = idService;

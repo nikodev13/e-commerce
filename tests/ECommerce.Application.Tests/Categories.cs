@@ -35,7 +35,6 @@ public class Categories : IDisposable
     [Fact]
     public async void UpdateCategoryCommandHandler_ForUpdatingCategoryThatNotExistsInDb_ReturnsNotFoundException()
     {
-        var logger = LoggerMock.GetLogger<UpdateCategoryCommandHandler>().Object;
         var command = new UpdateCategoryCommand(123456789, "CategoryUpdate");
         var handler = new UpdateCategoryCommandHandler(_dbContext);
         

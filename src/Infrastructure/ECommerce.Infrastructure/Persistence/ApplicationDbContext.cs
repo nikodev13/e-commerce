@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Persistence;
 
-public class ECommerceDbContext : DbContext, IApplicationDatabase
+public class ApplicationDbContext : DbContext, IApplicationDatabase
 {
     // for authentication and authorization
     public DbSet<User> Users => base.Set<User>();
-    //
     public DbSet<Product> Products => base.Set<Product>();
     public DbSet<Category> Categories => base.Set<Category>();
+    
     public new DbSet<TEntity> Set<TEntity>() where TEntity : Entity
     {
         return base.Set<TEntity>();
     }
 
-    public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
 

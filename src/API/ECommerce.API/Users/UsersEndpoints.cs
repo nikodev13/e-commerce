@@ -6,6 +6,7 @@ using ECommerce.Application.Users.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ECommerce.API.Users;
 
@@ -30,7 +31,7 @@ public static class UsersEndpoints
     [AllowAnonymous]
     private static IResult CheckLogin([FromServices] IUserContextService contextService)
     {
-        return Results.Ok(contextService.User?.FindFirst(ClaimTypes.Role)?.Value);
+        return Results.Ok(contextService.User.FindFirst(JwtRegisteredClaimNames.Sub).Value);
     }
 
     public static WebApplication RegisterUserEndpoints(this WebApplication app)

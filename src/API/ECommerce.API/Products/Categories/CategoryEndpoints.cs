@@ -1,8 +1,8 @@
 using ECommerce.API.Utilities;
 using ECommerce.Application.Categories;
 using ECommerce.Application.Categories.Commands;
-using ECommerce.Application.Categories.Models;
 using ECommerce.Application.Categories.Queries;
+using ECommerce.Application.Categories.ReadModels;
 using ECommerce.Application.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -54,18 +54,18 @@ namespace ECommerce.API.Products.Categories
             var groupName = "Product categories";
             app.MapGet("api/products/categories", GetAll)
                 .WithTags(groupName)
-                .Produces<List<CategoryDto>>()
+                .Produces<List<CategoryReadModel>>()
                 .AllowAnonymous();
 
             app.MapGet("api/products/categories/{id:long}", GetById)
                 .WithTags(groupName)
-                .Produces<CategoryDto>()
+                .Produces<CategoryReadModel>()
                 .Produces(StatusCodes.Status404NotFound)
                 .AllowAnonymous();
 
             app.MapGet("api/products/categories/{name}", GetByName)
                 .WithTags(groupName)
-                .Produces<CategoryDto>()
+                .Produces<CategoryReadModel>()
                 .Produces(StatusCodes.Status404NotFound)
                 .AllowAnonymous();
 

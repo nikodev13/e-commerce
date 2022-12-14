@@ -6,6 +6,4 @@ public class AuthenticationSettings
     public string Audience { get; set; }
     public string SecureKey { get; set; }
     public int AccessTokenExpireMinutes { get; set; } = 30;
-
-    public int RefreshTokenExpireMinutes { get; set; } = 1440;
 }

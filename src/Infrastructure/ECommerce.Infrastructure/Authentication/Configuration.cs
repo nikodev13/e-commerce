@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using ECommerce.Application.Users.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -11,13 +12,13 @@ internal static class Configuration
     public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         // add (application layer) authentication
-        services.Configure<AuthenticationSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<AuthenticationSettings>(configuration.GetSection("AuthenticationSettings"));
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenProvider, TokenProvider>();
         
         // set jwt settings from appsettings.json
         var jwtSettings = new AuthenticationSettings();
-        configuration.GetSection("JwtSettings").Bind(jwtSettings);       
+        configuration.GetSection("AuthenticationSettings").Bind(jwtSettings);       
         
         // configure authentication
         services.AddAuthentication(option =>
@@ -33,8 +34,12 @@ internal static class Configuration
             {
                 ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
+                ValidateLifetime = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecureKey)),
             };
         });
+        
+        // for mapping real claims types (i.a. sub not NameIdentifier)
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
     }
 }

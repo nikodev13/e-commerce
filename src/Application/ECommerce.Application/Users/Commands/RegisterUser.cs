@@ -61,6 +61,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand>
         {
             Id = Guid.NewGuid(),
             Email = request.Email,
+            IsEmailConfirmed = false,
             PasswordHash = passwordHash,
             Role = Role.User
         };

@@ -12,8 +12,8 @@ internal static class Configuration
     {
         var connectionString = configuration.GetConnectionString("Default");
         
-        services.AddDbContext<ECommerceDbContext>(options => options.UseSqlServer(connectionString));
-        services.AddScoped<ECommerceDbSeeder>();
-        services.AddScoped<IApplicationDatabase>(provider => provider.GetRequiredService<ECommerceDbContext>());
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddScoped<ApplicationDbSeeder>();
+        services.AddScoped<IApplicationDatabase>(provider => provider.GetRequiredService<ApplicationDbContext>());
     }
 }

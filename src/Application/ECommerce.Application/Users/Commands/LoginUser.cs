@@ -3,12 +3,14 @@ using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Users.Interfaces;
+using ECommerce.Application.Users.Models;
+using ECommerce.Application.Users.ReadModels;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Users.Commands;
 
-public class LoginUserCommand : ICommand<string>
+public class LoginUserCommand : ICommand<TokensReadModel>
 {
     public string Email { get; }
     public string Password { get; }
@@ -32,7 +34,7 @@ public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
     }
 }
 
-public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, string>
+public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
 {
     private readonly IApplicationDatabase _database;
     private readonly IPasswordHasher _passwordHasher;
@@ -50,7 +52,7 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, string>
         _userContextService = userContextService;
     }
 
-    public async Task<Result<string>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<TokensReadModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         if (_userContextService.UserId is not null)
             return new BadRequestError("You're already logged in.");
@@ -62,7 +64,16 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, string>
         if (!_passwordHasher.ValidatePassword(request.Password, user.PasswordHash))
             return new BadRequestError("Invalid email or password.");
         
-        var result =_tokenProvider.GenerateAccessToken(user);
-        return result;
+        var accessToken =_tokenProvider.GenerateAccessToken(user);
+        var refreshToken = _tokenProvider.GenerateRefreshToken();
+
+        user.RefreshToken = refreshToken;
+        await _database.SaveChangesAsync(cancellationToken);
+        
+        return new TokensReadModel()
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
     }
 }

@@ -11,6 +11,7 @@ namespace ECommerce.Application.Tests.Persistence;
 public sealed class AppDbContext : DbContext, IApplicationDatabase
 {
     public DbSet<Category> Categories => base.Set<Category>();
+    public DbSet<Product> Products => base.Set<Product>();
     public DbSet<User> Users => base.Set<User>();
 
     public new DbSet<TEntity> Set<TEntity>() where TEntity : Entity

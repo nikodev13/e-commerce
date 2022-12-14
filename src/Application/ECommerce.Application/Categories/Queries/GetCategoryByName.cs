@@ -1,4 +1,4 @@
-using ECommerce.Application.Categories.Models;
+using ECommerce.Application.Categories.ReadModels;
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Categories.Queries;
 
-public class GetCategoryByNameQuery : IQuery<CategoryDto>
+public class GetCategoryByNameQuery : IQuery<CategoryReadModel>
 {
     public GetCategoryByNameQuery(string categoryName)
     {
@@ -27,7 +27,7 @@ public class GetCategoryByNameQueryValidator : AbstractValidator<GetCategoryByNa
     }
 }
 
-public class GetCategoryByNameQueryHandler : IQueryHandler<GetCategoryByNameQuery, CategoryDto>
+public class GetCategoryByNameQueryHandler : IQueryHandler<GetCategoryByNameQuery, CategoryReadModel>
 {
     private readonly IApplicationDatabase _database;
 
@@ -36,7 +36,7 @@ public class GetCategoryByNameQueryHandler : IQueryHandler<GetCategoryByNameQuer
         _database = database;
     }
     
-    public async Task<Result<CategoryDto>> Handle(GetCategoryByNameQuery request, CancellationToken cancellationToken)
+    public async Task<Result<CategoryReadModel>> Handle(GetCategoryByNameQuery request, CancellationToken cancellationToken)
     {
         var category = await _database.Categories.AsNoTracking()
             .FirstOrDefaultAsync(c => c.Name == request.CategoryName, cancellationToken);
@@ -44,7 +44,7 @@ public class GetCategoryByNameQueryHandler : IQueryHandler<GetCategoryByNameQuer
         if (category is null) 
             return new NotFoundError($"Category with name {request.CategoryName} not found.");
 
-        var result = CategoryDto.FromCategory(category);
+        var result = CategoryReadModel.FromCategory(category);
         return result;
     }
 }

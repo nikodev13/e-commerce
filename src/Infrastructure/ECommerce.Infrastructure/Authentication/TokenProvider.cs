@@ -22,16 +22,17 @@ public class TokenProvider : ITokenProvider
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
         };
         
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.SecureKey));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var expires = DateTime.Now.AddMinutes(_authenticationSettings.AccessTokenExpireMinutes);
 
-        var token = new JwtSecurityToken(_authenticationSettings.Issuer,
-            _authenticationSettings.Issuer,
-            claims,
+        var token = new JwtSecurityToken(
+            issuer: _authenticationSettings.Issuer,
+            audience:_authenticationSettings.Audience,
+            claims: claims,
             expires: expires,
             signingCredentials: signingCredentials);
 
@@ -41,7 +42,9 @@ public class TokenProvider : ITokenProvider
 
     public string GenerateRefreshToken()
     {
-        var randomNumbers = RandomNumberGenerator.GetBytes(32);
-        return Encoding.ASCII.GetString(randomNumbers);
+        var bytes = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(bytes);
+        return Convert.ToBase64String(bytes);
     }
 }
