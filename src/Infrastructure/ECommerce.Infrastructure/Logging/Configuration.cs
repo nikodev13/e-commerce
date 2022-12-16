@@ -16,7 +16,7 @@ internal static class Configuration
             builder.ClearProviders();
             var logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+                // .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen,
                     outputTemplate: logTemplate)
                 .WriteTo.File(path: "logs/logs",

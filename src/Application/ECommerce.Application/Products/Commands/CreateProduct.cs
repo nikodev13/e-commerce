@@ -2,7 +2,7 @@ using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Common.Results;
 using ECommerce.Application.Common.Results.Errors;
-using ECommerce.Application.Products.Models;
+using ECommerce.Application.Products.ReadModels;
 using ECommerce.Domain.Products;
 using ECommerce.Domain.Shared.Services;
 using FluentValidation;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Products.Commands;
 
-public class CreateProductCommand : ICommand<ProductDto>
+public class CreateProductCommand : ICommand<ProductReadModel>
 {
     public string Name { get; }
     public string Description { get; }
@@ -36,7 +36,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     }
 }
 
-public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ProductDto>
+public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ProductReadModel>
 {
     private readonly IApplicationDatabase _database;
     private readonly ISnowflakeIdService _idService;
@@ -47,22 +47,29 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
         _idService = idService;
     }
     
-    public async Task<Result<ProductDto>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ProductReadModel>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var categoryExists = await _database.Categories
-            .AnyAsync(x => x.Id == request.CategoryId, cancellationToken);
+        if (await _database.Products.AnyAsync(x => x.Name == request.Name, cancellationToken))
+            return new AlreadyExistsError($"Product with name {request.Name} already exists.");
+            
+        var category = await _database.Categories
+            .FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
 
-        if (!categoryExists)
+        if (category is null)
             return new BadRequestError($"Category with id {request.CategoryId} does not exist.");
             
-        var category = new Product
+        var product = new Product
         {
+            Id = _idService.GenerateId(),
             Name = request.Name,
-            Description = request.Description
-            
+            Description = request.Description,
+            Category = category
         };
 
-        var result = ProductDto.FromProduct(category);
+        await _database.Products.AddAsync(product, cancellationToken);
+        await _database.SaveChangesAsync(cancellationToken);
+
+        var result = ProductReadModel.FromProduct(product);
         return result;
     }
 }

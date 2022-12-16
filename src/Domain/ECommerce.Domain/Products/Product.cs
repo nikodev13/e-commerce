@@ -10,6 +10,7 @@ public class Product : Entity
     public ProductId Id { get; init; }
     public ProductName Name { get; set; }
     public Description Description { get; set; }
+    public CategoryId CategoryId { get; set; }
     public Category Category { get; set; }
 
     private readonly List<ProductOffer> _productOffers;

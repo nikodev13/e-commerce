@@ -3,7 +3,6 @@ using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Users.Models;
 using ECommerce.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Authorization;
 

@@ -42,7 +42,7 @@ public class TokenProvider : ITokenProvider
 
     public string GenerateRefreshToken()
     {
-        var bytes = new byte[32];
+        var bytes = new byte[33];
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(bytes);
         return Convert.ToBase64String(bytes);

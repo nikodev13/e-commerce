@@ -1,6 +1,7 @@
+using ECommerce.API.Categories;
 using ECommerce.API.Configuration;
 using ECommerce.API.Middleware;
-using ECommerce.API.Products.Categories;
+using ECommerce.API.Products;
 using ECommerce.API.Users;
 using ECommerce.Application;
 using ECommerce.Application.Common.Interfaces;
@@ -38,13 +39,15 @@ if (app.Environment.IsDevelopment())
     // seed sample data to the ECommerceDb 
     using var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<ApplicationDbSeeder>();
-    await seeder.SeedSampleData();
+    seeder.SeedSampleData();
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.RegisterCategoryEndpoints();
+app.RegisterProductEndpoints();
+
 app.RegisterUserEndpoints();
 
 app.Run();

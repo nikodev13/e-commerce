@@ -1,15 +1,12 @@
 using ECommerce.API.Utilities;
-using ECommerce.Application.Categories;
 using ECommerce.Application.Categories.Commands;
 using ECommerce.Application.Categories.Queries;
 using ECommerce.Application.Categories.ReadModels;
-using ECommerce.Application.Users.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AuthorizationPolicy = ECommerce.Infrastructure.Authorization.AuthorizationPolicy;
 
-namespace ECommerce.API.Products.Categories
+namespace ECommerce.API.Categories
 {
     public static class CategoryEndpoints
     {

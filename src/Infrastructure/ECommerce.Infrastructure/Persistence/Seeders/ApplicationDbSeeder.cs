@@ -18,19 +18,9 @@ public class ApplicationDbSeeder
         _dbContext = dbContext;
         _idService = idService;
     }
-
-    private async Task SeedCategories()
-    {
-        if (!await _dbContext.Categories.AnyAsync())
-        {
-            var categoriesSeedData = new CategoriesSeedDataProvider(_idService).GetData();
-            await _dbContext.Categories.AddRangeAsync(categoriesSeedData);
-            await _dbContext.SaveChangesAsync();
-        }
-    }
     
-    public async Task SeedSampleData()
+    public void SeedSampleData()
     {
-        await SeedCategories();
+        _dbContext.SeedProductContextSampleData();
     }    
 }
