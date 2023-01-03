@@ -1,7 +1,6 @@
 using ECommerce.Application.Categories.ReadModels;
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Categories.Queries;
@@ -19,7 +18,7 @@ public class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategoriesQuery,
         _database = database;
     }
     
-    public async Task<Result<List<CategoryReadModel>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+    public async Task<List<CategoryReadModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
         var result = await _database.Categories.AsNoTracking()
             .Select(x => CategoryReadModel.FromCategory(x)).ToListAsync(cancellationToken);

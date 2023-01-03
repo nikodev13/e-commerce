@@ -1,8 +1,7 @@
 using ECommerce.Application.Categories.ReadModels;
 using ECommerce.Application.Common.CQRS;
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
-using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,13 +35,13 @@ public class GetCategoryByNameQueryHandler : IQueryHandler<GetCategoryByNameQuer
         _database = database;
     }
     
-    public async Task<Result<CategoryReadModel>> Handle(GetCategoryByNameQuery request, CancellationToken cancellationToken)
+    public async Task<CategoryReadModel> Handle(GetCategoryByNameQuery request, CancellationToken cancellationToken)
     {
         var category = await _database.Categories.AsNoTracking()
             .FirstOrDefaultAsync(c => c.Name == request.CategoryName, cancellationToken);
         
         if (category is null) 
-            return new NotFoundError($"Category with name {request.CategoryName} not found.");
+            throw new NotFoundException($"Category with name {request.CategoryName} not found.");
 
         var result = CategoryReadModel.FromCategory(category);
         return result;

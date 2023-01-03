@@ -1,15 +1,12 @@
 using ECommerce.Application.Common.CQRS;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
 using ECommerce.Application.Products.ReadModels;
-using ECommerce.Domain.Products;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Products.Queries;
 
 public class GetAllProductsQuery : IQuery<List<ProductReadModel>>
 {
-    
 }
 
 public class GetAllProductsQueryHandler : IQueryHandler<GetAllProductsQuery, List<ProductReadModel>>
@@ -21,7 +18,7 @@ public class GetAllProductsQueryHandler : IQueryHandler<GetAllProductsQuery, Lis
         _database = database;
     }
     
-    public async Task<Result<List<ProductReadModel>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+    public async Task<List<ProductReadModel>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
     {
         var result = await _database.Products
             .AsNoTracking()

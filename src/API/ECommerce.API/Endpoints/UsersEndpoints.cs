@@ -1,7 +1,5 @@
-using System.Security.Claims;
-using ECommerce.API.Utilities;
+using ECommerce.API.Requests;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
 using ECommerce.Application.Users.Commands;
 using ECommerce.Application.Users.ReadModels;
 using MediatR;
@@ -9,22 +7,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace ECommerce.API.Users;
+namespace ECommerce.API.Endpoints;
 
 public static class UsersEndpoints
 {
     private static async Task<IResult> Register([FromServices] IMediator mediator, [FromBody] RegisterRequest request)
     {
         var command = new RegisterUserCommand(request.Email, request.Password, request.ConfirmPassword);
-        var result = await mediator.Send(command);
-        return result.Resolve(() => Results.Ok());
+        await mediator.Send(command);
+        return Results.NoContent();
     }
     
     private static async Task<IResult> Login([FromServices] IMediator mediator, [FromBody] LoginRequest request)
     {
         var command = new LoginUserCommand(request.Email, request.Password);
         var result = await mediator.Send(command);
-        return result.Resolve(Results.Ok);
+        return Results.Ok(result);
     }
     
     [AllowAnonymous]
@@ -36,13 +34,13 @@ public static class UsersEndpoints
     private static async Task<IResult> RefreshToken([FromServices] IMediator mediator, [FromBody] RefreshTokenCommand refreshTokenCommand)
     {
         var result = await mediator.Send(refreshTokenCommand);
-        return result.Resolve(Results.Ok);
+        return Results.Ok(result);
     }
 
     public static WebApplication RegisterUserEndpoints(this WebApplication app)
     {
         app.MapPost("api/users/register", Register)
-            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict);
         

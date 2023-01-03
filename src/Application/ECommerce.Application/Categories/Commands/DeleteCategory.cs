@@ -1,8 +1,8 @@
 using ECommerce.Application.Common.CQRS;
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
-using ECommerce.Application.Common.Results.Errors;
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Categories.Commands;
@@ -35,16 +35,16 @@ public class DeleteCategoryCommandHandler : ICommandHandler<DeleteCategoryComman
         _database = database;
     }
     
-    public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _database.Categories.FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
         if (category is null)
-            return new NotFoundError($"Product category with id {category} not found.");
+            throw new NotFoundException($"Product category with id {category} not found.");
 
         _database.Categories.Remove(category);
         await _database.SaveChangesAsync(cancellationToken);
-        
-        return Result.Success();
+
+        return Unit.Value;
     }
 }

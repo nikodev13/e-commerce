@@ -1,8 +1,6 @@
-using ECommerce.API.Utilities;
 using ECommerce.Application.Products.Commands;
 using ECommerce.Application.Products.Queries;
 using ECommerce.Application.Products.ReadModels;
-using ECommerce.Domain.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,21 +12,21 @@ public static class ProductsEndpoints
     {
         var query = new GetAllProductsQuery();
         var result = await mediator.Send(query);
-        return result.Resolve(Results.Ok);
+        return Results.Ok(result);
     } 
     
     private static async Task<IResult> GetById([FromServices] IMediator mediator, [FromRoute] long id)
     {
         var query = new GetProductByIdQuery(id);
         var result = await mediator.Send(query);
-        return result.Resolve(Results.Ok);
+        return Results.Ok(result);
     }
 
     private static async Task<IResult> Create([FromServices] IMediator mediator,
         [FromBody] CreateProductCommand command)
     {
         var result = await mediator.Send(command);
-        return result.Resolve(() => Results.Created($"api/products/{result.Value.Id}", result.Value));
+        return Results.Created($"api/products/{result.Id}", result);
     }
     
     public static void RegisterProductEndpoints(this WebApplication app)

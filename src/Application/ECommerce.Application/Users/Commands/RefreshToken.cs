@@ -1,7 +1,6 @@
 using ECommerce.Application.Common.CQRS;
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
-using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Users.Interfaces;
 using ECommerce.Application.Users.ReadModels;
 using FluentValidation;
@@ -39,12 +38,12 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         _tokenProvider = tokenProvider;
     }
     
-    public async Task<Result<TokensReadModel>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<TokensReadModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await _database.Users.FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken, cancellationToken);
         if (user is null)
         {
-            return new BadRequestError("Invalid refresh token.");
+            throw new BadRequestException("Invalid refresh token.");
         }
 
         var accessToken = _tokenProvider.GenerateAccessToken(user);

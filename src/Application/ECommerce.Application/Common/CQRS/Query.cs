@@ -1,13 +1,12 @@
-using ECommerce.Application.Common.Results;
 using MediatR;
 
 namespace ECommerce.Application.Common.CQRS;
 
-public interface IQuery<TResult> : IRequest<Result<TResult>>
+public interface IQuery<out TResult> : IRequest<TResult>
 {
 }
 
-public interface IQueryHandler<in TQuery, TResult> : IRequestHandler<TQuery, Result<TResult>>
-    where TQuery : IRequest<Result<TResult>>
+public interface IQueryHandler<in TQuery, TResult> : IRequestHandler<TQuery, TResult>
+    where TQuery : IRequest<TResult>
 {
 }

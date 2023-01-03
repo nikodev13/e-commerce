@@ -1,7 +1,6 @@
 using ECommerce.Application.Common.CQRS;
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
-using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Products.ReadModels;
 using ECommerce.Domain.Products;
 using ECommerce.Domain.Shared.Services;
@@ -47,16 +46,16 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
         _idService = idService;
     }
     
-    public async Task<Result<ProductReadModel>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<ProductReadModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         if (await _database.Products.AnyAsync(x => x.Name == request.Name, cancellationToken))
-            return new AlreadyExistsError($"Product with name {request.Name} already exists.");
+            throw new AlreadyExistsException($"Product with name {request.Name} already exists.");
             
         var category = await _database.Categories
             .FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
 
         if (category is null)
-            return new BadRequestError($"Category with id {request.CategoryId} does not exist.");
+            throw new BadRequestException($"Category with id {request.CategoryId} does not exist.");
             
         var product = new Product
         {

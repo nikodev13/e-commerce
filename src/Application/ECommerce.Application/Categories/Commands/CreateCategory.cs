@@ -1,8 +1,7 @@
 using ECommerce.Application.Categories.ReadModels;
 using ECommerce.Application.Common.CQRS;
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
-using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Domain.Products;
 using ECommerce.Domain.Shared.Services;
 using FluentValidation;
@@ -44,12 +43,12 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
         _logger = logger;
     }
     
-    public async Task<Result<CategoryReadModel>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<CategoryReadModel> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         // if category with this name already exists, return AlreadyExistsError
         if (await _database.Categories.AnyAsync(x => x.Name == request.CategoryName, cancellationToken))
         {
-            return new AlreadyExistsError($"Category with name '{request.CategoryName}' already exists.");
+            throw new AlreadyExistsException($"Category with name '{request.CategoryName}' already exists.");
         }
 
         var category = new Category(_idService.GenerateId(), request.CategoryName);

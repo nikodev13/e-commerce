@@ -1,8 +1,7 @@
-using ECommerce.API.Categories;
 using ECommerce.API.Configuration;
+using ECommerce.API.Endpoints;
 using ECommerce.API.Middleware;
 using ECommerce.API.Products;
-using ECommerce.API.Users;
 using ECommerce.Application;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Infrastructure;

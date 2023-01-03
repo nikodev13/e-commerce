@@ -1,9 +1,7 @@
 using ECommerce.Application.Common.CQRS;
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Common.Results;
-using ECommerce.Application.Common.Results.Errors;
 using ECommerce.Application.Users.Interfaces;
-using ECommerce.Application.Users.Models;
 using ECommerce.Application.Users.ReadModels;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -52,17 +50,17 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensR
         _userContextService = userContextService;
     }
 
-    public async Task<Result<TokensReadModel>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<TokensReadModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         if (_userContextService.UserId is not null)
-            return new BadRequestError("You're already logged in.");
+            throw new BadRequestException("You're already logged in.");
             
         var user = await _database.Users.FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken: cancellationToken);
         if (user is null)
-            return new BadRequestError("Invalid email or password.");
+            throw new BadRequestException("Invalid email or password.");
 
         if (!_passwordHasher.ValidatePassword(request.Password, user.PasswordHash))
-            return new BadRequestError("Invalid email or password.");
+            throw new BadRequestException("Invalid email or password.");
         
         var accessToken =_tokenProvider.GenerateAccessToken(user);
         var refreshToken = _tokenProvider.GenerateRefreshToken();

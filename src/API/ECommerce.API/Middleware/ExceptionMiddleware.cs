@@ -1,3 +1,4 @@
+using ECommerce.Application.Common.Exceptions;
 using ECommerce.Domain.SeedWork;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,14 +19,29 @@ public class ExceptionMiddleware : IMiddleware
         {
             await next(context);
         }
-        catch (BusinessRuleValidationException ex)
+        catch (BadRequestException exception)
         {
             context.Response.StatusCode = 400;
-            await context.Response.WriteAsync(ex.Message);
+            await context.Response.WriteAsync(exception.Message);
         }
-        catch (Exception ex)
+        catch (NotFoundException exception)
         {
-            _logger.LogError("{@1} \n {@2}", ex.Message, ex.StackTrace);
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync(exception.Message);
+        }
+        catch (AlreadyExistsException exception)
+        {
+            context.Response.StatusCode = 409;
+            await context.Response.WriteAsync(exception.Message);
+        }
+        catch (BusinessRuleValidationException exception)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(exception.Message);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogCritical(exception, exception.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync("Internal server error.");
         }
