@@ -11,15 +11,10 @@ namespace ECommerce.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDatabase
 {
     // for authentication and authorization
-    public DbSet<User> Users => base.Set<User>();
-    public DbSet<Product> Products => base.Set<Product>();
-    public DbSet<Category> Categories => base.Set<Category>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Product> Products => Set<Product>();
+    public DbSet<Category> Categories => Set<Category>();
     
-    public new DbSet<TEntity> Set<TEntity>() where TEntity : Entity
-    {
-        return base.Set<TEntity>();
-    }
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
