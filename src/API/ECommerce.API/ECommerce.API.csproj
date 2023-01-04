@@ -19,4 +19,51 @@
       <ProjectReference Include="..\..\Infrastructure\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="obj\Debug\net6.0\apphost.exe" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.AssemblyInfoInputs.cache" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.assets.cache" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.csproj.AssemblyReference.cache" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.csproj.CopyComplete" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.csproj.CoreCompileInputs.cache" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.csproj.FileListAbsolute.txt" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.dll" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.GeneratedMSBuildEditorConfig.editorconfig" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.genruntimeconfig.cache" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.MvcApplicationPartsAssemblyInfo.cache" />
+      <Content Include="obj\Debug\net6.0\ECommerce.API.pdb" />
+      <Content Include="obj\Debug\net6.0\refint\ECommerce.API.dll" />
+      <Content Include="obj\Debug\net6.0\ref\ECommerce.API.dll" />
+      <Content Include="obj\Debug\net6.0\staticwebassets.build.json" />
+      <Content Include="obj\Debug\net6.0\staticwebassets\msbuild.build.ECommerce.API.props" />
+      <Content Include="obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ECommerce.API.props" />
+      <Content Include="obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ECommerce.API.props" />
+      <Content Include="obj\ECommerce.API.csproj.EntityFrameworkCore.targets" />
+      <Content Include="obj\ECommerce.API.csproj.nuget.dgspec.json" />
+      <Content Include="obj\ECommerce.API.csproj.nuget.g.props" />
+      <Content Include="obj\ECommerce.API.csproj.nuget.g.targets" />
+      <Content Include="obj\project.assets.json" />
+      <Content Include="obj\project.nuget.cache" />
+      <Content Include="obj\project.packagespec.json" />
+      <Content Include="obj\rider.project.restore.info" />
+      <Content Include="obj\staticwebassets.pack.sentinel" />
+      <Content Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" />
+      <Compile Include="obj\Debug\net6.0\ECommerce.API.AssemblyInfo.cs" />
+      <Compile Include="obj\Debug\net6.0\ECommerce.API.GlobalUsings.g.cs" />
+      <Compile Include="obj\Debug\net6.0\ECommerce.API.MvcApplicationPartsAssemblyInfo.cs" />
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
+    </ItemGroup>
+
 </Project>

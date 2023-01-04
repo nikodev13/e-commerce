@@ -1,6 +1,9 @@
+using ECommerce.API.Configuration;
+using ECommerce.API.Endpoints;
 using ECommerce.API.Middleware;
-using ECommerce.API.Products.Categories;
+using ECommerce.API.Products;
 using ECommerce.Application;
+using ECommerce.Application.Common.Interfaces;
 using ECommerce.Infrastructure;
 using ECommerce.Infrastructure.Persistence.Seeders;
 
@@ -12,7 +15,8 @@ var configuration = builder.Configuration;
 services.ConfigureApplicationServices();
 services.ConfigureInfrastructureServices(configuration);
 
-
+services.AddScoped<IUserContextService, UserContextService>();
+services.AddHttpContextAccessor();
 services.AddScoped<ExceptionMiddleware>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -20,6 +24,10 @@ services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,13 +37,16 @@ if (app.Environment.IsDevelopment())
     
     // seed sample data to the ECommerceDb 
     using var scope = app.Services.CreateScope();
-    var seeder = scope.ServiceProvider.GetRequiredService<ECommerceDbSeeder>();
-    await seeder.SeedSampleData();
+    var seeder = scope.ServiceProvider.GetRequiredService<ApplicationDbSeeder>();
+    seeder.SeedSampleData();
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
 
-app.UseMiddleware<ExceptionMiddleware>();
 app.RegisterCategoryEndpoints();
+app.RegisterProductEndpoints();
+
+app.RegisterUserEndpoints();
 
 app.Run();

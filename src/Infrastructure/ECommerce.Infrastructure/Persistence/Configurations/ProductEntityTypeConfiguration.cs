@@ -1,5 +1,4 @@
 ﻿using ECommerce.Domain.Products;
-using ECommerce.Domain.ProductsContext;
 using ECommerce.Domain.ProductsContext.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -23,26 +22,29 @@ namespace ECommerce.Infrastructure.Persistence.Configurations
             product.Property(p => p.Description)
                 .HasConversion(x => x.Value, x => new Description(x));
 
+            product.Property(p => p.CategoryId)
+                .HasConversion(x => x.Value, x => new CategoryId(x));
+            
             product.HasOne(p => p.Category);
             
             product.Ignore(p => p.ProductOffers);
             
-            product.OwnsMany<ProductOffer>("_productOffers", offer =>
-            {
-                offer.HasKey(o => o.Id);
-                offer.Property(o => o.Id)
-                    .HasConversion(x => x.Value, x => new ProductOfferId(x));
-
-                offer.WithOwner().HasForeignKey(o => o.ProductId);
-                offer.Property(o => o.ProductId)
-                    .HasConversion(x => x.Value, x => new ProductId(x));
-
-                offer.Property(o => o.Price)
-                    .HasConversion(x => x.Value, x => new MoneyValue(x));
-
-                offer.Property(o => o.Quantity)
-                    .HasConversion(x => x.Value, x => new Quantity(x));
-            });
+            // product.OwnsMany<ProductOffer>("_productOffers", offer =>
+            // {
+            //     offer.HasKey(o => o.Id);
+            //     offer.Property(o => o.Id)
+            //         .HasConversion(x => x.Value, x => new ProductOfferId(x));
+            //
+            //     offer.WithOwner().HasForeignKey(o => o.ProductId);
+            //     offer.Property(o => o.ProductId)
+            //         .HasConversion(x => x.Value, x => new ProductId(x));
+            //
+            //     offer.Property(o => o.Price)
+            //         .HasConversion(x => x.Value, x => new MoneyValue(x));
+            //
+            //     offer.Property(o => o.Quantity)
+            //         .HasConversion(x => x.Value, x => new Quantity(x));
+            // });
         }
     }
 }

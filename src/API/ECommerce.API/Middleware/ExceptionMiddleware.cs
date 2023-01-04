@@ -1,4 +1,5 @@
 using ECommerce.Application.Common.Exceptions;
+using ECommerce.Domain.SeedWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Middleware;
@@ -11,31 +12,36 @@ public class ExceptionMiddleware : IMiddleware
     {
         _logger = logger;
     }
-    
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
         {
             await next(context);
         }
-        catch (NotFoundException ex)
+        catch (BadRequestException exception)
         {
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsync(ex.Message);
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(exception.Message);
         }
-        catch (AlreadyExistsException ex)
+        catch (NotFoundException exception)
         {
-            context.Response.StatusCode = StatusCodes.Status409Conflict;
-            await context.Response.WriteAsync(ex.Message);
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync(exception.Message);
         }
-        catch (ValidationException ex)
+        catch (AlreadyExistsException exception)
         {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new ValidationProblemDetails(ex.Errors));
+            context.Response.StatusCode = 409;
+            await context.Response.WriteAsync(exception.Message);
         }
-        catch (Exception ex)
+        catch (BusinessRuleValidationException exception)
         {
-            _logger.LogError(ex.Message);
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(exception.Message);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogCritical(exception, exception.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync("Internal server error.");
         }

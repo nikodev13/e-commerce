@@ -15,6 +15,7 @@ public static class Dependencies
         var assembly = Assembly.GetExecutingAssembly();
         services.AddMediatR(assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        
         services.AddValidatorsFromAssembly(assembly);
         ValidatorOptions.Global.LanguageManager.Enabled = false;
         // services.AddAutoMapper(Assembly.GetExecutingAssembly());

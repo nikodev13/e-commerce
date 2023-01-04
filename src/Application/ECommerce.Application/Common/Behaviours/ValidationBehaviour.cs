@@ -1,11 +1,10 @@
 using FluentValidation;
 using MediatR;
-using ValidationException = ECommerce.Application.Common.Exceptions.ValidationException;
 
 namespace ECommerce.Application.Common.Behaviours;
 
-public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IRequest<TResponse>
+public class ValidationBehaviour<TRequest, TResult> : IPipelineBehavior<TRequest, TResult>
+    where TRequest : IRequest<TResult>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -14,16 +13,16 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
         _validators = validators;
     }
     
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResult> Handle(TRequest request, RequestHandlerDelegate<TResult> next, CancellationToken cancellationToken)
     {
-        var failures = _validators
+        var validationFailures = _validators
             .Select(x => x.Validate(request))
             .SelectMany(x => x.Errors)
             .ToList();
 
-        if (failures.Count != 0)
+        if (validationFailures.Count != 0)
         {
-            throw new ValidationException(failures);
+            throw new ValidationException(validationFailures);
         }
         
         return await next();
