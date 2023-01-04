@@ -28,7 +28,7 @@
 
 #### Moreover
 - The Entity Framework Core provides application database in the application layer and replaces domain unit of work and domain repositories (probably we never change database provider).
-- The application layer uses Results type as result of command and queries. They are handled (successes and failures) in API layer. 
+- The application layer uses exceptions as results exceptional situations (resource not found, already exists). They are handled by exception handling middleware in API layer.
 
 ### Available features:
 - CRUD for Product Category

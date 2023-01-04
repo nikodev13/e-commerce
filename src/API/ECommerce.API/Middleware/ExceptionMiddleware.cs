@@ -34,6 +34,11 @@ public class ExceptionMiddleware : IMiddleware
             context.Response.StatusCode = 409;
             await context.Response.WriteAsync(exception.Message);
         }
+        catch (ValidationException exception)
+        {
+            context.Response.StatusCode = 409;
+            await context.Response.WriteAsJsonAsync(new ValidationProblemDetails(exception.Errors));
+        }
         catch (BusinessRuleValidationException exception)
         {
             context.Response.StatusCode = 400;

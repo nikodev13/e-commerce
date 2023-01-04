@@ -4,7 +4,7 @@ using ECommerce.Application.Products.ReadModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.API.Products;
+namespace ECommerce.API.Endpoints;
 
 public static class ProductsEndpoints
 {

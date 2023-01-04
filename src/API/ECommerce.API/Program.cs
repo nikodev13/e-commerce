@@ -1,7 +1,6 @@
 using ECommerce.API.Configuration;
 using ECommerce.API.Endpoints;
 using ECommerce.API.Middleware;
-using ECommerce.API.Products;
 using ECommerce.Application;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Infrastructure;
