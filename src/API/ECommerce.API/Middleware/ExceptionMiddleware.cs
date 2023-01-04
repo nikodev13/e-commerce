@@ -1,5 +1,4 @@
 using ECommerce.Application.Common.Exceptions;
-using ECommerce.Domain.SeedWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Middleware;
@@ -38,11 +37,6 @@ public class ExceptionMiddleware : IMiddleware
         {
             context.Response.StatusCode = 409;
             await context.Response.WriteAsJsonAsync(new ValidationProblemDetails(exception.Errors));
-        }
-        catch (BusinessRuleValidationException exception)
-        {
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsync(exception.Message);
         }
         catch (Exception exception)
         {

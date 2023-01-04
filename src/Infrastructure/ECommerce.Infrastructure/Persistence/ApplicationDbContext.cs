@@ -2,8 +2,6 @@ using System.Reflection;
 using ECommerce.Application.Common.Interfaces;
 using ECommerce.Application.Users.Models;
 using ECommerce.Domain.Products;
-using ECommerce.Domain.ProductsContext;
-using ECommerce.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Persistence;

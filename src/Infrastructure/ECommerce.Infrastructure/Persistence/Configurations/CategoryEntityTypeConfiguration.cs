@@ -1,6 +1,5 @@
 using ECommerce.Domain.Products;
 using ECommerce.Domain.Products.ValueObjects;
-using ECommerce.Domain.ProductsContext.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

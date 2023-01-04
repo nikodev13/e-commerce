@@ -1,4 +1,6 @@
-namespace ECommerce.Domain.ProductsContext.ValueObjects;
+using ECommerce.Domain.Shared.Exceptions;
+
+namespace ECommerce.Domain.Products.ValueObjects;
 
 public class Description
 {
@@ -8,7 +10,7 @@ public class Description
     {
         if (string.IsNullOrWhiteSpace(description))
         {
-            throw new ArgumentException("Description cannot be empty.");
+            throw new DomainException("Description cannot be empty.");
         }
         Value = description;
     }

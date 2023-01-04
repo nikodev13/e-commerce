@@ -1,5 +1,5 @@
 ﻿using ECommerce.Domain.Products;
-using ECommerce.Domain.ProductsContext.ValueObjects;
+using ECommerce.Domain.Products.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -22,12 +22,7 @@ namespace ECommerce.Infrastructure.Persistence.Configurations
             product.Property(p => p.Description)
                 .HasConversion(x => x.Value, x => new Description(x));
 
-            product.Property(p => p.CategoryId)
-                .HasConversion(x => x.Value, x => new CategoryId(x));
-            
-            product.HasOne(p => p.Category);
-            
-            product.Ignore(p => p.ProductOffers);
+            product.HasOne(x => x.Category);
             
             // product.OwnsMany<ProductOffer>("_productOffers", offer =>
             // {

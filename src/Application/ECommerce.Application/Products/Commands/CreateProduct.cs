@@ -13,13 +13,18 @@ public class CreateProductCommand : ICommand<ProductReadModel>
 {
     public string Name { get; }
     public string Description { get; }
-    public long CategoryId { get;  }
+    public long CategoryId { get; }
 
-    public CreateProductCommand(string name, string description, long categoryId)
+    public decimal Price { get; }
+    public uint Quantity { get; }
+
+    public CreateProductCommand(string name, string description, long categoryId, decimal price, uint quantity)
     {
         Name = name;
         Description = description;
         CategoryId = categoryId;
+        Price = price;
+        Quantity = quantity;
     }
 }
 
@@ -31,6 +36,11 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .NotEmpty()
             .MinimumLength(3);
         RuleFor(x => x.CategoryId)
+            .NotEmpty();
+        RuleFor(x => x.Price)
+            .NotEmpty()
+            .GreaterThan(0);
+        RuleFor(x => x.Quantity)
             .NotEmpty();
     }
 }
@@ -62,7 +72,9 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
             Id = _idService.GenerateId(),
             Name = request.Name,
             Description = request.Description,
-            Category = category
+            Category = category,
+            Price = request.Price,
+            Quantity = request.Quantity
         };
 
         await _database.Products.AddAsync(product, cancellationToken);

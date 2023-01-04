@@ -1,3 +1,5 @@
+using ECommerce.Domain.Shared.Exceptions;
+
 namespace ECommerce.Domain.Products.ValueObjects;
 
 public class CategoryName
@@ -8,7 +10,7 @@ public class CategoryName
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Product name cannot be empty.");
+            throw new DomainException("Product name cannot be empty.");
         }
         Value = name;
     }

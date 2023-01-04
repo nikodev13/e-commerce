@@ -1,29 +1,37 @@
-using ECommerce.Domain.ProductsContext;
-using ECommerce.Domain.ProductsContext.ValueObjects;
-using ECommerce.Domain.SeedWork;
+using ECommerce.Domain.Products.ValueObjects;
+using ECommerce.Domain.Shared.Services;
 using ECommerce.Domain.Shared.ValueObjects;
 
 namespace ECommerce.Domain.Products;
 
-public class Product : Entity
+public class Product
 {
-    public ProductId Id { get; init; }
-    public ProductName Name { get; set; }
-    public Description Description { get; set; }
-    public CategoryId CategoryId { get; set; }
-    public Category Category { get; set; }
+    public ProductId Id { get; }
+    public required ProductName Name { get; set; }
+    public required Description Description { get; set; }
+    public required CategoryId CategoryId { get; set; }
+    public required MoneyValue Price { get; set; }
+    public required Quantity InStockQuantity { get; set; }
 
-    private readonly List<ProductOffer> _productOffers;
-    public IEnumerable<ProductOffer> ProductOffers => _productOffers;
-
-    public Product()
+    private Product(ProductId id)
     {
-        _productOffers = new List<ProductOffer>();
+        Id = id;
     }
-
-    public void MakeOffer(MoneyValue price, Quantity quantity)
+    
+    public static Product CreateNew(ProductName name,
+        Description description, 
+        CategoryId categoryId,
+        MoneyValue price,
+        Quantity quantity,
+        ISnowflakeIdService idService)
     {
-        var offer = new ProductOffer(Id, price, quantity);
-        _productOffers.Add(offer);
+        return new Product(idService.GenerateId())
+        {
+            Name = name,
+            Description = description,
+            CategoryId = categoryId,
+            Price = price,
+            InStockQuantity = quantity
+        };
     }
 }
