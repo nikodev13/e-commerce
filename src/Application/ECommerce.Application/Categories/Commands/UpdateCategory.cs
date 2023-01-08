@@ -4,17 +4,18 @@ using ECommerce.Application.Common.Interfaces;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.Categories.Commands;
 
 public class UpdateCategoryCommand : ICommand 
 {
-    public long CategoryId { get; }
+    public long Id { get; }
     public string CategoryName { get; }
 
-    public UpdateCategoryCommand(long categoryId, string categoryName)
+    public UpdateCategoryCommand(long id, string categoryName)
     {
-        CategoryId = categoryId;
+        Id = id;
         CategoryName = categoryName;
     }
 }
@@ -23,7 +24,7 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
 {
     public UpdateCategoryCommandValidator()
     {
-        RuleFor(x => x.CategoryId)
+        RuleFor(x => x.Id)
             .NotEmpty();
         RuleFor(x => x.CategoryName)
             .NotEmpty()
@@ -34,10 +35,12 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
 public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryCommand>
 {
     private readonly IApplicationDatabase _database;
+    private readonly ILogger<UpdateCategoryCommandHandler> _logger;
 
-    public UpdateCategoryCommandHandler(IApplicationDatabase database)
+    public UpdateCategoryCommandHandler(IApplicationDatabase database, ILogger<UpdateCategoryCommandHandler> logger)
     {
         _database = database;
+        _logger = logger;
     }
     
     public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
@@ -49,7 +52,7 @@ public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryComman
         }
         
         var category = await _database.Categories
-            .FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
         if (category is null)
             throw new NotFoundException($"Product category with id {category} not found.");

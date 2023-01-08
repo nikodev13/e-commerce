@@ -1,4 +1,4 @@
-namespace ECommerce.Domain.Shared.ValueObjects;
+namespace ECommerce.Domain.Products.ValueObjects;
 
 public class CategoryId
 {

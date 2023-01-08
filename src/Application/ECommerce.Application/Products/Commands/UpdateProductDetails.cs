@@ -47,15 +47,10 @@ public class UpdateProductDetailsCommandHandler : ICommandHandler<UpdateProductD
     public async Task<Unit> Handle(UpdateProductDetailsCommand request, CancellationToken cancellationToken)
     {
         var product = await _database.Products.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-
         if (product is null)
-        {
             throw new NotFoundException($"Product with ID `{request.Id}` does not exist.");
-        }
 
-        var category = await _database.Categories
-            .FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
-
+        var category = await _database.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
         if (category is null)
             throw new BadRequestException($"Category with id {request.CategoryId} does not exist.");
         

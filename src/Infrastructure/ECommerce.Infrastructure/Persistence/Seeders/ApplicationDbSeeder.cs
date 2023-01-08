@@ -1,12 +1,8 @@
+using ECommerce.Domain.Products;
 using ECommerce.Domain.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Persistence.Seeders;
-
-public interface IEntitySeedDataProvider<out TEntity>
-{
-    IEnumerable<TEntity> GetData();
-}
 
 public class ApplicationDbSeeder
 {
@@ -22,5 +18,6 @@ public class ApplicationDbSeeder
     public void SeedSampleData()
     {
         _dbContext.SeedProductContextSampleData();
-    }    
+        _dbContext.SeedCustomersContextSampleData();
+    }
 }

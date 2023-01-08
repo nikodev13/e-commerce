@@ -14,11 +14,10 @@ public class CreateProductCommand : ICommand<ProductReadModel>
     public string Name { get; }
     public string Description { get; }
     public long CategoryId { get; }
-
     public decimal Price { get; }
-    public uint Quantity { get; }
+    public int Quantity { get; }
 
-    public CreateProductCommand(string name, string description, long categoryId, decimal price, uint quantity)
+    public CreateProductCommand(string name, string description, long categoryId, decimal price, int quantity)
     {
         Name = name;
         Description = description;
@@ -60,22 +59,12 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
     {
         if (await _database.Products.AnyAsync(x => x.Name == request.Name, cancellationToken))
             throw new AlreadyExistsException($"Product with name {request.Name} already exists.");
-            
-        var category = await _database.Categories
-            .FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
 
+        var category = await _database.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
         if (category is null)
             throw new BadRequestException($"Category with id {request.CategoryId} does not exist.");
             
-        var product = new Product
-        {
-            Id = _idService.GenerateId(),
-            Name = request.Name,
-            Description = request.Description,
-            Category = category,
-            Price = request.Price,
-            Quantity = request.Quantity
-        };
+        var product = Product.CreateNew(request.Name, request.Description, category, request.Price, request.Quantity, _idService);
 
         await _database.Products.AddAsync(product, cancellationToken);
         await _database.SaveChangesAsync(cancellationToken);

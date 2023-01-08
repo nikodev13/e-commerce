@@ -51,11 +51,7 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
             throw new AlreadyExistsException($"Category with name '{request.CategoryName}' already exists.");
         }
 
-        var category = new Category
-        {
-            Id = _idService.GenerateId(),
-            Name = request.CategoryName
-        };
+        var category = Category.CreateNew(request.CategoryName, _idService);
         
         await _database.Categories.AddAsync(category, cancellationToken);
         await _database.SaveChangesAsync(cancellationToken);

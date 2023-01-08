@@ -26,8 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{9E55C7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Application.Tests", "tests\ECommerce.Application.Tests\ECommerce.Application.Tests.csproj", "{B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Infrastructure.Tests", "tests\ECommerce.Infrastructure.Tests\ECommerce.Infrastructure.Tests.csproj", "{14E09BE6-C352-4287-8C27-4AB16A09A91A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,7 +42,6 @@ Global
 		{8D4BB492-5772-4A56-8847-62C57B459700} = {8A048339-4E4A-46EF-BCD6-8C68160BC6BA}
 		{9E55C705-2B8D-4972-B0EA-C377A50BA8D8} = {F8A0C3FC-36CE-4DE0-A25C-65D500F9E007}
 		{B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A} = {E5F5E087-7E77-4FDE-96C2-9F2B694B680C}
-		{14E09BE6-C352-4287-8C27-4AB16A09A91A} = {E5F5E087-7E77-4FDE-96C2-9F2B694B680C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E4A52C0A-5E04-4EAF-B141-1EBF0D9E580E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -67,9 +64,5 @@ Global
 		{B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14E09BE6-C352-4287-8C27-4AB16A09A91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14E09BE6-C352-4287-8C27-4AB16A09A91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14E09BE6-C352-4287-8C27-4AB16A09A91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14E09BE6-C352-4287-8C27-4AB16A09A91A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

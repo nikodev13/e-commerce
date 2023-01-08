@@ -2,13 +2,13 @@
 
 public class Quantity
 {
-    public uint Value { get; }
+    public int Value { get; }
     
-    public Quantity(uint quantity)
+    public Quantity(int quantity)
     {
         Value = quantity;
     } 
     
-    public static implicit operator uint(Quantity id) => id.Value;
-    public static implicit operator Quantity(uint id) => new(id);
+    public static implicit operator int(Quantity id) => id.Value;
+    public static implicit operator Quantity(int id) => new(id);
 }

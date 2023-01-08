@@ -9,19 +9,19 @@ namespace ECommerce.Application.Categories.Queries;
 
 public class GetCategoryByIdQuery : IQuery<CategoryReadModel>
 {
-    public GetCategoryByIdQuery(long categoryId)
+    public GetCategoryByIdQuery(long id)
     {
-        CategoryId = categoryId;
+        Id = id;
     }
     
-    public long CategoryId { get; }
+    public long Id { get; }
 }
 
 public class GetCategoryByIdQueryValidator : AbstractValidator<GetCategoryByIdQuery>
 {
     public GetCategoryByIdQueryValidator()
     {
-        RuleFor(x => x.CategoryId)
+        RuleFor(x => x.Id)
             .NotEmpty();
     }
 }
@@ -37,9 +37,9 @@ public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, C
     
     public async Task<CategoryReadModel> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var category = await _database.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken);
+        var category = await _database.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
         if (category is null) 
-            throw new NotFoundException($"Category with ID {request.CategoryId} not found.");
+            throw new NotFoundException($"Category with ID {request.Id} not found.");
             
         var result = CategoryReadModel.FromCategory(category);
         return result;

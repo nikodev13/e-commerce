@@ -22,4 +22,10 @@
       <ProjectReference Include="..\..\Domain\ECommerce.Domain\ECommerce.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Customers\Commands" />
+      <Folder Include="Customers\Queries" />
+      <Folder Include="Customers\ReadModels" />
+    </ItemGroup>
+
 </Project>

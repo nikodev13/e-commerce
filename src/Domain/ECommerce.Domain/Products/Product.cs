@@ -6,30 +6,28 @@ namespace ECommerce.Domain.Products;
 
 public class Product
 {
-    public ProductId Id { get; }
+    public required ProductId Id { get; init; }
     public required ProductName Name { get; set; }
     public required Description Description { get; set; }
-    public required CategoryId CategoryId { get; set; }
+    public required Category Category { get; set; }
     public required MoneyValue Price { get; set; }
     public required Quantity InStockQuantity { get; set; }
 
-    private Product(ProductId id)
-    {
-        Id = id;
-    }
+    private Product() { }
     
     public static Product CreateNew(ProductName name,
         Description description, 
-        CategoryId categoryId,
+        Category category,
         MoneyValue price,
         Quantity quantity,
         ISnowflakeIdService idService)
     {
-        return new Product(idService.GenerateId())
+        return new Product
         {
+            Id = idService.GenerateId(),
             Name = name,
             Description = description,
-            CategoryId = categoryId,
+            Category = category,
             Price = price,
             InStockQuantity = quantity
         };

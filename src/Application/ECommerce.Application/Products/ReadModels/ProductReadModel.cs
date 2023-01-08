@@ -9,7 +9,7 @@ public class ProductReadModel
     public required string Description { get; init; }
     public required string Category { get; init; }
     public required decimal Price { get; init; }
-    public required uint Quantity { get; init; }
+    public required int Quantity { get; init; }
 
     public static ProductReadModel FromProduct(Product product)
     {
@@ -18,9 +18,9 @@ public class ProductReadModel
             Id = product.Id.Value,
             Name = product.Name.Value,
             Description = product.Description.Value,
-            Category = product.Category.Name.Value,
+            Category = product.Category.Name,
             Price = product.Price.Value,
-            Quantity = product.Quantity
+            Quantity = product.InStockQuantity.Value
         };
         
         return readModel;
