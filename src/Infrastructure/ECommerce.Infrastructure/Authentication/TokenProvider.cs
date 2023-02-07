@@ -2,8 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using ECommerce.Application.Users.Interfaces;
-using ECommerce.Application.Users.Models;
+using ECommerce.Domain.Users.Abstractions;
+using ECommerce.Domain.Users.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,27 +11,27 @@ namespace ECommerce.Infrastructure.Authentication;
 
 public class TokenProvider : ITokenProvider
 {
-    private readonly AuthenticationSettings _authenticationSettings;
+    private readonly JwtSettings _jwtSettings;
 
-    public TokenProvider(IOptions<AuthenticationSettings> jwtSettings)
+    public TokenProvider(IOptions<JwtSettings> jwtSettings)
     {
-        _authenticationSettings = jwtSettings.Value;
+        _jwtSettings = jwtSettings.Value;
     }
     
     public string GenerateAccessToken(User user)
     {
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
         };
         
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.SecureKey));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecureKey));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.Now.AddMinutes(_authenticationSettings.AccessTokenExpireMinutes);
+        var expires = DateTime.Now.AddMinutes(_jwtSettings.AccessTokenExpireMinutes);
 
         var token = new JwtSecurityToken(
-            issuer: _authenticationSettings.Issuer,
-            audience:_authenticationSettings.Audience,
+            issuer: _jwtSettings.Issuer,
+            audience:_jwtSettings.Audience,
             claims: claims,
             expires: expires,
             signingCredentials: signingCredentials);

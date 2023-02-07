@@ -1,6 +1,7 @@
-﻿using ECommerce.Domain.Products;
-using ECommerce.Domain.Products.ValueObjects;
+﻿using ECommerce.Domain.Management.Entities;
+using ECommerce.Domain.Management.ValueObjects;
 using ECommerce.Domain.Shared.ValueObjects;
+using ECommerce.Domain.Shared.ValueObjects.Ids;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,7 +11,7 @@ namespace ECommerce.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> product)
         {
-            product.ToTable("Products");
+            product.ToTable("Products", SchemaNames.Catalog);
             
             product.HasKey(p => p.Id);
             product.Property(x => x.Id)

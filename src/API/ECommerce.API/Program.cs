@@ -1,51 +1,45 @@
 using ECommerce.API.Configuration;
-using ECommerce.API.Endpoints;
+using ECommerce.API.Endpoints.Management;
+using ECommerce.API.Endpoints.Users;
 using ECommerce.API.Middleware;
 using ECommerce.Application;
-using ECommerce.Application.Common.Interfaces;
+using ECommerce.Application.Shared.Abstractions;
 using ECommerce.Infrastructure;
-using ECommerce.Infrastructure.Persistence.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
-var services = builder.Services;
 var configuration = builder.Configuration;
 
 // adding and configuring clean architecture layers
-services.ConfigureApplicationServices();
-services.ConfigureInfrastructureServices(configuration);
+builder.Services.ConfigureApplicationServices()
+    .ConfigureInfrastructureServices(configuration)
 
-services.AddScoped<IUserContextService, UserContextService>();
-services.AddHttpContextAccessor();
-services.AddScoped<ExceptionMiddleware>();
+    .AddScoped<IUserContextProvider, UserContextProvider>()
+    .AddHttpContextAccessor()
+    .AddScoped<ExceptionMiddleware>()
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen();
 
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseAuthentication();
+app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    
-    // seed sample data to the ECommerceDb 
-    using var scope = app.Services.CreateScope();
-    var seeder = scope.ServiceProvider.GetRequiredService<ApplicationDbSeeder>();
-    seeder.SeedSampleData();
+    app.UseSwagger().UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
+app.RegisterUserEndpoints();
 app.RegisterCategoryEndpoints();
 app.RegisterProductEndpoints();
 
-app.RegisterUserEndpoints();
-
 app.Run();
+
+public partial class Program { }

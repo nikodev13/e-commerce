@@ -1,4 +1,4 @@
-using ECommerce.Application.Common.Exceptions;
+using ECommerce.Application.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Middleware;

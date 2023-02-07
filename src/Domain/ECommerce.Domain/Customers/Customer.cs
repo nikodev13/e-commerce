@@ -1,5 +1,7 @@
-﻿using ECommerce.Domain.Addresses;
+﻿using ECommerce.Domain.Customers.Entities;
 using ECommerce.Domain.Customers.ValueObjects;
+using ECommerce.Domain.Shared.ValueObjects;
+using ECommerce.Domain.Shared.ValueObjects.Ids;
 
 namespace ECommerce.Domain.Customers;
 

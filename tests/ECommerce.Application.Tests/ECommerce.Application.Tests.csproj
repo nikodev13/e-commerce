@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.8.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
         <PackageReference Include="Moq" Version="4.18.2" />
@@ -27,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\API\ECommerce.API\ECommerce.API.csproj" />
       <ProjectReference Include="..\..\src\Application\ECommerce.Application\ECommerce.Application.csproj" />
       <ProjectReference Include="..\..\src\Infrastructure\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
     </ItemGroup>

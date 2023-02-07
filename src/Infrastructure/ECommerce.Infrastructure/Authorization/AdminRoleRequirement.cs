@@ -1,39 +1,30 @@
 using System.IdentityModel.Tokens.Jwt;
-using ECommerce.Application.Common.Interfaces;
-using ECommerce.Application.Users.Models;
-using ECommerce.Infrastructure.Persistence;
+using ECommerce.Application.Shared.Abstractions;
+using ECommerce.Domain.Users.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Authorization;
 
-public class AdminRoleRequirement : IAuthorizationRequirement
-{
-}
+public class AdminRoleRequirement : IAuthorizationRequirement { }
 
 public class AdminRoleRequirementHandler : AuthorizationHandler<AdminRoleRequirement>
 {
-    private readonly ApplicationDbContext _applicationDbContext;
-    private readonly IUserContextService _contextService;
+    private readonly IAppDbContext _dbContext;
 
-    public AdminRoleRequirementHandler(ApplicationDbContext applicationDbContext, IUserContextService contextService)
+    public AdminRoleRequirementHandler(IAppDbContext dbContext)
     {
-        _applicationDbContext = applicationDbContext;
-        _contextService = contextService;
+        _dbContext = dbContext;
     }
     
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRoleRequirement requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRoleRequirement requirement)
     {
         var idClaim = context.User.FindFirst(JwtRegisteredClaimNames.Sub);
-        if (idClaim is null || !Guid.TryParse(idClaim.Value, out var id))
-        {
-            return Task.CompletedTask;
-        }
+        if (idClaim is null || !Guid.TryParse(idClaim.Value, out var id)) return;
         
-        if (_applicationDbContext.Users.Any(x => x.Id == id && x.Role == Role.Admin))
+        if (await _dbContext.Users.AnyAsync(x => x.Id == id && x.Role == Role.Admin))
         {
             context.Succeed(requirement);
         }
-
-        return Task.CompletedTask;
     }
 }

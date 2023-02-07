@@ -1,4 +1,4 @@
-using ECommerce.Application.Users.Interfaces;
+using ECommerce.Domain.Users.Abstractions;
 
 namespace ECommerce.Infrastructure.Authentication;
 
