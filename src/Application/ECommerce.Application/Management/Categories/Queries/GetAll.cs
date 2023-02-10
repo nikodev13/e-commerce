@@ -15,7 +15,7 @@ public class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategoriesQuery,
         _dbContext = dbContext;
     }
     
-    public async Task<List<CategoryReadModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<CategoryReadModel>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
         var result = await _dbContext.Categories
             .Select(x => CategoryReadModel.FromCategory(x))

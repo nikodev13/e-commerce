@@ -10,13 +10,13 @@ using IUserContextProvider = ECommerce.Application.Shared.Abstractions.IUserCont
 
 namespace ECommerce.Application.Users.Commands;
 
-public class LoginUserCommand : ICommand<TokensReadModel>
+public sealed class LoginUserCommand : ICommand<TokensReadModel>
 {
     public required string Email { get; init; }
     public required string Password { get; init; }
 }
 
-public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
+public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
@@ -34,7 +34,7 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensR
         _userContextProvider = userContextProvider;
     }
 
-    public async Task<TokensReadModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async ValueTask<TokensReadModel> HandleAsync(LoginUserCommand request, CancellationToken cancellationToken)
     {
         if (_userContextProvider.UserId is not null) throw new UserAlreadyLoggedInException();
             

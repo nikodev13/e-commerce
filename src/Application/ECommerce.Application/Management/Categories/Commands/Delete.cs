@@ -1,7 +1,6 @@
 ﻿using ECommerce.Application.Management.Categories.Exceptions;
 using ECommerce.Application.Shared.Abstractions;
 using ECommerce.Application.Shared.CQRS;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +26,7 @@ public class DeleteCategoryCommandHandler : ICommandHandler<DeleteCategoryComman
         _logger = logger;
     }
     
-    public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async ValueTask HandleAsync(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (category is null)
@@ -41,7 +40,5 @@ public class DeleteCategoryCommandHandler : ICommandHandler<DeleteCategoryComman
         
         _logger.LogInformation("User with id `{@userId}` deleted product category (id `{@categoryId}`) with name {@categoryName}.",
             _userContextProvider.UserId, category.Id.Value, category.Name);
-        
-        return Unit.Value;
     }
 }

@@ -2,7 +2,6 @@
 using ECommerce.Application.Shared.Abstractions;
 using ECommerce.Application.Shared.CQRS;
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -31,7 +30,7 @@ public class UpdateProductSaleDataCommandHandler : ICommandHandler<UpdateProduct
         _logger = logger;
     }
     
-    public async Task<Unit> Handle(UpdateProductSaleDataCommand request, CancellationToken cancellationToken)
+    public async ValueTask HandleAsync(UpdateProductSaleDataCommand request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (product is null)
@@ -45,8 +44,6 @@ public class UpdateProductSaleDataCommandHandler : ICommandHandler<UpdateProduct
         
         _logger.LogInformation("User with id `{@userId}` updated sale data for product with id `{@productId}`.",
             _userContextProvider.UserId, product.Id.Value);
-        
-        return Unit.Value;
     }
 }
 

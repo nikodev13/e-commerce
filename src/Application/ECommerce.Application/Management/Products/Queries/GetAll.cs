@@ -4,9 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Management.Products.Queries;
 
-public class GetAllProductsQuery : IQuery<List<ProductReadModel>>
-{
-}
+public class GetAllProductsQuery : IQuery<List<ProductReadModel>> { }
 
 public class GetAllProductsQueryHandler : IQueryHandler<GetAllProductsQuery, List<ProductReadModel>>
 {
@@ -17,7 +15,7 @@ public class GetAllProductsQueryHandler : IQueryHandler<GetAllProductsQuery, Lis
         _dbContext = dbContext;
     }
     
-    public async Task<List<ProductReadModel>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<ProductReadModel>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
     {
         var result = await _dbContext.Products
             .AsNoTracking()

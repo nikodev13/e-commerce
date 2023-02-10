@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.Management.Products.Commands;
 
-public class CreateProductCommand : ICommand<ProductReadModel>
+public class CreateProductCommand : ICommand<long>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
@@ -20,7 +20,7 @@ public class CreateProductCommand : ICommand<ProductReadModel>
     public required bool IsActive { get; init; }
 }
 
-public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ProductReadModel>
+public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, long>
 {
     private readonly IAppDbContext _dbContext;
     private readonly ISnowflakeIdProvider _idProvider;
@@ -38,7 +38,7 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
         _logger = logger;
     }
     
-    public async Task<ProductReadModel> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async ValueTask<long> HandleAsync(CreateProductCommand request, CancellationToken cancellationToken)
     {
         if (await _dbContext.Products.AnyAsync(x => x.Name == request.Name, cancellationToken))
             throw new ProductAlreadyExistsException(request.Name);
@@ -54,9 +54,8 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
 
         _logger.LogInformation("User with id `{@userId}` created product with id `{@productId}`.",
             _userContextProvider.UserId, product.Id.Value);
-        
-        var result = ProductReadModel.FromProduct(product);
-        return result;
+
+        return product.Id;
     }
 }
 

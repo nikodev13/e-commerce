@@ -2,7 +2,6 @@ using ECommerce.Application.Management.Categories.Exceptions;
 using ECommerce.Application.Shared.Abstractions;
 using ECommerce.Application.Shared.CQRS;
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -29,7 +28,7 @@ public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryComman
         _logger = logger;
     }
     
-    public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async ValueTask HandleAsync(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
         // if category with this name already exists, return AlreadyExistsError
         if (await _dbContext.Categories.AnyAsync(x => x.Name == request.Name, cancellationToken))
@@ -47,8 +46,6 @@ public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryComman
         
         _logger.LogInformation("User with id `{@userId}` updated product category (id `{@categoryId}`) name from {@oldCategoryName} to {@newCategoryName}.",
             _userContextProvider.UserId, category.Id.Value, request.Name, oldCategoryName);
-
-        return Unit.Value;
     }
 }
 

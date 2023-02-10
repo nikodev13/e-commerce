@@ -2,7 +2,7 @@ using ECommerce.API.Endpoints.Management.Requests;
 using ECommerce.Application.Management.Categories;
 using ECommerce.Application.Management.Categories.Commands;
 using ECommerce.Application.Management.Categories.Queries;
-using MediatR;
+using ECommerce.Application.Shared.CQRS;
 using Microsoft.AspNetCore.Mvc;
 using AuthorizationPolicy = ECommerce.Infrastructure.Authorization.AuthorizationPolicy;
 
@@ -14,18 +14,20 @@ namespace ECommerce.API.Endpoints.Management
         {
             const string groupName = "Categories Management";
             
-            endpoints.MapGet("api/management/categories", async (IMediator mediator) =>
+            endpoints.MapGet("api/management/categories", 
+                    async ([FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    var result = await mediator.Send(new GetAllCategoriesQuery());
+                    var result = await dispatcher.Dispatch(new GetAllCategoriesQuery(), cancellationToken);
                     return Results.Ok(result);
                 })
                 .Produces<List<CategoryReadModel>>()
                 .WithTags(groupName)
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
-            endpoints.MapGet("api/management/categories/{id:long}", async (IMediator mediator, [FromRoute] long id) =>
+            endpoints.MapGet("api/management/categories/{id:long}", 
+                    async ([FromRoute] long id, [FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    var result = await mediator.Send(new GetCategoryByIdQuery { Id = id });
+                    var result = await dispatcher.Dispatch(new GetCategoryByIdQuery { Id = id }, cancellationToken);
                     return Results.Ok(result);
                 })
                 .Produces<CategoryReadModel>()
@@ -33,19 +35,21 @@ namespace ECommerce.API.Endpoints.Management
                 .WithTags(groupName)
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
-            endpoints.MapPost("api/management/categories", async (IMediator mediator, [FromBody] CreateCategoryRequest request) =>
+            endpoints.MapPost("api/management/categories", 
+                    async ([FromBody] CreateCategoryRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    var result = await mediator.Send(new CreateCategoryCommand { Name = request.Name });
-                    return Results.Created($"api/products/categories/{result.Id}", result);
+                    var id = await dispatcher.Dispatch(new CreateCategoryCommand { Name = request.Name }, cancellationToken);
+                    return Results.Created($"api/products/categories/{id}", null);
                 })
                 .Produces<CategoryReadModel>(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status409Conflict)
                 .WithTags(groupName)
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
-            endpoints.MapPut("api/management/categories/{id:long}", async (IMediator mediator, [FromRoute] long id, [FromBody] UpdateCategoryRequest request) =>
+            endpoints.MapPut("api/management/categories/{id:long}",
+                    async ([FromRoute] long id, [FromBody] UpdateCategoryRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    await mediator.Send(new UpdateCategoryCommand { Id = id, Name = request.Name});
+                    await dispatcher.Dispatch(new UpdateCategoryCommand { Id = id, Name = request.Name }, cancellationToken);
                     return Results.NoContent();
                 })
                 .Produces(StatusCodes.Status204NoContent)
@@ -53,9 +57,10 @@ namespace ECommerce.API.Endpoints.Management
                 .WithTags(groupName)
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
-            endpoints.MapDelete("api/management/categories/{id:long}", async (IMediator mediator, [FromRoute] long id) =>
+            endpoints.MapDelete("api/management/categories/{id:long}",
+                    async ([FromRoute] long id, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    await mediator.Send(new DeleteCategoryCommand { Id = id });
+                    await dispatcher.Dispatch(new DeleteCategoryCommand { Id = id }, cancellationToken);
                     return Results.NoContent();
                 })
                 .Produces(StatusCodes.Status204NoContent)

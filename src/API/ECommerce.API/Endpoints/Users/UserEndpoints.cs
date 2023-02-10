@@ -1,7 +1,7 @@
 using ECommerce.Application.Shared.Abstractions;
+using ECommerce.Application.Shared.CQRS;
 using ECommerce.Application.Users;
 using ECommerce.Application.Users.Commands;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +10,7 @@ namespace ECommerce.API.Endpoints.Users;
 public static class UsersEndpoints
 {
     [AllowAnonymous]
-    private static IResult CheckLogin([FromServices] IMediator mediator, [FromServices] IUserContextProvider contextProvider)
+    private static IResult CheckLogin([FromServices] IUserContextProvider contextProvider)
     {
         return Results.Ok(contextProvider.UserId);
     }
@@ -20,13 +20,13 @@ public static class UsersEndpoints
         const string groupName = "Users";
         
         endpoints.MapPost("api/users/register",
-        async (IMediator mediator, [FromBody] RegisterRequest request) =>
+        async ([FromBody] RegisterRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                await mediator.Send(new RegisterUserCommand()
+                await dispatcher.Dispatch(new RegisterUserCommand
                 {
                     Email = request.Email,
                     Password = request.Password
-                });
+                }, cancellationToken);
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)
@@ -35,13 +35,13 @@ public static class UsersEndpoints
             .WithTags(groupName);
         
         endpoints.MapPost("api/users/login",            
-        async (IMediator mediator, [FromBody] LoginRequest request) =>
+        async ([FromBody] LoginRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new LoginUserCommand()
+                var result = await dispatcher.Dispatch(new LoginUserCommand
                 {
                     Email = request.Email,
                     Password = request.Password
-                });
+                }, cancellationToken);
                 return Results.Ok(result);
             })
             .Produces<TokensReadModel>()
@@ -49,13 +49,13 @@ public static class UsersEndpoints
             .WithTags(groupName);
 
         endpoints.MapPost("api/users/refresh-token",            
-        async (IMediator mediator, [FromBody] RefreshTokenRequest request) =>
+        async ([FromBody] RefreshTokenRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new RefreshTokenCommand()
+                var result = await dispatcher.Dispatch(new RefreshTokenCommand
                 {
                     Email = request.Email,
                     RefreshToken = request.RefreshToken
-                });
+                }, cancellationToken);
                 return Results.Ok(result);
             })
             .Produces<TokensReadModel>()

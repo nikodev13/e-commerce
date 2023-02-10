@@ -11,15 +11,6 @@ public class GetProductByIdQuery : IQuery<ProductReadModel>
     public required long Id { get; init; }
 }
 
-public class GetProductByIdQueryValidator : AbstractValidator<GetProductByIdQuery>
-{
-    public GetProductByIdQueryValidator()
-    {
-        RuleFor(x => x.Id)
-            .NotEmpty();
-    }
-}
-
 public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ProductReadModel>
 {
     private readonly IAppDbContext _dbContext;
@@ -29,7 +20,7 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
         _dbContext = dbContext;
     }
     
-    public async Task<ProductReadModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ProductReadModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
             .AsNoTracking()
@@ -41,5 +32,14 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
 
         var result = ProductReadModel.FromProduct(product);
         return result;
+    }
+}
+
+public class GetProductByIdQueryValidator : AbstractValidator<GetProductByIdQuery>
+{
+    public GetProductByIdQueryValidator()
+    {
+        RuleFor(x => x.Id)
+            .NotEmpty();
     }
 }

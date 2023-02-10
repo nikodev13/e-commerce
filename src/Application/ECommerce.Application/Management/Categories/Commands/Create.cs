@@ -9,12 +9,12 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Application.Management.Categories.Commands;
 
-public class CreateCategoryCommand : ICommand<CategoryReadModel>
+public class CreateCategoryCommand : ICommand<long>
 {
     public required string Name { get; init; }
 }
 
-public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, CategoryReadModel>
+public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, long>
 {
     private readonly IAppDbContext _dbContext;
     private readonly ISnowflakeIdProvider _idProvider;
@@ -32,7 +32,7 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
         _logger = logger;
     }
     
-    public async Task<CategoryReadModel> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async ValueTask<long> HandleAsync(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         if (await _dbContext.Categories.AnyAsync(x => x.Name == request.Name, cancellationToken))
             throw new CategoryAlreadyExistsException(request.Name);
@@ -44,9 +44,8 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
         
         _logger.LogInformation("User with id `{@userId}` created new product category (id `{@categoryId}`) with name {@categoryName}.",
             _userContextProvider.UserId, category.Id.Value, category.Name);
-        
-        var result = CategoryReadModel.FromCategory(category);
-        return result;
+
+        return category.Id;
     }
 }
 

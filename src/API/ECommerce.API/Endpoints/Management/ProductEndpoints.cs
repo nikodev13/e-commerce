@@ -2,8 +2,8 @@ using ECommerce.API.Endpoints.Management.Requests;
 using ECommerce.Application.Management.Products;
 using ECommerce.Application.Management.Products.Commands;
 using ECommerce.Application.Management.Products.Queries;
+using ECommerce.Application.Shared.CQRS;
 using ECommerce.Infrastructure.Authorization;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Endpoints.Management;
@@ -15,9 +15,9 @@ public static class ProductEndpoints
         const string groupName = "Products Management";
         
         endpoints.MapGet("api/management/products", 
-                async (IMediator mediator) =>
+                async ([FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetAllProductsQuery());
+                var result = await dispatcher.Dispatch(new GetAllProductsQuery(), cancellationToken);
                 return Results.Ok(result);
             })
             .Produces<List<ProductReadModel>>()
@@ -25,9 +25,9 @@ public static class ProductEndpoints
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
         endpoints.MapGet("api/management/products/{id:long}",
-                async (IMediator mediator, [FromRoute] long id) =>
+                async ([FromRoute] long id, [FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetProductByIdQuery { Id = id });
+                var result = await dispatcher.Dispatch(new GetProductByIdQuery { Id = id }, cancellationToken);
                 return Results.Ok(result);
             })
             .Produces<ProductReadModel>()
@@ -36,9 +36,9 @@ public static class ProductEndpoints
             .RequireAuthorization(AuthorizationPolicy.Admin);
 
         endpoints.MapPost("api/management/products", 
-                async (IMediator mediator, [FromBody] CreateProductRequest request) =>
+                async ([FromBody] CreateProductRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new CreateProductCommand
+                var id = await dispatcher.Dispatch(new CreateProductCommand
                 {
                     Name = request.Name,
                     Description = request.Description,
@@ -46,8 +46,8 @@ public static class ProductEndpoints
                     Price = request.Price,
                     Quantity = request.Quantity,
                     IsActive = request.IsActive
-                });
-                return Results.Created($"api/management/products/{result.Id}", result);
+                }, cancellationToken);
+                return Results.Created($"api/management/products/{id}", null);
             })
             .Produces<ProductReadModel>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
@@ -55,15 +55,15 @@ public static class ProductEndpoints
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
         endpoints.MapPut("api/management/products/{id:long}/update-details", 
-                async (IMediator mediator, [FromRoute] long id, [FromBody] UpdateProductDetailsCommand request) =>
+                async ([FromRoute] long id, [FromBody] UpdateProductDetailsRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                await mediator.Send(new UpdateProductDetailsCommand
+                await dispatcher.Dispatch(new UpdateProductDetailsCommand
                 {
                     Id = id,
                     Name = request.Name,
                     Description = request.Description,
                     CategoryId = request.CategoryId,
-                });
+                }, cancellationToken);
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)
@@ -74,15 +74,15 @@ public static class ProductEndpoints
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
         endpoints.MapPut("api/management/products/{id:long}/update-sale-data", 
-                async (IMediator mediator, [FromRoute] long id, [FromBody] UpdateProductSaleDataRequest request) =>
+                async ([FromRoute] long id, [FromBody] UpdateProductSaleDataRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                await mediator.Send(new UpdateProductSaleDataCommand
+                await dispatcher.Dispatch(new UpdateProductSaleDataCommand
                 {
                     Id = id,
                     Price = request.Price,
                     Quantity = request.Quantity,
                     IsActive = request.IsActive
-                });
+                }, cancellationToken);
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)

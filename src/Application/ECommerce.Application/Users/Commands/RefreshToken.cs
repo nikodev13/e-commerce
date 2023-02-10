@@ -24,7 +24,7 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
         _tokenProvider = tokenProvider;
     }
     
-    public async Task<TokensReadModel> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    public async ValueTask<TokensReadModel> HandleAsync(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email.Value == request.Email.ToLower(), cancellationToken);
         if (user is null) throw new InvalidRefreshTokenCredentialsException();
