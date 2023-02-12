@@ -1,11 +1,9 @@
-﻿using System.Linq.Expressions;
-using System.Windows.Input;
-using ECommerce.Application.Management.Abstractions;
+﻿using ECommerce.Application.Shared.Abstractions;
+using ECommerce.Application.Shared.CQRS;
 using ECommerce.Application.Tests.Users;
 using ECommerce.Application.Tests.Utilities;
-using ECommerce.Application.Users.Abstractions;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using ICommand = ECommerce.Application.Shared.CQRS.ICommand;
 
 namespace ECommerce.Application.Tests;
 
@@ -26,36 +24,43 @@ public class Testing : IDisposable, IAsyncLifetime
         _factory = new CustomWebApplicationFactory();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
     }
-
-    public Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
+    
+    public async Task<TResult> ExecuteQuerydAsync<TResult>(IQuery<TResult> query)
     {
-        var mediator = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ISender>();
-
-        return mediator.Send(request);
+        var dispatcher = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IQueryDispatcher>();
+        return await dispatcher.DispatchAsync(query, CancellationToken.None);
     }
 
-    public IAppDbContext GetUsersDbContext() =>
-        _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IAppDbContext>();
+    public async Task<TResult> ExecuteCommandAsync<TResult>(ICommand<TResult> command)
+    {
+        var dispatcher = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ICommandDispatcher>();
+        return await dispatcher.DispatchAsync(command, CancellationToken.None);
+    }
     
-    public IAppDbContext GetManagementDbContext() =>
+    public async Task ExecuteCommandAsync(ICommand command)
+    {
+        var dispatcher = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ICommandDispatcher>();
+        await dispatcher.DispatchAsync(command, CancellationToken.None);
+    }
+
+    public IAppDbContext GetAppDbContext() =>
         _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IAppDbContext>();
 
     public void Dispose()
     {
-        GetUsersDbContext().Users.RemoveRange(DummyUsers.Data);
         _factory.Dispose();
     }
 
     public async Task InitializeAsync()
     {
-        var usersDbContext = GetUsersDbContext();
+        var usersDbContext = GetAppDbContext();
         usersDbContext.Users.AddRange(DummyUsers.Data);
         await usersDbContext.SaveChangesAsync(CancellationToken.None);
     }
 
     public async Task DisposeAsync()
     {
-        var usersDbContext = GetUsersDbContext();
+        var usersDbContext = GetAppDbContext();
         usersDbContext.Users.RemoveRange(DummyUsers.Data);
         await usersDbContext.SaveChangesAsync(CancellationToken.None);
     }

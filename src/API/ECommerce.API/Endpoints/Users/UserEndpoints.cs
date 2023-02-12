@@ -22,7 +22,7 @@ public static class UsersEndpoints
         endpoints.MapPost("api/users/register",
         async ([FromBody] RegisterRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                await dispatcher.Dispatch(new RegisterUserCommand
+                await dispatcher.DispatchAsync(new RegisterUserCommand
                 {
                     Email = request.Email,
                     Password = request.Password
@@ -37,7 +37,7 @@ public static class UsersEndpoints
         endpoints.MapPost("api/users/login",            
         async ([FromBody] LoginRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await dispatcher.Dispatch(new LoginUserCommand
+                var result = await dispatcher.DispatchAsync<LoginUserCommand, TokensReadModel>(new LoginUserCommand
                 {
                     Email = request.Email,
                     Password = request.Password
@@ -51,7 +51,7 @@ public static class UsersEndpoints
         endpoints.MapPost("api/users/refresh-token",            
         async ([FromBody] RefreshTokenRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await dispatcher.Dispatch(new RefreshTokenCommand
+                var result = await dispatcher.DispatchAsync<RefreshTokenCommand, TokensReadModel>(new RefreshTokenCommand
                 {
                     Email = request.Email,
                     RefreshToken = request.RefreshToken

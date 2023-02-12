@@ -1,4 +1,5 @@
 using System.Reflection;
+using ECommerce.Application.Shared;
 using ECommerce.Application.Shared.CQRS;
 using ECommerce.Domain;
 using ECommerce.Domain.Shared.Services;
@@ -13,7 +14,7 @@ public static class Extensions
     {
         var assembly = Assembly.GetExecutingAssembly();
 
-        services.RegisterApplicationHandlers();
+        services.ConfigureSharedServices();
         services.AddValidatorsFromAssembly(assembly);
         ValidatorOptions.Global.LanguageManager.Enabled = false;
         services.AddSingleton<ISnowflakeIdProvider, SnowflakeIdProvider>();

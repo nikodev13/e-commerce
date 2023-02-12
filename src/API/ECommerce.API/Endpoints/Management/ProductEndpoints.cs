@@ -17,7 +17,7 @@ public static class ProductEndpoints
         endpoints.MapGet("api/management/products", 
                 async ([FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await dispatcher.Dispatch(new GetAllProductsQuery(), cancellationToken);
+                var result = await dispatcher.DispatchAsync<GetAllProductsQuery, List<ProductReadModel>>(new GetAllProductsQuery(), cancellationToken);
                 return Results.Ok(result);
             })
             .Produces<List<ProductReadModel>>()
@@ -27,7 +27,7 @@ public static class ProductEndpoints
         endpoints.MapGet("api/management/products/{id:long}",
                 async ([FromRoute] long id, [FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await dispatcher.Dispatch(new GetProductByIdQuery { Id = id }, cancellationToken);
+                var result = await dispatcher.DispatchAsync<GetProductByIdQuery, ProductReadModel>(new GetProductByIdQuery { Id = id }, cancellationToken);
                 return Results.Ok(result);
             })
             .Produces<ProductReadModel>()
@@ -38,7 +38,7 @@ public static class ProductEndpoints
         endpoints.MapPost("api/management/products", 
                 async ([FromBody] CreateProductRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var id = await dispatcher.Dispatch(new CreateProductCommand
+                var id = await dispatcher.DispatchAsync<CreateProductCommand, long>(new CreateProductCommand
                 {
                     Name = request.Name,
                     Description = request.Description,
@@ -57,7 +57,7 @@ public static class ProductEndpoints
         endpoints.MapPut("api/management/products/{id:long}/update-details", 
                 async ([FromRoute] long id, [FromBody] UpdateProductDetailsRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                await dispatcher.Dispatch(new UpdateProductDetailsCommand
+                await dispatcher.DispatchAsync(new UpdateProductDetailsCommand
                 {
                     Id = id,
                     Name = request.Name,
@@ -76,7 +76,7 @@ public static class ProductEndpoints
         endpoints.MapPut("api/management/products/{id:long}/update-sale-data", 
                 async ([FromRoute] long id, [FromBody] UpdateProductSaleDataRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                await dispatcher.Dispatch(new UpdateProductSaleDataCommand
+                await dispatcher.DispatchAsync(new UpdateProductSaleDataCommand
                 {
                     Id = id,
                     Price = request.Price,

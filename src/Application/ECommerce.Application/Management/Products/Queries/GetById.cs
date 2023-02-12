@@ -20,7 +20,7 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
         _dbContext = dbContext;
     }
     
-    public async ValueTask<ProductReadModel> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ProductReadModel> HandleAsync(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
             .AsNoTracking()

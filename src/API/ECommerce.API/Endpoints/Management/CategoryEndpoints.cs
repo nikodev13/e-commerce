@@ -17,7 +17,7 @@ namespace ECommerce.API.Endpoints.Management
             endpoints.MapGet("api/management/categories", 
                     async ([FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    var result = await dispatcher.Dispatch(new GetAllCategoriesQuery(), cancellationToken);
+                    var result = await dispatcher.DispatchAsync<GetAllCategoriesQuery, List<CategoryReadModel>>(new GetAllCategoriesQuery(), cancellationToken);
                     return Results.Ok(result);
                 })
                 .Produces<List<CategoryReadModel>>()
@@ -27,7 +27,7 @@ namespace ECommerce.API.Endpoints.Management
             endpoints.MapGet("api/management/categories/{id:long}", 
                     async ([FromRoute] long id, [FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    var result = await dispatcher.Dispatch(new GetCategoryByIdQuery { Id = id }, cancellationToken);
+                    var result = await dispatcher.DispatchAsync<GetCategoryByIdQuery, CategoryReadModel>(new GetCategoryByIdQuery { Id = id }, cancellationToken);
                     return Results.Ok(result);
                 })
                 .Produces<CategoryReadModel>()
@@ -38,7 +38,7 @@ namespace ECommerce.API.Endpoints.Management
             endpoints.MapPost("api/management/categories", 
                     async ([FromBody] CreateCategoryRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    var id = await dispatcher.Dispatch(new CreateCategoryCommand { Name = request.Name }, cancellationToken);
+                    var id = await dispatcher.DispatchAsync<CreateCategoryCommand, long>(new CreateCategoryCommand { Name = request.Name }, cancellationToken);
                     return Results.Created($"api/products/categories/{id}", null);
                 })
                 .Produces<CategoryReadModel>(StatusCodes.Status201Created)
@@ -49,7 +49,7 @@ namespace ECommerce.API.Endpoints.Management
             endpoints.MapPut("api/management/categories/{id:long}",
                     async ([FromRoute] long id, [FromBody] UpdateCategoryRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    await dispatcher.Dispatch(new UpdateCategoryCommand { Id = id, Name = request.Name }, cancellationToken);
+                    await dispatcher.DispatchAsync(new UpdateCategoryCommand { Id = id, Name = request.Name }, cancellationToken);
                     return Results.NoContent();
                 })
                 .Produces(StatusCodes.Status204NoContent)
@@ -60,7 +60,7 @@ namespace ECommerce.API.Endpoints.Management
             endpoints.MapDelete("api/management/categories/{id:long}",
                     async ([FromRoute] long id, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
-                    await dispatcher.Dispatch(new DeleteCategoryCommand { Id = id }, cancellationToken);
+                    await dispatcher.DispatchAsync(new DeleteCategoryCommand { Id = id }, cancellationToken);
                     return Results.NoContent();
                 })
                 .Produces(StatusCodes.Status204NoContent)

@@ -7,8 +7,8 @@ internal static class Extensions
 {
     internal static IServiceCollection ConfigureProcessing(this IServiceCollection services)
     {
-        services.AddSingleton<IQueryDispatcher, QueryDispatcher>();
-        services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
+        services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+        services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         
         return services;
     }

@@ -20,7 +20,7 @@ public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, C
         _dbContext = dbContext;
     }
     
-    public async ValueTask<CategoryReadModel> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<CategoryReadModel> HandleAsync(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
         var category = await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
         if (category is null) 

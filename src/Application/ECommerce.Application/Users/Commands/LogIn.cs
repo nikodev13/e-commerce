@@ -16,7 +16,7 @@ public sealed class LoginUserCommand : ICommand<TokensReadModel>
     public required string Password { get; init; }
 }
 
-public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
+public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
@@ -53,7 +53,7 @@ public sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, 
     }
 }
 
-public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
+internal sealed class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {
     public LoginUserCommandValidator()
     {

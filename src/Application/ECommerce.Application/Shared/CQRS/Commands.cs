@@ -14,8 +14,9 @@ public interface ICommandHandler<in TCommand, TResult> where TCommand : ICommand
 
 public interface ICommandDispatcher
 {
-    ValueTask Dispatch<TCommand>(TCommand query, CancellationToken cancellationToken)
+    ValueTask DispatchAsync<TCommand>(TCommand command, CancellationToken cancellationToken)
         where TCommand : ICommand;
 
-    ValueTask<TResult> Dispatch<TResult>(ICommand<TResult> query, CancellationToken cancellationToken);
+    ValueTask<TResult> DispatchAsync<TCommand, TResult>(TCommand command, CancellationToken cancellationToken)
+        where TCommand : ICommand<TResult>;
 }

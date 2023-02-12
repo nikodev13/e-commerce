@@ -15,7 +15,7 @@ public class GetAllProductsQueryHandler : IQueryHandler<GetAllProductsQuery, Lis
         _dbContext = dbContext;
     }
     
-    public async ValueTask<List<ProductReadModel>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<ProductReadModel>> HandleAsync(GetAllProductsQuery request, CancellationToken cancellationToken)
     {
         var result = await _dbContext.Products
             .AsNoTracking()
