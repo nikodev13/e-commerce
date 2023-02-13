@@ -8,9 +8,3 @@ public interface IQueryHandler<in TQuery, TResult> where TQuery : IQuery<TResult
 {
     ValueTask<TResult> HandleAsync(TQuery command, CancellationToken cancellationToken);
 }
-
-public interface IQueryDispatcher
-{
-    ValueTask<TResult> DispatchAsync<TQuery, TResult>(TQuery query, CancellationToken cancellationToken)
-        where TQuery : IQuery<TResult>;
-}

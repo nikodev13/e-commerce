@@ -11,12 +11,3 @@ public interface ICommandHandler<in TCommand, TResult> where TCommand : ICommand
 {
     ValueTask<TResult> HandleAsync(TCommand command, CancellationToken cancellationToken);
 }
-
-public interface ICommandDispatcher
-{
-    ValueTask DispatchAsync<TCommand>(TCommand command, CancellationToken cancellationToken)
-        where TCommand : ICommand;
-
-    ValueTask<TResult> DispatchAsync<TCommand, TResult>(TCommand command, CancellationToken cancellationToken)
-        where TCommand : ICommand<TResult>;
-}

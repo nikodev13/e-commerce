@@ -15,9 +15,9 @@ namespace ECommerce.API.Endpoints.Management
             const string groupName = "Categories Management";
             
             endpoints.MapGet("api/management/categories", 
-                    async ([FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
+                    async ([FromServices] IQueryHandler<GetAllCategoriesQuery, List<CategoryReadModel>> handler, CancellationToken cancellationToken) =>
                 {
-                    var result = await dispatcher.DispatchAsync<GetAllCategoriesQuery, List<CategoryReadModel>>(new GetAllCategoriesQuery(), cancellationToken);
+                    var result = await handler.HandleAsync(new GetAllCategoriesQuery(), cancellationToken);
                     return Results.Ok(result);
                 })
                 .Produces<List<CategoryReadModel>>()
@@ -25,9 +25,9 @@ namespace ECommerce.API.Endpoints.Management
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
             endpoints.MapGet("api/management/categories/{id:long}", 
-                    async ([FromRoute] long id, [FromServices] IQueryDispatcher dispatcher, CancellationToken cancellationToken) =>
+                    async ([FromRoute] long id, [FromServices] IQueryHandler<GetCategoryByIdQuery, CategoryReadModel> handler, CancellationToken cancellationToken) =>
                 {
-                    var result = await dispatcher.DispatchAsync<GetCategoryByIdQuery, CategoryReadModel>(new GetCategoryByIdQuery { Id = id }, cancellationToken);
+                    var result = await handler.HandleAsync(new GetCategoryByIdQuery { Id = id }, cancellationToken);
                     return Results.Ok(result);
                 })
                 .Produces<CategoryReadModel>()
@@ -36,9 +36,9 @@ namespace ECommerce.API.Endpoints.Management
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
             endpoints.MapPost("api/management/categories", 
-                    async ([FromBody] CreateCategoryRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+                    async ([FromBody] CreateCategoryRequest request, [FromServices] ICommandHandler<CreateCategoryCommand, long> handler, CancellationToken cancellationToken) =>
                 {
-                    var id = await dispatcher.DispatchAsync<CreateCategoryCommand, long>(new CreateCategoryCommand { Name = request.Name }, cancellationToken);
+                    var id = await handler.HandleAsync(new CreateCategoryCommand { Name = request.Name }, cancellationToken);
                     return Results.Created($"api/products/categories/{id}", null);
                 })
                 .Produces<CategoryReadModel>(StatusCodes.Status201Created)
@@ -47,9 +47,9 @@ namespace ECommerce.API.Endpoints.Management
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
             endpoints.MapPut("api/management/categories/{id:long}",
-                    async ([FromRoute] long id, [FromBody] UpdateCategoryRequest request, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+                    async ([FromRoute] long id, [FromBody] UpdateCategoryRequest request, [FromServices] ICommandHandler<UpdateCategoryCommand> handler, CancellationToken cancellationToken) =>
                 {
-                    await dispatcher.DispatchAsync(new UpdateCategoryCommand { Id = id, Name = request.Name }, cancellationToken);
+                    await handler.HandleAsync(new UpdateCategoryCommand { Id = id, Name = request.Name }, cancellationToken);
                     return Results.NoContent();
                 })
                 .Produces(StatusCodes.Status204NoContent)
@@ -58,9 +58,9 @@ namespace ECommerce.API.Endpoints.Management
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
             endpoints.MapDelete("api/management/categories/{id:long}",
-                    async ([FromRoute] long id, [FromServices] ICommandDispatcher dispatcher, CancellationToken cancellationToken) =>
+                    async ([FromRoute] long id, [FromServices] ICommandHandler<DeleteCategoryCommand> handler, CancellationToken cancellationToken) =>
                 {
-                    await dispatcher.DispatchAsync(new DeleteCategoryCommand { Id = id }, cancellationToken);
+                    await handler.HandleAsync(new DeleteCategoryCommand { Id = id }, cancellationToken);
                     return Results.NoContent();
                 })
                 .Produces(StatusCodes.Status204NoContent)
