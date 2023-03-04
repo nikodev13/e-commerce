@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.Shared.Abstractions;
+﻿using ECommerce.ApplicationCore.Shared.Abstractions;
 
 namespace ECommerce.Application.Tests.Utilities;
 

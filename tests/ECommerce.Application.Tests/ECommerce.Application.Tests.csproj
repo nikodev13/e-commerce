@@ -28,9 +28,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\API\ECommerce.API\ECommerce.API.csproj" />
-      <ProjectReference Include="..\..\src\Application\ECommerce.Application\ECommerce.Application.csproj" />
-      <ProjectReference Include="..\..\src\Infrastructure\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\ECommerce.API\ECommerce.API.csproj" />
+      <ProjectReference Include="..\..\src\ECommerce.ApplicationCore\ECommerce.ApplicationCore.csproj" />
+      <ProjectReference Include="..\..\src\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Customers\Accounts" />
+      <Folder Include="Customers\Addresses" />
     </ItemGroup>
 
 </Project>

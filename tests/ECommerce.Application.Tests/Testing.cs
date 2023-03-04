@@ -1,9 +1,10 @@
-﻿using ECommerce.Application.Shared.Abstractions;
-using ECommerce.Application.Shared.CQRS;
-using ECommerce.Application.Tests.Users;
-using ECommerce.Application.Tests.Utilities;
+﻿using ECommerce.ApplicationCore.Shared.Abstractions;
+using ECommerce.ApplicationCore.Shared.CQRS;
+using ECommerce.ApplicationCore.Tests.Management.Categories;
+using ECommerce.ApplicationCore.Tests.Management.Products;
+using ECommerce.ApplicationCore.Tests.Users;
+using ECommerce.ApplicationCore.Tests.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using ICommand = ECommerce.Application.Shared.CQRS.ICommand;
 
 namespace ECommerce.Application.Tests;
 
@@ -25,22 +26,25 @@ public class Testing : IDisposable, IAsyncLifetime
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
     }
     
-    public async Task<TResult> ExecuteQuerydAsync<TResult>(IQuery<TResult> query)
+    public async Task<TResult> ExecuteQueryAsync<TQuery, TResult>(TQuery query, CancellationToken cancellationToken = default)
+        where TQuery : IQuery<TResult>
     {
-        var dispatcher = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IQueryDispatcher>();
-        return await dispatcher.DispatchAsync(query, CancellationToken.None);
+        var handler = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IQueryHandler<TQuery, TResult>>();
+        return await handler.HandleAsync(query, cancellationToken);
     }
 
-    public async Task<TResult> ExecuteCommandAsync<TResult>(ICommand<TResult> command)
+    public async Task<TResult> ExecuteCommandAsync<TCommand, TResult>(TCommand command, CancellationToken cancellationToken = default)
+        where TCommand : ICommand<TResult>
     {
-        var dispatcher = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ICommandDispatcher>();
-        return await dispatcher.DispatchAsync(command, CancellationToken.None);
+        var handler = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ICommandHandler<TCommand, TResult>>();
+        return await handler.HandleAsync(command, cancellationToken);
     }
     
-    public async Task ExecuteCommandAsync(ICommand command)
+    public async Task ExecuteCommandAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
+        where TCommand : ICommand
     {
-        var dispatcher = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ICommandDispatcher>();
-        await dispatcher.DispatchAsync(command, CancellationToken.None);
+        var handler = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
+        await handler.HandleAsync(command, cancellationToken);
     }
 
     public IAppDbContext GetAppDbContext() =>
@@ -55,6 +59,8 @@ public class Testing : IDisposable, IAsyncLifetime
     {
         var usersDbContext = GetAppDbContext();
         usersDbContext.Users.AddRange(DummyUsers.Data);
+        usersDbContext.Categories.AddRange(DummyCategories.Data);
+        usersDbContext.Products.AddRange(DummyProducts.Data);
         await usersDbContext.SaveChangesAsync(CancellationToken.None);
     }
 
@@ -62,6 +68,8 @@ public class Testing : IDisposable, IAsyncLifetime
     {
         var usersDbContext = GetAppDbContext();
         usersDbContext.Users.RemoveRange(DummyUsers.Data);
+        usersDbContext.Categories.RemoveRange(DummyCategories.Data);
+        usersDbContext.Products.RemoveRange(DummyProducts.Data);
         await usersDbContext.SaveChangesAsync(CancellationToken.None);
     }
 }
