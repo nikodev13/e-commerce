@@ -51,5 +51,4 @@ public class ExceptionMiddleware : IMiddleware
             await context.Response.WriteAsync("Internal server error.");
         }
     }
-    
 }

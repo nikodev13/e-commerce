@@ -10,7 +10,8 @@ public class ValidationCommandHandlerDecorator<TCommand, TResult> : ICommandHand
     private readonly ICommandHandler<TCommand, TResult> _handler;
     private readonly IValidator<TCommand> _validator;
 
-    public ValidationCommandHandlerDecorator(ICommandHandler<TCommand, TResult> handler, IValidator<TCommand> validator)
+    public ValidationCommandHandlerDecorator(ICommandHandler<TCommand, TResult> handler, 
+        IValidator<TCommand> validator)
     {
         _handler = handler;
         _validator = validator;
@@ -19,9 +20,9 @@ public class ValidationCommandHandlerDecorator<TCommand, TResult> : ICommandHand
     public ValueTask<TResult> HandleAsync(TCommand command, CancellationToken cancellationToken)
     {
         var validationResult = _validator.Validate(command);
-
-        if (!validationResult.IsValid)
-            throw new Exceptions.ValidationException(validationResult.Errors);
+        
+        if (validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
         return _handler.HandleAsync(command, cancellationToken);
     }
@@ -44,7 +45,7 @@ public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TComm
         var validationResult = _validator.Validate(command);
 
         if (!validationResult.IsValid)
-            throw new Exceptions.ValidationException(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         return _handler.HandleAsync(command, cancellationToken);
     }

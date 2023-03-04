@@ -17,9 +17,9 @@ public static class Extensions
             .AsImplementedInterfaces()
             .WithScopedLifetime());
 
-        // services.Decorate(typeof(IQueryHandler<,>), typeof(ValidationQueryHandlerDecorator<,>));
-        // services.Decorate(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
-        // services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationCommandHandlerDecorator<,>));
+        services.Decorate(typeof(IQueryHandler<,>), typeof(ValidationQueryHandlerDecorator<,>));
+        services.Decorate(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
+        services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationCommandHandlerDecorator<,>));
         
         return services;
     }

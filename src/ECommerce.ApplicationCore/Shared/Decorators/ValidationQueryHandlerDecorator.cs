@@ -21,7 +21,7 @@ public class ValidationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQ
         var validationResult = _validator.Validate(command);
 
         if (!validationResult.IsValid)
-            throw new Exceptions.ValidationException(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         return _handler.HandleAsync(command, cancellationToken);
     }
