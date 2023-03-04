@@ -36,17 +36,21 @@ public class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComman
         if (await _dbContext.Categories.AnyAsync(x => x.Name == request.Name, cancellationToken))
             throw new CategoryAlreadyExistsException(request.Name);
 
+        var userId = _userContextProvider.UserId!.Value;
+        
         var category = new Category
         {
             Id = _idProvider.GenerateId(),
-            Name = request.Name
+            Name = request.Name,
+            CreatedBy = userId,
+            CreatedAt = DateTime.Now
         };
 
         await _dbContext.Categories.AddAsync(category, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation("User with id `{@userId}` created new product category (id `{@categoryId}`) with name {@categoryName}.",
-            _userContextProvider.UserId, category.Id, category.Name);
+            userId, category.Id, category.Name);
 
         return category.Id;
     }

@@ -40,15 +40,19 @@ public class UpdateProductDetailsCommandHandler : ICommandHandler<UpdateProductD
         var category = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
         if (category is null)
             throw new CategoryNotFoundException(request.CategoryId);
+
+        var userId = _userContextProvider.UserId!.Value;
         
         product.Name = request.Name;
         product.Description = request.Description;
         product.Category = category;
+        product.LastModifiedBy = userId;
+        product.LastModifiedAt = DateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("User with id `{@userId}` updated product details for product with id `{@productId}`.",
-            _userContextProvider.UserId, product.Id);
+        _logger.LogInformation("User with id `{@userId}` updated product details for product with id `{@productId}`.", 
+            userId, product.Id);
     }
 }
 

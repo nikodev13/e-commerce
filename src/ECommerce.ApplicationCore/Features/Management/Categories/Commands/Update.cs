@@ -40,12 +40,17 @@ public class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryComman
         if (category is null)
             throw new CategoryNotFoundException(request.Id);
 
+        var userId = _userContextProvider.UserId!.Value;
+
         var oldCategoryName = category.Name;
         category.Name = request.Name;
+        category.LastModifiedBy = userId;
+        category.LastModifiedAt = DateTime.Now;
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation("User with id `{@userId}` updated product category (id `{@categoryId}`) name from {@oldCategoryName} to {@newCategoryName}.",
-            _userContextProvider.UserId, category.Id, request.Name, oldCategoryName);
+            userId, category.Id, request.Name, oldCategoryName);
     }
 }
 

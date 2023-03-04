@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using ECommerce.ApplicationCore.Entities;
 using ECommerce.ApplicationCore.Shared.Abstractions;
+using ECommerce.ApplicationCore.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Infrastructure.Persistence;
@@ -21,7 +22,6 @@ public class AppDbContext : DbContext, IAppDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(AppDbContext))!);
-        
         base.OnModelCreating(modelBuilder);
     }
 }

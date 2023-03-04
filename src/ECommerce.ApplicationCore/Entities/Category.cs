@@ -1,6 +1,8 @@
-﻿namespace ECommerce.ApplicationCore.Entities;
+﻿using ECommerce.ApplicationCore.Shared.Entities;
 
-public class Category
+namespace ECommerce.ApplicationCore.Entities;
+
+public class Category : AuditableEntity
 {
     public required long Id { get; init; }
     public required string Name { get; set; }

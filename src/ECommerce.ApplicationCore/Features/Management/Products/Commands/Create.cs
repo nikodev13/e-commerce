@@ -39,6 +39,8 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
     
     public async ValueTask<long> HandleAsync(CreateProductCommand request, CancellationToken cancellationToken)
     {
+        var userId = _userContextProvider.UserId!.Value;
+        
         if (await _dbContext.Products.AnyAsync(x => x.Name == request.Name, cancellationToken))
             throw new ProductAlreadyExistsException(request.Name);
 
@@ -54,14 +56,16 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
             Category = category,
             Price = request.Price,
             InStockQuantity = request.Quantity,
-            IsActive = request.IsActive
+            IsActive = request.IsActive,
+            CreatedBy = userId,
+            CreatedAt = DateTime.Now
         };
 
         await _dbContext.Products.AddAsync(product, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("User with id `{@userId}` created product with id `{@productId}`.",
-            _userContextProvider.UserId, product.Id);
+            userId, product.Id);
 
         return product.Id;
     }

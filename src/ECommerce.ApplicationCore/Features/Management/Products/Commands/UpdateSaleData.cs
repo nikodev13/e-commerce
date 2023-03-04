@@ -36,14 +36,18 @@ public class UpdateProductSaleDataCommandHandler : ICommandHandler<UpdateProduct
         if (product is null)
             throw new ProductNotFoundException(request.Id);
 
+        var userId = _userContextProvider.UserId!.Value;
+        
         product.Price = request.Price;
         product.InStockQuantity = request.Quantity;
         product.IsActive = request.IsActive;
+        product.LastModifiedBy = userId;
+        product.LastModifiedAt = DateTime.Now;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
         
         _logger.LogInformation("User with id `{@userId}` updated sale data for product with id `{@productId}`.",
-            _userContextProvider.UserId, product.Id);
+            userId, product.Id);
     }
 }
 
