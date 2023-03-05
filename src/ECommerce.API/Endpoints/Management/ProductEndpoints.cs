@@ -1,8 +1,9 @@
-using ECommerce.API.Requests;
+using ECommerce.API.Endpoints.Management.Requests;
 using ECommerce.ApplicationCore.Features.Management.Products;
 using ECommerce.ApplicationCore.Features.Management.Products.Commands;
 using ECommerce.ApplicationCore.Features.Management.Products.Queries;
 using ECommerce.ApplicationCore.Shared.CQRS;
+using ECommerce.ApplicationCore.Shared.Models;
 using ECommerce.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,11 @@ public static class ProductEndpoints
     public static IEndpointRouteBuilder RegisterProductEndpoints(this IEndpointRouteBuilder endpoints)
     {
         const string groupName = "Products Management";
-
-        endpoints.MapGet("api/management/products", GetAll)
+        
+        endpoints.MapGet("api/management/products", GetPaginated)
             .Produces<List<ProductReadModel>>()
-            .WithTags(groupName)
-            .RequireAuthorization(AuthorizationPolicy.Admin);
+            .WithTags(groupName);
+            // .RequireAuthorization(AuthorizationPolicy.Admin);
         
         endpoints.MapGet("api/management/products/{id:long}", GetById)
             .Produces<ProductReadModel>()
@@ -31,8 +32,7 @@ public static class ProductEndpoints
             .WithTags(groupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
-        endpoints.MapPut("api/management/products/{id:long}/update-details", 
-                UpdateDetails)
+        endpoints.MapPut("api/management/products/{id:long}/update-details", UpdateDetails)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
@@ -50,12 +50,19 @@ public static class ProductEndpoints
         return endpoints;
     }
 
-    private static async ValueTask<IResult> GetAll(
-        [FromServices] IQueryHandler<GetAllProductsQuery,
-            List<ProductReadModel>> handler,
+    private static async ValueTask<IResult> GetPaginated(
+        [AsParameters] GetPaginatedProductsRequest request,
+        [FromServices] IQueryHandler<GetPaginatedProductsQuery, PaginatedList<ProductReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(new GetAllProductsQuery(), cancellationToken);
+        var result = await handler.HandleAsync(new GetPaginatedProductsQuery
+        {
+            PageSize = 1,
+            PageNumber = 1,
+            SearchPhrase = null,
+            SortBy = null,
+            SortDirection = null
+        }, cancellationToken);
         return Results.Ok(result);
     }
     

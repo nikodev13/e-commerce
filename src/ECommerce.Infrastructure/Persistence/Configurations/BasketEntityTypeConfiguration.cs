@@ -13,7 +13,8 @@ public class BasketEntityTypeConfiguration : IEntityTypeConfiguration<Basket>, I
         baskets.HasKey(x => x.CustomerId);
         baskets.Property(x => x.CustomerId);
 
-        baskets.HasMany(x => x.Items).WithOne().HasPrincipalKey(x => x.CustomerId);
+        baskets.HasMany(x => x.Items)
+            .WithOne().HasPrincipalKey(x => x.CustomerId);
     }
 
     public void Configure(EntityTypeBuilder<BasketItem> basketItems)

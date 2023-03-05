@@ -1,4 +1,4 @@
-﻿namespace ECommerce.API.Requests;
+﻿namespace ECommerce.API.Endpoints.Customers.Requests;
 
 public class AddNewAddressRequest
 {

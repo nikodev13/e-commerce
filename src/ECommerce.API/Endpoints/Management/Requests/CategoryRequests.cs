@@ -1,4 +1,4 @@
-﻿namespace ECommerce.API.Requests;
+﻿namespace ECommerce.API.Endpoints.Management.Requests;
 
 public class CreateCategoryRequest
 {

@@ -2,6 +2,7 @@ using ECommerce.API.Configuration;
 using ECommerce.API.Endpoints;
 using ECommerce.API.Endpoints.Customers;
 using ECommerce.API.Endpoints.Management;
+using ECommerce.API.Endpoints.Users;
 using ECommerce.API.Middleware;
 using ECommerce.ApplicationCore;
 using ECommerce.ApplicationCore.Shared.Abstractions;

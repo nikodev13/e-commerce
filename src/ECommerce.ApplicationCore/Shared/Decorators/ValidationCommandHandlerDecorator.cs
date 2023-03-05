@@ -21,7 +21,7 @@ public class ValidationCommandHandlerDecorator<TCommand, TResult> : ICommandHand
     {
         var validationResult = _validator.Validate(command);
         
-        if (validationResult.IsValid)
+        if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
         return _handler.HandleAsync(command, cancellationToken);

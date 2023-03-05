@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
-using ECommerce.API.Requests;
 using ECommerce.ApplicationCore.Features.Users;
 using ECommerce.ApplicationCore.Features.Users.Commands;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECommerce.API.Endpoints;
+namespace ECommerce.API.Endpoints.Users;
 
 public static class UsersEndpoints
 {

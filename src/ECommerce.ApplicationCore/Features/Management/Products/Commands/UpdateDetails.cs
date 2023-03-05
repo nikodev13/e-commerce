@@ -1,3 +1,4 @@
+using ECommerce.ApplicationCore.Entities;
 using ECommerce.ApplicationCore.Features.Management.Categories.Exceptions;
 using ECommerce.ApplicationCore.Features.Management.Products.Exceptions;
 using ECommerce.ApplicationCore.Shared.Abstractions;
@@ -37,15 +38,14 @@ public class UpdateProductDetailsCommandHandler : ICommandHandler<UpdateProductD
         if (product is null)
             throw new ProductNotFoundException(request.Id);
 
-        var category = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
-        if (category is null)
+        if (await _dbContext.Categories.AnyAsync(x => x.Id == request.CategoryId, cancellationToken))
             throw new CategoryNotFoundException(request.CategoryId);
 
         var userId = _userContextProvider.UserId!.Value;
         
         product.Name = request.Name;
         product.Description = request.Description;
-        product.Category = category;
+        product.CategoryId = request.CategoryId;
         product.LastModifiedBy = userId;
         product.LastModifiedAt = DateTime.Now;
 

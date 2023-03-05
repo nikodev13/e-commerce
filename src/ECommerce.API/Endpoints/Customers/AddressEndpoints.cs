@@ -1,4 +1,4 @@
-﻿using ECommerce.API.Requests;
+﻿using ECommerce.API.Endpoints.Customers.Requests;
 using ECommerce.ApplicationCore.Features.Customer.Adresses;
 using ECommerce.ApplicationCore.Features.Customer.Adresses.Commands;
 using ECommerce.ApplicationCore.Features.Customer.Adresses.Queries;

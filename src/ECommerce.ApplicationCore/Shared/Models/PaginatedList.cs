@@ -3,17 +3,17 @@
 public class PaginatedList<T>
 {
     public List<T> Items { get; }
-    public uint PageNumber { get; }
-    public uint PageSize { get; }
-    public uint TotalItems { get; }
-    public uint TotalPages { get; }
+    public int PageSize { get; }
+    public int PageNumber { get; }
+    public int TotalItems { get; }
+    public int TotalPages { get; }
     
-    public PaginatedList(List<T> items, uint pageNumber, uint pageSize, uint totalItems)
+    public PaginatedList(List<T> items, int pageSize, int pageNumber, int totalItems)
     {
         Items = items;
-        PageNumber = pageNumber;
         PageSize = pageSize;
+        PageNumber = pageNumber;
         TotalItems = totalItems;
-        TotalPages = (uint)double.Ceiling((double)totalItems / pageSize);
+        TotalPages = (int)double.Ceiling((double)totalItems / pageSize);
     }
 }

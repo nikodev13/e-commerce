@@ -1,4 +1,4 @@
-﻿namespace ECommerce.API.Requests;
+﻿namespace ECommerce.API.Endpoints.Users;
 
 public class LoginRequest
 {

@@ -1,7 +1,7 @@
 ﻿
 using ECommerce.ApplicationCore.Features.Customer.Orders.Commands;
 
-namespace ECommerce.API.Requests;
+namespace ECommerce.API.Endpoints.Customers.Requests;
 
 public class PlaceOrderRequest
 {

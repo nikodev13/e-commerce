@@ -43,9 +43,8 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
         
         if (await _dbContext.Products.AnyAsync(x => x.Name == request.Name, cancellationToken))
             throw new ProductAlreadyExistsException(request.Name);
-
-        var category = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId, cancellationToken);
-        if (category is null)
+       
+        if (!await _dbContext.Categories.AnyAsync(x => x.Id == request.CategoryId, cancellationToken))
             throw new CategoryNotFoundException(request.CategoryId);
             
         var product = new Product
@@ -53,12 +52,12 @@ public class CreateProductCommandHandler : ICommandHandler<CreateProductCommand,
             Id = _idProvider.GenerateId(),
             Name = request.Name,
             Description = request.Description,
-            Category = category,
             Price = request.Price,
             InStockQuantity = request.Quantity,
             IsActive = request.IsActive,
+            CategoryId = request.CategoryId,
             CreatedBy = userId,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.Now,
         };
 
         await _dbContext.Products.AddAsync(product, cancellationToken);

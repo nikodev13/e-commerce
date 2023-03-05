@@ -39,10 +39,10 @@ public class ExceptionMiddleware : IMiddleware
             context.Response.StatusCode = 409;
             await context.Response.WriteAsync(exception.Message);
         }
-        catch (BadHttpRequestException exception) when (exception.InnerException is JsonException)
+        catch (BadHttpRequestException exception) 
         {
             context.Response.StatusCode = 400;
-            await context.Response.WriteAsync("The body is an invalid JSON.");
+            await context.Response.WriteAsync("Invalid request.");
         }
         catch (Exception exception)
         {

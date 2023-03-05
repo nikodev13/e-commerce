@@ -1,21 +1,4 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=603a5bc7_002D95c6_002D4975_002D8797_002D20bb097be71d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Register.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;ProjectFile&gt;B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A/d:Users/f:Register.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.Login.Login_Successfully_ReturnAccessAndRefreshToken&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.Login.Login_WithInvalidPassword_ThrowsInvalidLogInCredentialsException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.Login.Login_WithActiveAccessToken_ThrowsUserAlreadyLoggedInException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.Login.Login_ByAuthenticatedUser_ThrowsUserAlreadyLoggedInException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.RefreshToken.RefreshToken_WithInvalidEmail_ThrowsInvalidRefreshTokenCredentialsException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.RefreshToken.RefreshToken_WithInvalidRefreshToken_ThrowsInvalidRefreshTokenCredentialsException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Users.RefreshToken.RefreshToken_Successfully_ReturnTokensReadModel&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Management.Categories.CreateCategory.CreateCategory_Successfully_ReturnReadModel&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Management.Categories.CreateCategory.CreateCategory_WithExistingCategoryName_ThrowAlreadyExistsException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Management.Categories.DeleteCategory.DeleteCategory_WithProducts_ThrowsCategoryWithProductsCannotBeDeletedException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Management.Categories.DeleteCategory.DeleteCategory_Successfully&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Management.Categories.UpdateCategory.UpdateCategory_WithInvalidId_ThrowsCategoryNotFoundException&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::B31602B4-C9FA-4899-95DF-DFFDB2E2BD3A::net7.0::ECommerce.Application.Tests.Management.Categories.UpdateCategory&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Or&gt;&#xD;
+  &lt;ProjectFolder&gt;A82BBB14-98B8-49BD-9522-A6A40EAA1503/d:Tests/d:Management&lt;/ProjectFolder&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

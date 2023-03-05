@@ -1,4 +1,4 @@
-using ECommerce.API.Requests;
+using ECommerce.API.Endpoints.Management.Requests;
 using ECommerce.ApplicationCore.Features.Management.Categories;
 using ECommerce.ApplicationCore.Features.Management.Categories.Commands;
 using ECommerce.ApplicationCore.Features.Management.Categories.Queries;

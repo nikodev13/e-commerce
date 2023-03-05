@@ -1,4 +1,4 @@
-﻿using ECommerce.API.Requests;
+﻿using ECommerce.API.Endpoints.Customers.Requests;
 using ECommerce.ApplicationCore.Features.Customer.Account;
 using ECommerce.ApplicationCore.Features.Customer.Account.Commands;
 using ECommerce.ApplicationCore.Features.Customer.Account.Queries;

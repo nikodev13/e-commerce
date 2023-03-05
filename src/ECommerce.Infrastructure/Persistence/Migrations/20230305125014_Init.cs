@@ -27,9 +27,12 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,14 +108,17 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     InStockQuantity = table.Column<long>(type: "bigint", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
