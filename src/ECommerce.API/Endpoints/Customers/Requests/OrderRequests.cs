@@ -1,5 +1,5 @@
 ﻿
-using ECommerce.ApplicationCore.Features.Customer.Orders.Commands;
+using ECommerce.ApplicationCore.Features.Customers.Orders.Commands;
 
 namespace ECommerce.API.Endpoints.Customers.Requests;
 

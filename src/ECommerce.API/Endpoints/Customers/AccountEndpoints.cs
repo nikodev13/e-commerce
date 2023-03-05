@@ -1,7 +1,7 @@
 ﻿using ECommerce.API.Endpoints.Customers.Requests;
-using ECommerce.ApplicationCore.Features.Customer.Account;
-using ECommerce.ApplicationCore.Features.Customer.Account.Commands;
-using ECommerce.ApplicationCore.Features.Customer.Account.Queries;
+using ECommerce.ApplicationCore.Features.Customers.Account;
+using ECommerce.ApplicationCore.Features.Customers.Account.Commands;
+using ECommerce.ApplicationCore.Features.Customers.Account.Queries;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using ECommerce.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,12 +1,12 @@
 ﻿using ECommerce.ApplicationCore.Entities;
-using ECommerce.ApplicationCore.Features.Customer.Orders.Exceptions;
+using ECommerce.ApplicationCore.Features.Customers.Orders.Exceptions;
 using ECommerce.ApplicationCore.Shared.Abstractions;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Orders.Commands;
+namespace ECommerce.ApplicationCore.Features.Customers.Orders.Commands;
 
 public class PlaceOrderCommand : ICommand<long>
 {

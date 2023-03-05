@@ -1,7 +1,7 @@
 ﻿using ECommerce.API.Endpoints.Customers.Requests;
-using ECommerce.ApplicationCore.Features.Customer.Adresses;
-using ECommerce.ApplicationCore.Features.Customer.Adresses.Commands;
-using ECommerce.ApplicationCore.Features.Customer.Adresses.Queries;
+using ECommerce.ApplicationCore.Features.Customers.Adresses;
+using ECommerce.ApplicationCore.Features.Customers.Adresses.Commands;
+using ECommerce.ApplicationCore.Features.Customers.Adresses.Queries;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using ECommerce.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;

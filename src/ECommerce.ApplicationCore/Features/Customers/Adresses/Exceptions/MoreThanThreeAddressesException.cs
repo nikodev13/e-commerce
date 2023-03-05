@@ -1,6 +1,6 @@
 ﻿using ECommerce.ApplicationCore.Shared.Exceptions;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Adresses.Exceptions;
+namespace ECommerce.ApplicationCore.Features.Customers.Adresses.Exceptions;
 
 public class MoreThanThreeAddressesException : BadRequestException
 {

@@ -1,6 +1,6 @@
 ﻿using ECommerce.ApplicationCore.Shared.Exceptions;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Orders.Exceptions;
+namespace ECommerce.ApplicationCore.Features.Customers.Orders.Exceptions;
 
 public class ProductOutOfStockException : BadRequestException
 {

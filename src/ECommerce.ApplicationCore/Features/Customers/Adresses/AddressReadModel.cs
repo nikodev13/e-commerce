@@ -1,6 +1,6 @@
 ﻿using ECommerce.ApplicationCore.Entities;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Adresses;
+namespace ECommerce.ApplicationCore.Features.Customers.Adresses;
 
 public class AddressReadModel
 {

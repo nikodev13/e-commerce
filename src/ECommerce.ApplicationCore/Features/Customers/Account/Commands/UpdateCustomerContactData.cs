@@ -3,7 +3,7 @@ using ECommerce.ApplicationCore.Shared.CQRS;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Account.Commands;
+namespace ECommerce.ApplicationCore.Features.Customers.Account.Commands;
 
 public class UpdateCustomerContactDataCommand : ICommand
 {

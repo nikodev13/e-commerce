@@ -2,7 +2,7 @@
 using ECommerce.ApplicationCore.Shared.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Adresses.Queries;
+namespace ECommerce.ApplicationCore.Features.Customers.Adresses.Queries;
 
 public class GetAllAddressesCommand : IQuery<List<AddressReadModel>> { }
 

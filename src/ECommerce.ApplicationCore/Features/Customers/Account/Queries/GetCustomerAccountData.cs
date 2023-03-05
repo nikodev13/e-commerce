@@ -2,7 +2,7 @@
 using ECommerce.ApplicationCore.Shared.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Account.Queries;
+namespace ECommerce.ApplicationCore.Features.Customers.Account.Queries;
 
 public class GetCustomerAccountQuery : IQuery<CustomerAccountReadModel> { }
 

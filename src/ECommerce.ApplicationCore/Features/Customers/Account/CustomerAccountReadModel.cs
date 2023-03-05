@@ -1,6 +1,6 @@
 ﻿using ECommerce.ApplicationCore.Entities;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Account;
+namespace ECommerce.ApplicationCore.Features.Customers.Account;
 
 public class CustomerAccountReadModel
 {

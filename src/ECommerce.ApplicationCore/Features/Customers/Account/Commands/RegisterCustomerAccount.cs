@@ -4,7 +4,7 @@ using ECommerce.ApplicationCore.Shared.CQRS;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Account.Commands;
+namespace ECommerce.ApplicationCore.Features.Customers.Account.Commands;
 
 public class RegisterCustomerCommand : ICommand
 {

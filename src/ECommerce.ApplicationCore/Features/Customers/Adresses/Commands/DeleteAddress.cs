@@ -1,9 +1,9 @@
-﻿using ECommerce.ApplicationCore.Features.Customer.Adresses.Exceptions;
+﻿using ECommerce.ApplicationCore.Features.Customers.Adresses.Exceptions;
 using ECommerce.ApplicationCore.Shared.Abstractions;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.ApplicationCore.Features.Customer.Adresses.Commands;
+namespace ECommerce.ApplicationCore.Features.Customers.Adresses.Commands;
 
 public class DeleteAddressCommand : ICommand
 {
