@@ -1,10 +1,9 @@
 ﻿using ECommerce.ApplicationCore.Shared.Abstractions;
-using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ECommerce.API.Tests.Configuration;
+namespace ECommerce.Application.Tests.Utilities;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
@@ -14,9 +13,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             services.Remove<IUserContextProvider>();
             services.AddScoped<IUserContextProvider, FakeUserContextProvider>();
-            services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
         });
-
+        
         builder.UseEnvironment("Development");
     }
 }

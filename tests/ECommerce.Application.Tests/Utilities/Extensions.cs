@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace ECommerce.API.Tests.Configuration;
+namespace ECommerce.Application.Tests.Utilities;
 
-public static class ServiceCollectionExtensions
+public static class Extensions
 {
     public static IServiceCollection Remove<TService>(this IServiceCollection services)
     {

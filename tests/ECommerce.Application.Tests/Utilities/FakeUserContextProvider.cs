@@ -1,9 +1,10 @@
 ﻿using ECommerce.ApplicationCore.Shared.Abstractions;
 
-namespace ECommerce.API.Tests.Configuration;
+namespace ECommerce.Application.Tests.Utilities;
 
 public class FakeUserContextProvider : IUserContextProvider
 {
-    public static Guid? CurrentUserId { get; set; }
     public Guid? UserId => CurrentUserId;
+
+    public static Guid? CurrentUserId { get; set; }
 }
