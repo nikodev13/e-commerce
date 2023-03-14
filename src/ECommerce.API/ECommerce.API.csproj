@@ -66,8 +66,4 @@
       <None Remove="obj\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Requests" />
-    </ItemGroup>
-
 </Project>

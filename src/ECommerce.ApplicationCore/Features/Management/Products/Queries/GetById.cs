@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Management.Products.Queries;
 
-public class GetProductByIdQuery : IQuery<ProductReadModel>
+public class GetProductByIdQuery : IQuery<ManagementProductReadModel>
 {
     public required long Id { get; init; }
 }
 
-public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ProductReadModel>
+public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ManagementProductReadModel>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -20,17 +20,17 @@ public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, Pro
         _dbContext = dbContext;
     }
     
-    public async ValueTask<ProductReadModel> HandleAsync(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ManagementProductReadModel> HandleAsync(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
             .AsNoTracking()
             .Include(x => x.Category)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
 
         if (product is null)
-            throw new ProductNotFoundException(request.Id);
+            throw new ProductNotFoundException(query.Id);
 
-        var result = ProductReadModel.FromProduct(product);
+        var result = ManagementProductReadModel.From(product);
         return result;
     }
 }

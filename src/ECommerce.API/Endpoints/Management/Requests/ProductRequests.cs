@@ -1,16 +1,10 @@
-﻿using ECommerce.ApplicationCore.Shared.Constants;
+﻿using ECommerce.ApplicationCore.Features.Management.Products.Queries;
+using ECommerce.ApplicationCore.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Endpoints.Management.Requests;
 
-public class GetPaginatedProductsRequest
-{
-    public int PageSize { get; init; } = 25;
-    public int PageNumber { get; init; } = 1;
-    public string? SearchPhrase { get; init; }
-    public string? SortBy { get; init; }
-    public SortDirection? SortDirection { get; init; }
-}
+public class GetPaginatedManagementProductsRequest : GetPaginatedManagementProductsQuery { }
 
 public class CreateProductRequest
 {

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Management.Categories.Queries;
 
-public class GetAllCategoriesQuery : IQuery<List<CategoryReadModel>> { }
+public class GetAllCategoriesQuery : IQuery<List<ManagementCategoryReadModel>> { }
 
-public class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategoriesQuery, List<CategoryReadModel>>
+public class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategoriesQuery, List<ManagementCategoryReadModel>>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -15,10 +15,10 @@ public class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategoriesQuery,
         _dbContext = dbContext;
     }
     
-    public async ValueTask<List<CategoryReadModel>> HandleAsync(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<ManagementCategoryReadModel>> HandleAsync(GetAllCategoriesQuery query, CancellationToken cancellationToken)
     {
         var result = await _dbContext.Categories
-            .Select(x => CategoryReadModel.FromCategory(x))
+            .Select(x => ManagementCategoryReadModel.FromCategory(x))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
         

@@ -17,7 +17,7 @@ public class GetAllAddressesCommandHandler : IQueryHandler<GetAllAddressesComman
         _userContextProvider = userContextProvider;
     }
     
-    public async ValueTask<List<AddressReadModel>> HandleAsync(GetAllAddressesCommand command, CancellationToken cancellationToken)
+    public async ValueTask<List<AddressReadModel>> HandleAsync(GetAllAddressesCommand query, CancellationToken cancellationToken)
     {
         var customerId = _userContextProvider.UserId!.Value;
         var result = await _dbContext.Addresses.Where(x => x.CustomerId == customerId)

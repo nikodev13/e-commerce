@@ -1,9 +1,8 @@
-using ECommerce.ApplicationCore.Entities;
-using ECommerce.ApplicationCore.Shared.Models;
+﻿using ECommerce.ApplicationCore.Entities;
 
-namespace ECommerce.ApplicationCore.Features.Management.Products;
+namespace ECommerce.ApplicationCore.Features.Customers.Products.ReadModels;
 
-public class ProductReadModel : AuditableReadModel
+public class CustomerProductReadModel
 {
     public required long Id { get; init; }
     public required string Name { get; init; }
@@ -11,12 +10,12 @@ public class ProductReadModel : AuditableReadModel
     public required string Category { get; init; }
     public required decimal Price { get; init; }
     public required uint Quantity { get; init; }
-    
-    private ProductReadModel() { }
-    
-    public static ProductReadModel FromProduct(Product product)
+
+    private CustomerProductReadModel() { }
+
+    public static CustomerProductReadModel From(Product product)
     {
-        var readModel = new ProductReadModel
+        var readModel = new CustomerProductReadModel()
         {
             Id = product.Id,
             Name = product.Name,
@@ -24,12 +23,8 @@ public class ProductReadModel : AuditableReadModel
             Category = product.Category.Name,
             Price = product.Price,
             Quantity = product.InStockQuantity,
-            CreatedBy = product.CreatedBy,
-            CreatedAt = product.CreatedAt,
-            LastModifiedBy = product.LastModifiedBy,
-            LastModifiedAt = product.LastModifiedAt
         };
-        
+
         return readModel;
     }
 }

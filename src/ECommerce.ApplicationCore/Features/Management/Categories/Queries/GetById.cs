@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Management.Categories.Queries;
 
-public class GetCategoryByIdQuery : IQuery<CategoryReadModel>
+public class GetCategoryByIdQuery : IQuery<ManagementCategoryReadModel>
 {
     public required long Id { get; init; }
 }
 
-public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, CategoryReadModel>
+public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, ManagementCategoryReadModel>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -20,12 +20,12 @@ public class GetCategoryByIdQueryHandler : IQueryHandler<GetCategoryByIdQuery, C
         _dbContext = dbContext;
     }
     
-    public async ValueTask<CategoryReadModel> HandleAsync(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ManagementCategoryReadModel> HandleAsync(GetCategoryByIdQuery query, CancellationToken cancellationToken)
     {
-        var category = await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+        var category = await _dbContext.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == query.Id, cancellationToken);
         if (category is null) 
-            throw new CategoryNotFoundException(request.Id);
-        var result = CategoryReadModel.FromCategory(category);
+            throw new CategoryNotFoundException(query.Id);
+        var result = ManagementCategoryReadModel.FromCategory(category);
         return result;
     }
 }

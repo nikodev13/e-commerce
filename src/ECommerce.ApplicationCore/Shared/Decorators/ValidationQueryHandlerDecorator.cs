@@ -16,13 +16,13 @@ public class ValidationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQ
         _validator = validator;
     }
 
-    public ValueTask<TResult> HandleAsync(TQuery command, CancellationToken cancellationToken)
+    public ValueTask<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken)
     {
-        var validationResult = _validator.Validate(command);
+        var validationResult = _validator.Validate(query);
 
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        return _handler.HandleAsync(command, cancellationToken);
+        return _handler.HandleAsync(query, cancellationToken);
     }
 }

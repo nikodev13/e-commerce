@@ -15,18 +15,18 @@ namespace ECommerce.API.Endpoints.Management
             const string groupName = "Categories Management";
 
             endpoints.MapGet("api/management/categories", GetAll)
-                .Produces<List<CategoryReadModel>>()
+                .Produces<List<ManagementCategoryReadModel>>()
                 .WithTags(groupName)  
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
             endpoints.MapGet("api/management/categories/{id:long}", GetById)
-                .Produces<CategoryReadModel>()
+                .Produces<ManagementCategoryReadModel>()
                 .Produces(StatusCodes.Status404NotFound)
                 .WithTags(groupName)
                 .RequireAuthorization(AuthorizationPolicy.Admin);
 
             endpoints.MapPost("api/management/categories", Create)
-                .Produces<CategoryReadModel>(StatusCodes.Status201Created)
+                .Produces<ManagementCategoryReadModel>(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status409Conflict)
                 .WithTags(groupName)
                 .RequireAuthorization(AuthorizationPolicy.Admin);
@@ -48,7 +48,7 @@ namespace ECommerce.API.Endpoints.Management
         }
 
         private static async ValueTask<IResult> GetAll(
-            [FromServices] IQueryHandler<GetAllCategoriesQuery, List<CategoryReadModel>> handler,
+            [FromServices] IQueryHandler<GetAllCategoriesQuery, List<ManagementCategoryReadModel>> handler,
             CancellationToken cancellationToken)
         {
             var result = await handler.HandleAsync(new GetAllCategoriesQuery(), cancellationToken);
@@ -57,7 +57,7 @@ namespace ECommerce.API.Endpoints.Management
 
         private static async ValueTask<IResult> GetById(
             [FromRoute] long id, 
-            [FromServices] IQueryHandler<GetCategoryByIdQuery, CategoryReadModel> handler,
+            [FromServices] IQueryHandler<GetCategoryByIdQuery, ManagementCategoryReadModel> handler,
             CancellationToken cancellationToken)
         {
             var result = await handler.HandleAsync(

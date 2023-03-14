@@ -3,14 +3,14 @@ using ECommerce.ApplicationCore.Shared.Entities;
 
 namespace ECommerce.ApplicationCore.Features.Management.Categories;
 
-public class CategoryReadModel : AuditableEntity
+public class ManagementCategoryReadModel : AuditableEntity
 {
     public required long Id { get; init; }
     public required string Name { get; init; }
 
-    public static CategoryReadModel FromCategory(Category category)
+    public static ManagementCategoryReadModel FromCategory(Category category)
     {
-        return new CategoryReadModel
+        return new ManagementCategoryReadModel
         {
             Id = category.Id,
             Name = category.Name,

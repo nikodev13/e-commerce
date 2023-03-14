@@ -16,18 +16,18 @@ public static class ProductEndpoints
         const string groupName = "Products Management";
         
         endpoints.MapGet("api/management/products", GetPaginated)
-            .Produces<List<ProductReadModel>>()
+            .Produces<List<ManagementProductReadModel>>()
             .WithTags(groupName);
             // .RequireAuthorization(AuthorizationPolicy.Admin);
         
         endpoints.MapGet("api/management/products/{id:long}", GetById)
-            .Produces<ProductReadModel>()
+            .Produces<ManagementProductReadModel>()
             .Produces(StatusCodes.Status404NotFound)
             .WithTags(groupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
 
         endpoints.MapPost("api/management/products", Create)
-            .Produces<ProductReadModel>(StatusCodes.Status201Created)
+            .Produces<ManagementProductReadModel>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .WithTags(groupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
@@ -51,11 +51,11 @@ public static class ProductEndpoints
     }
 
     private static async ValueTask<IResult> GetPaginated(
-        [AsParameters] GetPaginatedProductsRequest request,
-        [FromServices] IQueryHandler<GetPaginatedProductsQuery, PaginatedList<ProductReadModel>> handler,
+        [AsParameters] GetPaginatedManagementProductsRequest request,
+        [FromServices] IQueryHandler<GetPaginatedManagementProductsQuery, PaginatedList<ManagementProductReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(new GetPaginatedProductsQuery
+        var result = await handler.HandleAsync(new GetPaginatedManagementProductsQuery
         {
             PageSize = 1,
             PageNumber = 1,
@@ -68,7 +68,7 @@ public static class ProductEndpoints
     
     private static async ValueTask<IResult> GetById(
         [FromRoute] long id,
-        [FromServices] IQueryHandler<GetProductByIdQuery, ProductReadModel> handler, 
+        [FromServices] IQueryHandler<GetProductByIdQuery, ManagementProductReadModel> handler, 
         CancellationToken cancellationToken)
     {
         var result = await handler.HandleAsync(

@@ -1,32 +1,34 @@
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using ECommerce.ApplicationCore.Entities;
+using ECommerce.ApplicationCore.Features.Customers.Products.ReadModels;
 using ECommerce.ApplicationCore.Shared.Abstractions;
 using ECommerce.ApplicationCore.Shared.Constants;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using ECommerce.ApplicationCore.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.ApplicationCore.Features.Management.Products.Queries;
+namespace ECommerce.ApplicationCore.Features.Customers.Products.Queries;
 
-public class GetPaginatedManagementProductsQuery : IQuery<PaginatedList<ManagementProductReadModel>>
+public class GetPaginatedCustomerProductsQuery : IQuery<PaginatedList<CustomerProductReadModel>>
 {
     public required int PageSize { get; set; } = 1;
     public required int PageNumber { get; set; } = 25;
-    public required string? SearchPhrase { get; init; }
-    public required string? SortBy { get; init; }
-    public required SortDirection? SortDirection { get; init; }
+    public string? SearchPhrase { get; init; }
+    public string? SortBy { get; init; }
+    public SortDirection? SortDirection { get; init; }
 }
 
-public class GetPaginatedManagementProductsQueryHandler : IQueryHandler<GetPaginatedManagementProductsQuery, PaginatedList<ManagementProductReadModel>>
+public class GetPaginatedCustomerProductsQueryHandler
+    : IQueryHandler<GetPaginatedCustomerProductsQuery, PaginatedList<CustomerProductReadModel>>
 {
     private readonly IAppDbContext _dbContext;
 
-    public GetPaginatedManagementProductsQueryHandler(IAppDbContext dbContext)
+    public GetPaginatedCustomerProductsQueryHandler(IAppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
     
-    public async ValueTask<PaginatedList<ManagementProductReadModel>> HandleAsync(GetPaginatedManagementProductsQuery query, CancellationToken cancellationToken)
+    public async ValueTask<PaginatedList<CustomerProductReadModel>> HandleAsync(GetPaginatedCustomerProductsQuery query, CancellationToken cancellationToken)
     {
         var queryBase = _dbContext.Products
             .Include(x => x.Category).AsQueryable();
@@ -34,7 +36,7 @@ public class GetPaginatedManagementProductsQueryHandler : IQueryHandler<GetPagin
         if (!string.IsNullOrWhiteSpace(query.SearchPhrase))
         {
             queryBase = queryBase.Where(x => x.Name.Contains(query.SearchPhrase)
-                                     || x.Category.Name.Contains(query.SearchPhrase));
+                                             || x.Category.Name.Contains(query.SearchPhrase));
         }
 
         if (!string.IsNullOrWhiteSpace(query.SortBy))
@@ -55,12 +57,12 @@ public class GetPaginatedManagementProductsQueryHandler : IQueryHandler<GetPagin
         
         var result = await queryBase.Skip(query.PageSize * query.PageNumber)
             .Take(query.PageSize)
-            .Select(x => ManagementProductReadModel.From(x))
+            .Select(x => CustomerProductReadModel.From(x))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         var totalItems = await _dbContext.Products.CountAsync(cancellationToken);
 
-        return new PaginatedList<ManagementProductReadModel>(result, query.PageSize, query.PageNumber, totalItems);
+        return new PaginatedList<CustomerProductReadModel>(result, query.PageSize, query.PageNumber, totalItems);
     }
 }
