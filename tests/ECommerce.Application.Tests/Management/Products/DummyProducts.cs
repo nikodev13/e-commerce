@@ -21,7 +21,7 @@ public static class DummyProducts
                 Description = "Where's GTA VI ?",
                 CategoryId = DummyCategories.Data[0].Id,
                 Price = 300,
-                InStockQuantity = 0,
+                InStockQuantity = 10,
                 IsActive = false,
                 CreatedBy = Guid.Parse("3DBD0163-906C-4413-8D48-23AEAC703B26"),
                 CreatedAt = DateTime.Now,

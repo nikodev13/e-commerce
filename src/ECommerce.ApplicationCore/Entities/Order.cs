@@ -17,6 +17,7 @@ public class OrderLine
     public required long ProductId { get; init; }
     public Product Product { get; init; } = default!;
     public required uint Amount { get; set; }
+    public required decimal Cost { get; set; }
 }
 
 public class DeliveryAddress

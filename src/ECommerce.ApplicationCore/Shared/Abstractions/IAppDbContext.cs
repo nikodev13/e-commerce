@@ -8,8 +8,8 @@ public interface IAppDbContext
     DbSet<CustomerAccount> CustomersAccounts { get; }
     DbSet<Address> Addresses { get; }
     DbSet<Order> Orders { get; }
+    DbSet<OrderLine> OrderLines { get; }
 
-    
     DbSet<Category> Categories { get; }
     DbSet<Product> Products { get; }
     

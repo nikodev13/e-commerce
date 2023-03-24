@@ -4,18 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerce.Infrastructure.Persistence.Configurations;
 
-public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
+public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>, IEntityTypeConfiguration<OrderLine>
 {
     public void Configure(EntityTypeBuilder<Order> orders)
     {
         orders.HasKey(x => x.Id);
-        orders.OwnsOne(x => x.DeliveryAddress, addresses =>
-        {
-        });
+        orders.Property(x => x.Id).ValueGeneratedNever();
+        orders.OwnsOne(x => x.DeliveryAddress);
+    }
 
-        orders.OwnsMany(x => x.OrderLines, orderLines =>
-        {
-            orderLines.HasKey(x => x.OrderId);
-        });
+
+    public void Configure(EntityTypeBuilder<OrderLine> orderLines)
+    {
+        orderLines.ToTable("OrderLines");
+        orderLines.HasKey(x => new { x.OrderId, x.ProductId });
+        orderLines.Property(x => x.Amount);
     }
 }

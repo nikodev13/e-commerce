@@ -147,10 +147,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -279,30 +276,22 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.OwnsMany("ECommerce.ApplicationCore.Entities.OrderLine", "OrderLines", b1 =>
                         {
                             b1.Property<long>("OrderId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("OrderId"));
-
-                            b1.Property<long>("Amount")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("OrderId1")
                                 .HasColumnType("bigint");
 
                             b1.Property<long>("ProductId")
                                 .HasColumnType("bigint");
 
-                            b1.HasKey("OrderId");
+                            b1.Property<long>("Amount")
+                                .HasColumnType("bigint");
 
-                            b1.HasIndex("OrderId1");
+                            b1.HasKey("OrderId", "ProductId");
 
                             b1.HasIndex("ProductId");
 
                             b1.ToTable("OrderLine");
 
                             b1.WithOwner("Order")
-                                .HasForeignKey("OrderId1");
+                                .HasForeignKey("OrderId");
 
                             b1.HasOne("ECommerce.ApplicationCore.Entities.Product", "Product")
                                 .WithMany()

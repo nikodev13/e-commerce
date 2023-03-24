@@ -5,6 +5,7 @@ using ECommerce.ApplicationCore.Shared.CQRS;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace ECommerce.ApplicationCore.Features.Customers.Orders.Commands;
 
@@ -12,19 +13,9 @@ public class PlaceOrderCommand : ICommand<long>
 {
     public required List<OrderLine> OrderLines { get; init; }
     public required Address DeliveryAddress { get; init; }
-    
-    public class OrderLine
-    {
-        public required long ProductId { get; init; }
-        public required uint Amount { get; init; }
-    }
-    
-    public class Address
-    {
-        public required string Street { get; init; }
-        public required string PostalCode { get; init; }
-        public required string City { get; init; }
-    }
+
+    public record OrderLine(long ProductId, uint Amount);
+    public record Address(string Street, string PostalCode, string City);
 }
 
 public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
@@ -55,26 +46,34 @@ public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
             .Where(x => productIds.Contains(x.Id))
             .ToListAsync(cancellationToken);
 
-        // check quantities
+        var orderId = _idProvider.GenerateId();
+        var orderLines = new List<OrderLine>(10);
+        // build order lines
         foreach (var product in products)
         {
-            var orderLine = command.OrderLines.First(x => x.ProductId == product.Id);
-            if (product.InStockQuantity < orderLine.Amount) 
+            // check quantities
+            var commandOrderLine = command.OrderLines.First(x => x.ProductId == product.Id);
+            if (product.InStockQuantity < commandOrderLine.Amount) 
                 throw new ProductOutOfStockException(product.Id, product.InStockQuantity);
-        }
-        
-        // debit stock
-        foreach (var product in products)
-        {
-            var orderLine = command.OrderLines.First(x => x.ProductId == product.Id);
-            product.InStockQuantity -= orderLine.Amount;
+            
+            // create domain order line
+            var orderLine = new OrderLine
+            {
+                OrderId = orderId,
+                ProductId = product.Id,
+                Amount = commandOrderLine.Amount,
+                Cost = product.Price
+            };
+
+            // debit stock
+            product.InStockQuantity -= commandOrderLine.Amount;
         }
         await _appDbContext.SaveChangesAsync(cancellationToken);
         
         // create order
         var order = new Order
         {
-            Id = _idProvider.GenerateId(),
+            Id = orderId,
             CustomerId = customerId,
             DeliveryAddress = new DeliveryAddress
             {
@@ -82,12 +81,7 @@ public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
                 PostalCode = command.DeliveryAddress.PostalCode,
                 City = command.DeliveryAddress.City
             },
-            OrderLines = command.OrderLines.Select(x => new OrderLine
-            {
-                OrderId = _idProvider.GenerateId(),
-                ProductId = x.ProductId,
-                Amount = x.Amount
-            }).ToList()
+            OrderLines = orderLines
         };
 
         await _appDbContext.Orders.AddAsync(order, cancellationToken);

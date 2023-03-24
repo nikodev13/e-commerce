@@ -135,8 +135,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DeliveryAddressStreet = table.Column<string>(name: "DeliveryAddress_Street", type: "nvarchar(max)", nullable: false),
                     DeliveryAddressPostalCode = table.Column<string>(name: "DeliveryAddress_PostalCode", type: "nvarchar(max)", nullable: false),
@@ -158,18 +157,16 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "OrderLine",
                 columns: table => new
                 {
-                    OrderId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId1 = table.Column<long>(type: "bigint", nullable: false),
+                    OrderId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Amount = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderLine", x => x.OrderId);
+                    table.PrimaryKey("PK_OrderLine", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_OrderLine_Orders_OrderId1",
-                        column: x => x.OrderId1,
+                        name: "FK_OrderLine_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -191,11 +188,6 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 table: "Categories",
                 column: "Name",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderLine_OrderId1",
-                table: "OrderLine",
-                column: "OrderId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderLine_ProductId",

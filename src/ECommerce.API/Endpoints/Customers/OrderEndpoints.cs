@@ -27,9 +27,7 @@ public static class OrderEndpoints
         return ValueTask.FromResult(Results.Ok(""));
     }
     
-    private static ValueTask<IResult> PlaceOrder(
-        
-    )
+    private static ValueTask<IResult> PlaceOrder()
     {
         return ValueTask.FromResult(Results.Ok(""));
     }

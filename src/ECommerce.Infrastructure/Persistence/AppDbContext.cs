@@ -11,6 +11,7 @@ public class AppDbContext : DbContext, IAppDbContext
     public DbSet<CustomerAccount> CustomersAccounts => Set<CustomerAccount>();
     public DbSet<Address> Addresses => Set<Address>();
     public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderLine> OrderLines => Set<OrderLine>();
 
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Product> Products => Set<Product>();

@@ -33,9 +33,4 @@
       <ProjectReference Include="..\..\src\ECommerce.Infrastructure\ECommerce.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Customers\Accounts" />
-      <Folder Include="Customers\Addresses" />
-    </ItemGroup>
-
 </Project>
