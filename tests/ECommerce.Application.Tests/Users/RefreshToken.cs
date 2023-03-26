@@ -19,11 +19,7 @@ public class RefreshToken
     public async Task RefreshToken_WithInvalidEmail_ThrowsInvalidRefreshTokenCredentialsException()
     {
         // arrange
-        var command = new RefreshTokenCommand
-        {
-            Email = "any_invalid@email.com",
-            RefreshToken = "any token"
-        };
+        var command = new RefreshTokenCommand("any_invalid@email.com", "any token");
 
         // act
         async Task<TokensReadModel> Action() => await _testing.ExecuteCommandAsync<RefreshTokenCommand, TokensReadModel>(command);
@@ -39,11 +35,7 @@ public class RefreshToken
     public async Task RefreshToken_WithInvalidRefreshToken_ThrowsInvalidRefreshTokenCredentialsException(string? refreshToken)
     {
         // arrange
-        var command = new RefreshTokenCommand
-        {
-            Email = DummyUsers.Data[0].Email,
-            RefreshToken = refreshToken!
-        };
+        var command = new RefreshTokenCommand(DummyUsers.Data[0].Email, refreshToken!);
 
         // act
         async Task<TokensReadModel> Action() => await _testing.ExecuteCommandAsync<RefreshTokenCommand, TokensReadModel>(command);
@@ -60,12 +52,8 @@ public class RefreshToken
         var user = await db.Users.FirstAsync(x => x.Email == DummyUsers.Data[0].Email);
         user.RefreshToken = "any refresh token";
         await db.SaveChangesAsync(default);
-        
-        var command = new RefreshTokenCommand
-        {
-            Email = user.Email,
-            RefreshToken = user.RefreshToken
-        };
+
+        var command = new RefreshTokenCommand(user.Email, user.RefreshToken);
 
         // act
         var result = await _testing.ExecuteCommandAsync<RefreshTokenCommand, TokensReadModel>(command);

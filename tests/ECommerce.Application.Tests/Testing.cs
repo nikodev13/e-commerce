@@ -1,5 +1,6 @@
-﻿using ECommerce.Application.Tests.Management.Categories;
-using ECommerce.Application.Tests.Management.Products;
+﻿using ECommerce.Application.Tests.Categories;
+using ECommerce.Application.Tests.Customers;
+using ECommerce.Application.Tests.Products;
 using ECommerce.Application.Tests.Users;
 using ECommerce.Application.Tests.Utilities;
 using ECommerce.ApplicationCore.Shared.Abstractions;
@@ -59,6 +60,7 @@ public class Testing : IDisposable, IAsyncLifetime
     {
         var usersDbContext = GetAppDbContext();
         usersDbContext.Users.AddRange(DummyUsers.Data);
+        usersDbContext.CustomersAccounts.AddRange(DummyCustomersAccounts.Data);
         usersDbContext.Categories.AddRange(DummyCategories.Data);
         usersDbContext.Products.AddRange(DummyProducts.Data);
         await usersDbContext.SaveChangesAsync(CancellationToken.None);
@@ -68,6 +70,7 @@ public class Testing : IDisposable, IAsyncLifetime
     {
         var usersDbContext = GetAppDbContext();
         usersDbContext.Users.RemoveRange(DummyUsers.Data);
+        usersDbContext.CustomersAccounts.RemoveRange(DummyCustomersAccounts.Data);
         usersDbContext.Categories.RemoveRange(DummyCategories.Data);
         usersDbContext.Products.RemoveRange(DummyProducts.Data);
         await usersDbContext.SaveChangesAsync(CancellationToken.None);

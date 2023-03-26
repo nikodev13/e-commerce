@@ -8,11 +8,11 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>, IEn
 {
     public void Configure(EntityTypeBuilder<Order> orders)
     {
+        orders.ToTable("Orders");
         orders.HasKey(x => x.Id);
         orders.Property(x => x.Id).ValueGeneratedNever();
         orders.OwnsOne(x => x.DeliveryAddress);
     }
-
 
     public void Configure(EntityTypeBuilder<OrderLine> orderLines)
     {

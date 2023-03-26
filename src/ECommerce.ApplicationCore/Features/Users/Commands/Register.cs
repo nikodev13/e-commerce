@@ -7,13 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Users.Commands;
 
-public sealed class RegisterUserCommand : ICommand
-{
-    public required string Email { get; init; }
-    public required string Password { get; init; }
-}
+public record RegisterUserCommand(string Email, string Password) : ICommand;
 
-public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand> 
+internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand> 
 {
     private readonly IAppDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
@@ -44,7 +40,7 @@ public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCom
     }
 }
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
 {
     public RegisterUserCommandValidator()
     {

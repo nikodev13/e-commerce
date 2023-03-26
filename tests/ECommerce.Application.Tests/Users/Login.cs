@@ -22,11 +22,7 @@ public class Login
         // arrange 
         var db = _testing.GetAppDbContext();
         var user = await db.Users.FirstAsync(x => x.Email == DummyUsers.Data[0].Email);
-        var command = new LoginUserCommand
-        {
-            Email = user.Email,
-            Password = "password1"
-        };
+        var command = new LoginUserCommand(user.Email, "password1");
 
         // act
         var result = await _testing.ExecuteCommandAsync<LoginUserCommand, TokensReadModel>(command);
@@ -43,11 +39,7 @@ public class Login
         // arrange 
         var user = DummyUsers.Data[0];
         FakeUserContextProvider.CurrentUserId = user.Id;
-        var command = new LoginUserCommand
-        {
-            Email = user.Email,
-            Password = "password1"
-        };
+        var command = new LoginUserCommand(user.Email, "password1");
 
         // act
         async Task<TokensReadModel> Action() => await _testing.ExecuteCommandAsync<LoginUserCommand, TokensReadModel>(command);
@@ -64,11 +56,7 @@ public class Login
     {
         // arrange 
         var user = DummyUsers.Data[0];
-        var command = new LoginUserCommand
-        {
-            Email = user.Email,
-            Password = "password2"
-        };
+        var command = new LoginUserCommand(user.Email, "password2");
 
         // act
         async Task<TokensReadModel> Action() => await _testing.ExecuteCommandAsync<LoginUserCommand, TokensReadModel>(command);

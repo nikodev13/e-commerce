@@ -19,11 +19,7 @@ public class Register
     {
         // arrange
         var db = _testing.GetAppDbContext();
-        var command = new RegisterUserCommand
-        {
-            Email = "unique@email.com",
-            Password = "password1"
-        };
+        var command = new RegisterUserCommand("unique@email.com", "password1");
 
         // act
         await _testing.ExecuteCommandAsync(command);
@@ -40,12 +36,7 @@ public class Register
     public async Task UserRegister_WithEmailThatAlreadyExists_ThrowsBadRequest()
     {
         // arrange
-        var db = _testing.GetAppDbContext();
-        var command = new RegisterUserCommand
-        {
-            Email = (await db.Users.FirstAsync()).Email,
-            Password = "password1"
-        };
+        var command = new RegisterUserCommand(DummyUsers.Data[0].Email, "password1");
 
         // act
         async Task Action() => await _testing.ExecuteCommandAsync(command);

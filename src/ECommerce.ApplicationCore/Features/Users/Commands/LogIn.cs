@@ -7,23 +7,19 @@ using IUserContextProvider = ECommerce.ApplicationCore.Shared.Abstractions.IUser
 
 namespace ECommerce.ApplicationCore.Features.Users.Commands;
 
-public sealed class LoginUserCommand : ICommand<TokensReadModel>
-{
-    public required string Email { get; init; }
-    public required string Password { get; init; }
-}
+public record LoginUserCommand(string Email, string Password) : ICommand<TokensReadModel>;
 
-public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
+internal sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensReadModel>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IPasswordHasher _passwordHasher;
     private readonly ITokenProvider _tokenProvider;
-    private readonly Shared.Abstractions.IUserContextProvider _userContextProvider;
+    private readonly IUserContextProvider _userContextProvider;
 
     public LoginUserCommandHandler(IAppDbContext dbContext,
         IPasswordHasher passwordHasher,
         ITokenProvider tokenProvider,
-        Shared.Abstractions.IUserContextProvider userContextProvider)
+        IUserContextProvider userContextProvider)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
@@ -44,16 +40,12 @@ public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, TokensR
         user.RefreshToken = refreshToken;
         
         await _dbContext.SaveChangesAsync(cancellationToken);
-        
-        return new TokensReadModel()
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken
-        };
+
+        return new TokensReadModel(accessToken, refreshToken);
     }
 }
 
-public sealed class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
+internal sealed class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {
     public LoginUserCommandValidator()
     {

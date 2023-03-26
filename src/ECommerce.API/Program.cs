@@ -1,8 +1,5 @@
 using ECommerce.API.Configuration;
 using ECommerce.API.Endpoints;
-using ECommerce.API.Endpoints.Customers;
-using ECommerce.API.Endpoints.Management;
-using ECommerce.API.Endpoints.Users;
 using ECommerce.API.Middleware;
 using ECommerce.ApplicationCore;
 using ECommerce.ApplicationCore.Shared.Abstractions;
@@ -26,6 +23,8 @@ builder.Services.ConfigureApplicationServices()
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
@@ -35,16 +34,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
-
-app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseAuthorization();
 
 app.RegisterUserEndpoints();
+
+app.RegisterProductsEndpoints();
+app.RegisterCategoriesEndpoints();
+
+app.RegisterOrderEndpoints();
 app.RegisterCustomerAccountEndpoints();
-app.RegisterCustomerAddressEndpoints();
-app.RegisterCategoryEndpoints();
-app.RegisterProductEndpoints();
 
 app.Run();
 

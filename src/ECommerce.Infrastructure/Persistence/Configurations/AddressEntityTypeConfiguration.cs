@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerce.Infrastructure.Persistence.Configurations;
 
-public class AddressEntityTypeConfiguration : IEntityTypeConfiguration<Address>
+public class AddressEntityTypeConfiguration : IEntityTypeConfiguration<CustomerAddress>
 {
-    public void Configure(EntityTypeBuilder<Address> addresses)
+    public void Configure(EntityTypeBuilder<CustomerAddress> addresses)
     {
         addresses.ToTable("CustomerAddresses");
 

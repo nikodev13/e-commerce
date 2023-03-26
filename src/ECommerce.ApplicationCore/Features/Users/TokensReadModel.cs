@@ -1,7 +1,3 @@
 namespace ECommerce.ApplicationCore.Features.Users;
 
-public class TokensReadModel
-{
-    public required string AccessToken { get; init; }
-    public required string RefreshToken { get; init; }
-}
+public record TokensReadModel(string AccessToken, string RefreshToken);

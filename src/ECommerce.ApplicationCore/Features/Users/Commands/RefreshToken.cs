@@ -6,13 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Users.Commands;
 
-public class RefreshTokenCommand : ICommand<TokensReadModel>
-{
-    public required string Email { get; init; }
-    public required string RefreshToken { get; init; }
-}
+public record RefreshTokenCommand(string Email, string RefreshToken) : ICommand<TokensReadModel>;
 
-public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, TokensReadModel>
+internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, TokensReadModel>
 {
     private readonly IAppDbContext _dbContext;
     private readonly ITokenProvider _tokenProvider;
@@ -25,24 +21,22 @@ public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, T
     
     public async ValueTask<TokensReadModel> HandleAsync(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == request.Email.ToLower(), cancellationToken);
-        if (user?.RefreshToken is null || user.RefreshToken != request.RefreshToken) throw new InvalidRefreshTokenCredentialsException();
+        var (email, refreshToken) = request; 
+        
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email.ToLower(), cancellationToken);
+        if (user?.RefreshToken is null || user.RefreshToken != refreshToken) throw new InvalidRefreshTokenCredentialsException();
 
-        var accessToken = _tokenProvider.GenerateAccessToken(user);
-        var refreshToken = _tokenProvider.GenerateRefreshToken();
+        var newAccessToken = _tokenProvider.GenerateAccessToken(user);
+        var newRefreshToken = _tokenProvider.GenerateRefreshToken();
 
-        user.RefreshToken = refreshToken;
+        user.RefreshToken = newRefreshToken;
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return new TokensReadModel()
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken
-        };
+        return new TokensReadModel(newAccessToken, newRefreshToken);
     }
 }
 
-public class RefreshTokenValidator : AbstractValidator<RefreshTokenCommand>
+internal sealed class RefreshTokenValidator : AbstractValidator<RefreshTokenCommand>
 {
     public RefreshTokenValidator()
     {

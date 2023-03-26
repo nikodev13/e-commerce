@@ -159,7 +159,28 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.OrderLine", b =>
+                {
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderLines", (string)null);
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Product", b =>
@@ -273,43 +294,29 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.OwnsMany("ECommerce.ApplicationCore.Entities.OrderLine", "OrderLines", b1 =>
-                        {
-                            b1.Property<long>("OrderId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("Amount")
-                                .HasColumnType("bigint");
-
-                            b1.HasKey("OrderId", "ProductId");
-
-                            b1.HasIndex("ProductId");
-
-                            b1.ToTable("OrderLine");
-
-                            b1.WithOwner("Order")
-                                .HasForeignKey("OrderId");
-
-                            b1.HasOne("ECommerce.ApplicationCore.Entities.Product", "Product")
-                                .WithMany()
-                                .HasForeignKey("ProductId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.Navigation("Order");
-
-                            b1.Navigation("Product");
-                        });
-
                     b.Navigation("Customer");
 
                     b.Navigation("DeliveryAddress")
                         .IsRequired();
+                });
 
-                    b.Navigation("OrderLines");
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.OrderLine", b =>
+                {
+                    b.HasOne("ECommerce.ApplicationCore.Entities.Order", "Order")
+                        .WithMany("OrderLines")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECommerce.ApplicationCore.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Product", b =>
@@ -326,6 +333,11 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Basket", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>
+                {
+                    b.Navigation("OrderLines");
                 });
 #pragma warning restore 612, 618
         }
