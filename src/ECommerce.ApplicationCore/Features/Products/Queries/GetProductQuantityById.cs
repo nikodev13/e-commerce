@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Products.Queries;
 
-public record GetProductQuantityByIdQuery(long Id) : IQuery<ProductQuantityReadModel>;
+public record GetProductQuantityQuery(long Id) : IQuery<ProductQuantityReadModel>;
 
-public class GetProductQuantityByIdQueryHandler : IQueryHandler<GetProductQuantityByIdQuery, ProductQuantityReadModel>
+public class GetProductQuantityQueryHandler : IQueryHandler<GetProductQuantityQuery, ProductQuantityReadModel>
 {
     private readonly IAppDbContext _dbContext;
 
-    public GetProductQuantityByIdQueryHandler(IAppDbContext dbContext)
+    public GetProductQuantityQueryHandler(IAppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
     
-    public async ValueTask<ProductQuantityReadModel> HandleAsync(GetProductQuantityByIdQuery query, CancellationToken cancellationToken)
+    public async ValueTask<ProductQuantityReadModel> HandleAsync(GetProductQuantityQuery query, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
             .Select(x => new ProductQuantityReadModel(x.Id, x.InStockQuantity))

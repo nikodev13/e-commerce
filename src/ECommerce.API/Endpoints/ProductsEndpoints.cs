@@ -22,10 +22,16 @@ public static class ProductsEndpoints
         endpoints.MapGet("api/products/{id}", GetById)
             .WithTags(groupName);
         
-        endpoints.MapGet("api/products/{id}/quantity", GetProductQuantityById)
+        endpoints.MapGet("api/products/{id}/quantity", GetProductQuantity)
             .WithTags(groupName);
 
         const string managementGroupName = "Products Management";
+        endpoints.MapGet("api/products/{id:long}", GetProductHistoryData)
+            .Produces<ProductHistoryReadModel>()
+            .Produces(StatusCodes.Status404NotFound)
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+        
         endpoints.MapPost("api/products", Create)
             .Produces<ProductReadModel>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
@@ -69,12 +75,21 @@ public static class ProductsEndpoints
         return Results.Ok(readModel);
     }
 
-    private static async ValueTask<IResult> GetProductQuantityById(
+    private static async ValueTask<IResult> GetProductQuantity(
         [FromRoute] long id,
-        [FromServices] IQueryHandler<GetProductQuantityByIdQuery, ProductQuantityReadModel> handler,
+        [FromServices] IQueryHandler<GetProductQuantityQuery, ProductQuantityReadModel> handler,
         CancellationToken cancellationToken)
     {
-        var readModel = await handler.HandleAsync(new GetProductQuantityByIdQuery(id), cancellationToken);
+        var readModel = await handler.HandleAsync(new GetProductQuantityQuery(id), cancellationToken);
+        return Results.Ok(readModel);
+    }
+    
+    private static async ValueTask<IResult> GetProductHistoryData(
+        [FromRoute] long id,
+        [FromServices] IQueryHandler<GetProductHistoryDataQuery, ProductHistoryReadModel> handler,
+        CancellationToken cancellationToken)
+    {
+        var readModel = await handler.HandleAsync(new GetProductHistoryDataQuery(id), cancellationToken);
         return Results.Ok(readModel);
     }
     

@@ -18,7 +18,13 @@ public static class CategoriesEndpoints
             .WithTags(groupName);
 
         const string managementGroupName = "Categories Management";
-        
+
+        endpoints.MapGet("api/categories/{id:long}", GetCategoryHistoryData)
+            .Produces<CategoryHistoryReadModel>()
+            .Produces(StatusCodes.Status404NotFound)
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+
         endpoints.MapPost("api/categories", Create)
             .Produces<CategoryReadModel>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status409Conflict)
@@ -47,6 +53,16 @@ public static class CategoriesEndpoints
 
     {
         var readModels = await handler.HandleAsync(new GetAllCategoriesQuery(), cancellationToken);
+        return Results.Ok(readModels);
+    }
+    
+    private static async ValueTask<IResult> GetCategoryHistoryData(
+        [FromRoute] long id,
+        [FromServices] IQueryHandler<GetCategoryHistoryDataQuery, CategoryHistoryReadModel> handler,
+        CancellationToken cancellationToken)
+
+    {
+        var readModels = await handler.HandleAsync(new GetCategoryHistoryDataQuery(id), cancellationToken);
         return Results.Ok(readModels);
     }
     
