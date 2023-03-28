@@ -13,7 +13,7 @@ public class PlaceOrderCommand : ICommand<long>
     public required List<OrderLine> OrderLines { get; init; }
     public required Address DeliveryAddress { get; init; }
 
-    public record OrderLine(long ProductId, uint Amount);
+    public record OrderLine(long ProductId, uint Quantity);
 
     public record Address(string Street, string PostalCode, string City);
 }
@@ -48,12 +48,13 @@ public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
 
         var orderId = _idProvider.GenerateId();
         var orderLines = new List<OrderLine>(10);
+        decimal totalCost = 0;
         // build order lines
         foreach (var product in products)
         {
             // check quantities
             var commandOrderLine = command.OrderLines.First(x => x.ProductId == product.Id);
-            if (product.InStockQuantity < commandOrderLine.Amount) 
+            if (product.InStockQuantity < commandOrderLine.Quantity) 
                 throw new ProductOutOfStockException(product.Id, product.InStockQuantity);
             
             // create domain order line
@@ -61,26 +62,33 @@ public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
             {
                 OrderId = orderId,
                 ProductId = product.Id,
-                Amount = commandOrderLine.Amount,
+                Quantity = commandOrderLine.Quantity,
                 UnitPrice = product.Price
             });
 
+            totalCost += decimal.Round(commandOrderLine.Quantity * product.Price,2);
+
             // debit stock
-            product.InStockQuantity -= commandOrderLine.Amount;
+            product.InStockQuantity -= commandOrderLine.Quantity;
         }
+        
+        // create Payment
+        var payment = Payment.Create(PaymentType.DotPay, totalCost);
         
         // create order
         var order = new Order
         {
             Id = orderId,
             CustomerId = customerId,
+            PaymentId = payment.Id,
+            Payment = payment,
             DeliveryAddress = new DeliveryAddress
             {
                 Street = command.DeliveryAddress.Street,
                 PostalCode = command.DeliveryAddress.PostalCode,
                 City = command.DeliveryAddress.City
             },
-            OrderLines = orderLines
+            OrderLines = orderLines,
         };
 
         await _appDbContext.Orders.AddAsync(order, cancellationToken);
@@ -109,7 +117,7 @@ public class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
         public OrderLineValidator()
         {
             RuleFor(x => x.ProductId).NotEmpty();
-            RuleFor(x => x.Amount).NotEmpty().GreaterThan(0u);
+            RuleFor(x => x.Quantity).NotEmpty().GreaterThan(0u);
         }
     }
     

@@ -18,6 +18,6 @@ public class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>, IEn
     {
         orderLines.ToTable("OrderLines");
         orderLines.HasKey(x => new { x.OrderId, x.ProductId });
-        orderLines.Property(x => x.Amount);
+        orderLines.Property(x => x.Quantity);
     }
 }

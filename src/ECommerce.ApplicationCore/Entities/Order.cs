@@ -6,6 +6,8 @@ public class Order
     public required Guid CustomerId { get; init; }
     public CustomerAccount Customer { get; init; } = default!;
     public required DeliveryAddress DeliveryAddress { get; init; }
+    public required Guid PaymentId { get; init; }
+    public Payment Payment { get; init; } = default!;
     public required List<OrderLine> OrderLines { get; init; }
     public OrderStatus Status { get; set; } = OrderStatus.Placed;
 }
@@ -13,10 +15,9 @@ public class Order
 public class OrderLine
 {
     public required long OrderId { get; init; }
-    public Order Order { get; init; } = default!;
     public required long ProductId { get; init; }
     public Product Product { get; init; } = default!;
-    public required uint Amount { get; set; }
+    public required uint Quantity { get; set; }
     public required decimal UnitPrice { get; set; }
 }
 
