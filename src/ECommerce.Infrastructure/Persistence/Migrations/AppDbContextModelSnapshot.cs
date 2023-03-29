@@ -22,34 +22,6 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Address", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id", "CustomerId");
-
-                    b.ToTable("CustomerAddresses", (string)null);
-                });
-
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Basket", b =>
                 {
                     b.Property<Guid>("CustomerId")
@@ -144,6 +116,39 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.ToTable("CustomerAccounts", (string)null);
                 });
 
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAddress", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("CustomerAccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id", "CustomerId");
+
+                    b.HasIndex("CustomerAccountId");
+
+                    b.ToTable("CustomerAddresses", (string)null);
+                });
+
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -152,12 +157,18 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
 
                     b.ToTable("Orders", (string)null);
                 });
@@ -170,7 +181,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("Amount")
+                    b.Property<long>("Quantity")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("UnitPrice")
@@ -181,6 +192,27 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderLines", (string)null);
+                });
+
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Value")
+                        .HasPrecision(19, 4)
+                        .HasColumnType("decimal(19,4)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Product", b =>
@@ -261,11 +293,24 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .HasForeignKey("BasketCustomerId");
                 });
 
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAddress", b =>
+                {
+                    b.HasOne("ECommerce.ApplicationCore.Entities.CustomerAccount", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerAccountId");
+                });
+
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>
                 {
                     b.HasOne("ECommerce.ApplicationCore.Entities.CustomerAccount", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECommerce.ApplicationCore.Entities.Payment", "Payment")
+                        .WithOne()
+                        .HasForeignKey("ECommerce.ApplicationCore.Entities.Order", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -298,11 +343,13 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
                     b.Navigation("DeliveryAddress")
                         .IsRequired();
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.OrderLine", b =>
                 {
-                    b.HasOne("ECommerce.ApplicationCore.Entities.Order", "Order")
+                    b.HasOne("ECommerce.ApplicationCore.Entities.Order", null)
                         .WithMany("OrderLines")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -313,8 +360,6 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -333,6 +378,11 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Basket", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAccount", b =>
+                {
+                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>

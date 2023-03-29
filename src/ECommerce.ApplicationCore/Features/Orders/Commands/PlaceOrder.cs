@@ -8,13 +8,10 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.ApplicationCore.Features.Orders.Commands;
 
-public class PlaceOrderCommand : ICommand<long>
+public record PlaceOrderCommand(List<PlaceOrderCommand.OrderLine> OrderLines, PlaceOrderCommand.Address DeliveryAddress) 
+    : ICommand<long>
 {
-    public required List<OrderLine> OrderLines { get; init; }
-    public required Address DeliveryAddress { get; init; }
-
     public record OrderLine(long ProductId, uint Quantity);
-
     public record Address(string Street, string PostalCode, string City);
 }
 

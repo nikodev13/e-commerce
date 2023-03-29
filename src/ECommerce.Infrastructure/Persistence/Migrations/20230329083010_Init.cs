@@ -55,18 +55,17 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerAddresses",
+                name: "Payment",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(19,4)", precision: 19, scale: 4, nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAddresses", x => new { x.Id, x.CustomerId });
+                    table.PrimaryKey("PK_Payment", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,6 +131,27 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CustomerAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CustomerAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerAddresses", x => new { x.Id, x.CustomerId });
+                    table.ForeignKey(
+                        name: "FK_CustomerAddresses_CustomerAccounts_CustomerAccountId",
+                        column: x => x.CustomerAccountId,
+                        principalTable: "CustomerAccounts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -140,6 +160,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     DeliveryAddressStreet = table.Column<string>(name: "DeliveryAddress_Street", type: "nvarchar(max)", nullable: false),
                     DeliveryAddressPostalCode = table.Column<string>(name: "DeliveryAddress_PostalCode", type: "nvarchar(max)", nullable: false),
                     DeliveryAddressCity = table.Column<string>(name: "DeliveryAddress_City", type: "nvarchar(max)", nullable: false),
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -151,6 +172,12 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         principalTable: "CustomerAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Payment_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,7 +186,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 {
                     OrderId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
-                    Amount = table.Column<long>(type: "bigint", nullable: false),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -191,6 +218,11 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomerAddresses_CustomerAccountId",
+                table: "CustomerAddresses",
+                column: "CustomerAccountId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderLines_ProductId",
                 table: "OrderLines",
                 column: "ProductId");
@@ -199,6 +231,12 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "IX_Orders_CustomerId",
                 table: "Orders",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_PaymentId",
+                table: "Orders",
+                column: "PaymentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -238,6 +276,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "CustomerAccounts");
+
+            migrationBuilder.DropTable(
+                name: "Payment");
 
             migrationBuilder.DropTable(
                 name: "Categories");

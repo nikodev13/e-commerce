@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Orders.Commands;
 
-public record ChangeOrderLineQuantityQuery(long OrderId, long ProductId, uint NewQuantity) : ICommand;
+public record ChangeOrderLineQuantityCommand(long OrderId, long ProductId, uint NewQuantity) : ICommand;
 
-public class ChangeOrderLineQuantityQueryHandler : ICommandHandler<ChangeOrderLineQuantityQuery>
+public class ChangeOrderLineQuantityQueryHandler : ICommandHandler<ChangeOrderLineQuantityCommand>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -17,7 +17,7 @@ public class ChangeOrderLineQuantityQueryHandler : ICommandHandler<ChangeOrderLi
         _dbContext = dbContext;
     }
     
-    public async ValueTask HandleAsync(ChangeOrderLineQuantityQuery command, CancellationToken cancellationToken)
+    public async ValueTask HandleAsync(ChangeOrderLineQuantityCommand command, CancellationToken cancellationToken)
     {
         var (orderId, productId, newQuantity) = command;
 

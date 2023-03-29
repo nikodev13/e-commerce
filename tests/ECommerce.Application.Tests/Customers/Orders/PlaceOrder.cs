@@ -24,15 +24,11 @@ public class PlaceOrder
         FakeUserContextProvider.CurrentUserId = DummyUsers.Data[0].Id;
         var db = _testing.GetAppDbContext();
         var product = DummyProducts.Data[0];
-        var command = new PlaceOrderCommand
-        {
-            OrderLines = new List<PlaceOrderCommand.OrderLine>
+        var command = new PlaceOrderCommand(new List<PlaceOrderCommand.OrderLine>
             {
                 new(product.Id, 1)
             },
-            DeliveryAddress =
-                new PlaceOrderCommand.Address("any-street", "00-000", "Danzig")
-        };
+            new PlaceOrderCommand.Address("any-street", "00-000", "Danzig"));
         // act
         var lastProductQuantity = DummyProducts.Data[0].InStockQuantity;
         var result = await _testing.ExecuteCommandAsync<PlaceOrderCommand, long>(command);
