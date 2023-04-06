@@ -10,6 +10,9 @@ public class Order
     public Payment Payment { get; init; } = default!;
     public required List<OrderLine> OrderLines { get; init; }
     public OrderStatus Status { get; set; } = OrderStatus.Placed;
+    public DateTime PlacedAt { get; } = DateTime.Now;
+    public DateTime? SentAt { get; set; }
+    public Guid? OperatedBy { get; set; }
 }
 
 public class OrderLine
@@ -32,8 +35,9 @@ public enum OrderStatus
 {
     Placed = 0,
     WaitingForPayment = 1,
-    Canceled = 2,
+    Paid = 2,
     InRealization = 3,
     Sent = 4,
     Delivered = 5,
+    Canceled = 6,
 }

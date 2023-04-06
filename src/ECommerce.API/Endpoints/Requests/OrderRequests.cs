@@ -16,8 +16,18 @@ public record PlaceOrderRequest(List<PlaceOrderCommand.OrderLine> OrderLines, Pl
     public PlaceOrderCommand ToCommand() => this;
 }
 
-public record ChangeOrderLineQuantityRequest(long OrderId, long ProductId, uint NewQuantity)
-    : ChangeOrderLineQuantityCommand(OrderId, ProductId, NewQuantity)
+public record GetPaginatedOrdersOrdersInListForManagementRequest(int PageSize, int PageNumber, OrderStatus OrderStatus = OrderStatus.Paid)
+    : GetPaginatedOrdersInListForManagementQuery(PageSize, PageNumber, OrderStatus)
 {
-    public ChangeOrderLineQuantityCommand ToCommand() => this;
+    public GetPaginatedOrdersInListForManagementQuery ToQuery() => this;
+}
+
+public record ChangeOrderLineQuantityRequest(long ProductId, uint NewQuantity)
+{
+    public ChangeOrderLineQuantityCommand ToCommand(long orderId) => new(orderId, ProductId, NewQuantity);
+}
+
+public record SetOrderStatusRequestOrderStatus(OrderStatus OrderStatus)
+{
+    public SetOrderStatusCommand ToCommand(long orderId) => new(orderId, OrderStatus);
 }

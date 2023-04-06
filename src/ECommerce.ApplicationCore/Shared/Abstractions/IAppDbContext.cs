@@ -7,6 +7,7 @@ public interface IAppDbContext
 {
     DbSet<CustomerAccount> CustomersAccounts { get; }
     DbSet<CustomerAddress> Addresses { get; }
+    DbSet<WishlistProduct> WishlistProducts { get; }
     DbSet<Order> Orders { get; }
     DbSet<OrderLine> OrderLines { get; }
 
