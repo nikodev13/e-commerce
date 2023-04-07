@@ -1,4 +1,5 @@
 using System.Reflection;
+using ECommerce.ApplicationCore.Features.Users.Commands;
 using ECommerce.ApplicationCore.Shared;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using ECommerce.ApplicationCore.Shared.Abstractions;
@@ -11,10 +12,8 @@ public static class Extensions
 {
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
-        var assembly = Assembly.GetExecutingAssembly();
-
         services.ConfigureCqrs();
-        services.AddValidatorsFromAssembly(assembly);
+        services.AddValidatorsFromAssemblyContaining(typeof(Extensions), ServiceLifetime.Scoped, null, true);
         ValidatorOptions.Global.LanguageManager.Enabled = false;
         
         return services;
