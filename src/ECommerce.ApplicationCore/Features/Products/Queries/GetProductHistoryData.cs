@@ -8,7 +8,7 @@ namespace ECommerce.ApplicationCore.Features.Products.Queries;
 
 public record GetProductHistoryDataQuery(long Id) : IQuery<ProductHistoryReadModel>;
 
-public class GetProductHistoryDataQueryHandler : IQueryHandler<GetProductHistoryDataQuery, ProductHistoryReadModel>
+internal sealed class GetProductHistoryDataQueryHandler : IQueryHandler<GetProductHistoryDataQuery, ProductHistoryReadModel>
 {
     private readonly IAppDbContext _dbContext;
 

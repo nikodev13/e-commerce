@@ -7,19 +7,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Orders.Queries;
 
-public record GetPaginatedOrdersInListForManagementQuery(int PageSize, int PageNumber, OrderStatus OrderStatus = OrderStatus.Paid) 
+public record GetPaginatedOrdersForManagementQuery(int PageSize, int PageNumber, OrderStatus OrderStatus = OrderStatus.Paid) 
     : IQuery<PaginatedList<OrderInListReadModel>>;
 
-public class GetPaginatedInListForManagementQueryHandler : IQueryHandler<GetPaginatedOrdersInListForManagementQuery, PaginatedList<OrderInListReadModel>>
+internal sealed class GetPaginatedForManagementQueryHandler : IQueryHandler<GetPaginatedOrdersForManagementQuery, PaginatedList<OrderInListReadModel>>
 {
     private readonly IAppDbContext _dbContext;
 
-    public GetPaginatedInListForManagementQueryHandler(IAppDbContext dbContext)
+    public GetPaginatedForManagementQueryHandler(IAppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
     
-    public async ValueTask<PaginatedList<OrderInListReadModel>> HandleAsync(GetPaginatedOrdersInListForManagementQuery query, CancellationToken cancellationToken)
+    public async ValueTask<PaginatedList<OrderInListReadModel>> HandleAsync(GetPaginatedOrdersForManagementQuery query, CancellationToken cancellationToken)
     {
         var (pageSize, pageNumber, orderStatus) = query;
 

@@ -12,9 +12,9 @@ public static class Extensions
 {
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
-        services.ConfigureCqrs();
         services.AddValidatorsFromAssemblyContaining(typeof(Extensions), ServiceLifetime.Scoped, null, true);
         ValidatorOptions.Global.LanguageManager.Enabled = false;
+        services.ConfigureCqrs();
         
         return services;
     }

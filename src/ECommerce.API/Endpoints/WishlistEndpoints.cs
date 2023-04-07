@@ -1,4 +1,4 @@
-﻿using ECommerce.API.Endpoints.Requests;
+﻿using ECommerce.API.Endpoints.RequestBodies;
 using ECommerce.ApplicationCore.Features.Wishlist.Commands;
 using ECommerce.ApplicationCore.Features.Wishlist.Queries;
 using ECommerce.ApplicationCore.Features.Wishlist.ReadModels;
@@ -40,20 +40,20 @@ public static class WishlistEndpoints
     }
     
     private static async Task<IResult> AddProductToWishlist(
-        [FromBody] AddProductToWishlistRequest request,
+        [FromBody] AddProductToWishlistRequestBody requestBody,
         [FromServices] ICommandHandler<AddProductToWishlistCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(request, cancellationToken);
+        await handler.HandleAsync(requestBody, cancellationToken);
         return Results.NoContent();
     }
     
     private static async Task<IResult> RemoveProductFromWishlist(
-        [FromBody] RemoveProductFromWishlistRequest request,
+        [FromBody] RemoveProductFromWishlistRequestBody requestBody,
         [FromServices] ICommandHandler<RemoveProductFromWishlistCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(request, cancellationToken);
+        await handler.HandleAsync(requestBody, cancellationToken);
         return Results.NoContent();
     }
 }

@@ -4,7 +4,7 @@ public class Order
 {
     public required long Id { get; init; }
     public required Guid CustomerId { get; init; }
-    public CustomerAccount Customer { get; init; } = default!;
+    public Customer Customer { get; init; } = default!;
     public required DeliveryAddress DeliveryAddress { get; init; }
     public required Guid PaymentId { get; init; }
     public Payment Payment { get; init; } = default!;

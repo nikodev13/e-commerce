@@ -9,7 +9,7 @@ namespace ECommerce.ApplicationCore.Features.Wishlist.Commands;
 
 public record AddProductToWishlistCommand(long ProductId) : ICommand;
 
-public class AddProductToWishlistCommandHandler : ICommandHandler<AddProductToWishlistCommand>
+internal sealed class AddProductToWishlistCommandHandler : ICommandHandler<AddProductToWishlistCommand>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;

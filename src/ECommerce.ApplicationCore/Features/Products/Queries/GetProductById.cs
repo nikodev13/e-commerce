@@ -8,7 +8,7 @@ namespace ECommerce.ApplicationCore.Features.Products.Queries;
 
 public record GetProductByIdQuery(long Id) : IQuery<ProductReadModel>;
 
-public class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ProductReadModel>
+internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ProductReadModel>
 {
     private readonly IAppDbContext _dbContext;
 

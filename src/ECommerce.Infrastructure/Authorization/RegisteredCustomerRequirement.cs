@@ -22,7 +22,7 @@ public class RegisteredCustomerRequirementHandler : AuthorizationHandler<Registe
         var idClaim = context.User.FindFirst(JwtRegisteredClaimNames.Sub);
         if (idClaim is null || !Guid.TryParse(idClaim.Value, out var id)) return;
         
-        if (!await _dbContext.CustomersAccounts.AnyAsync(x => x.Id == id))
+        if (!await _dbContext.Customers.AnyAsync(x => x.Id == id))
             context.Fail(new AuthorizationFailureReason(this, "This action is only allowed to registered customers."));
     }
 }

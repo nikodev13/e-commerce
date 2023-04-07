@@ -8,8 +8,8 @@ namespace ECommerce.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext, IAppDbContext
 {
-    public DbSet<CustomerAccount> CustomersAccounts => Set<CustomerAccount>();
-    public DbSet<CustomerAddress> Addresses => Set<CustomerAddress>();
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Address> Addresses => Set<Address>();
     public DbSet<WishlistProduct> WishlistProducts => Set<WishlistProduct>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderLine> OrderLines => Set<OrderLine>();

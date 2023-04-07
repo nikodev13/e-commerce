@@ -1,6 +1,7 @@
 ﻿using ECommerce.ApplicationCore.Features.Users;
 using ECommerce.ApplicationCore.Features.Users.Commands;
 using ECommerce.ApplicationCore.Features.Users.Exceptions;
+using ECommerce.ApplicationCore.Features.Users.ReadModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Application.Tests.Users;

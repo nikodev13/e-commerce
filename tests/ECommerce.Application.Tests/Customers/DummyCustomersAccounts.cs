@@ -5,9 +5,9 @@ namespace ECommerce.Application.Tests.Customers;
 
 public static class DummyCustomersAccounts
 {
-    public static List<CustomerAccount> Data = new()
+    public static List<Customer> Data = new()
     {
-        new CustomerAccount
+        new Customer
         {
             Id = DummyUsers.Data[0].Id,
             FirstName = "John",

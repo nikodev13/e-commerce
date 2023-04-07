@@ -8,7 +8,7 @@ namespace ECommerce.ApplicationCore.Features.Wishlist.Commands;
 
 public record RemoveProductFromWishlistCommand(long ProductId) : ICommand;
 
-public class RemoveProductFromWishlistCommandHandler : ICommandHandler<RemoveProductFromWishlistCommand>
+internal sealed class RemoveProductFromWishlistCommandHandler : ICommandHandler<RemoveProductFromWishlistCommand>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;

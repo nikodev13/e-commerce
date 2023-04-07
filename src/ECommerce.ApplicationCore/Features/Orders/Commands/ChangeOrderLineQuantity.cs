@@ -8,7 +8,7 @@ namespace ECommerce.ApplicationCore.Features.Orders.Commands;
 
 public record ChangeOrderLineQuantityCommand(long OrderId, long ProductId, uint NewQuantity) : ICommand;
 
-public class ChangeOrderLineQuantityQueryHandler : ICommandHandler<ChangeOrderLineQuantityCommand>
+internal sealed class ChangeOrderLineQuantityQueryHandler : ICommandHandler<ChangeOrderLineQuantityCommand>
 {
     private readonly IAppDbContext _dbContext;
 

@@ -7,8 +7,7 @@ namespace ECommerce.ApplicationCore.Features.Categories.Queries;
 
 public class GetAllCategoriesQuery : IQuery<List<CategoryReadModel>> { }
 
-public class GetAllCategoriesQueryHandler 
-    : IQueryHandler<GetAllCategoriesQuery, List<CategoryReadModel>>
+internal sealed class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategoriesQuery, List<CategoryReadModel>>
 {
     private readonly IAppDbContext _dbContext;
 

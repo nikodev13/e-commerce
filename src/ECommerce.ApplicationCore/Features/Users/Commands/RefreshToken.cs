@@ -1,4 +1,5 @@
 using ECommerce.ApplicationCore.Features.Users.Exceptions;
+using ECommerce.ApplicationCore.Features.Users.ReadModels;
 using ECommerce.ApplicationCore.Shared.Abstractions;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using FluentValidation;

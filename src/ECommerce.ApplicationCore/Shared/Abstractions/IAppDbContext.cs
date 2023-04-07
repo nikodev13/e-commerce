@@ -5,8 +5,8 @@ namespace ECommerce.ApplicationCore.Shared.Abstractions;
 
 public interface IAppDbContext
 {
-    DbSet<CustomerAccount> CustomersAccounts { get; }
-    DbSet<CustomerAddress> Addresses { get; }
+    DbSet<Customer> Customers { get; }
+    DbSet<Address> Addresses { get; }
     DbSet<WishlistProduct> WishlistProducts { get; }
     DbSet<Order> Orders { get; }
     DbSet<OrderLine> OrderLines { get; }

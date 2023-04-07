@@ -42,7 +42,10 @@ app.RegisterProductsEndpoints();
 app.RegisterCategoriesEndpoints();
 
 app.RegisterOrderEndpoints();
-app.RegisterCustomerAccountEndpoints();
+
+app.RegisterCustomersEndpoints();
+app.RegisterAddressBookEndpoints();
+app.RegisterWishlistEndpoints();
 
 app.Run();
 

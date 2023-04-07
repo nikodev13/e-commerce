@@ -1,4 +1,4 @@
-﻿using ECommerce.API.Endpoints.Requests;
+﻿using ECommerce.API.Endpoints.RequestBodies;
 using ECommerce.ApplicationCore.Features.Orders.Commands;
 using ECommerce.ApplicationCore.Features.Orders.Queries;
 using ECommerce.ApplicationCore.Features.Orders.ReadModels;
@@ -55,46 +55,46 @@ public static class OrderEndpoints
     }
     
     private static async ValueTask<IResult> GetPaginatedOrders(
-        [AsParameters] GetPaginatedOrdersRequest request,
+        [AsParameters] GetPaginatedOrdersRequestParameters requestParameters,
         [FromServices] IQueryHandler<GetPaginatedOrdersQuery, PaginatedList<OrderReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var orders = await handler.HandleAsync(request.ToQuery(), cancellationToken);
+        var orders = await handler.HandleAsync(requestParameters.ToQuery(), cancellationToken);
         return Results.Ok(orders);
     }
     
     private static async ValueTask<IResult> PlaceOrder(
-        [FromBody] PlaceOrderRequest request,
+        [FromBody] PlaceOrderRequestBody requestBody,
         [FromServices] ICommandHandler<PlaceOrderCommand, long> handler,
         CancellationToken cancellationToken)
     {
-        var orderId = await handler.HandleAsync(request.ToCommand(), cancellationToken);
+        var orderId = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
         return Results.Created($"api/orders/{orderId}", null);
     }
 
     private static async ValueTask<IResult> GetOrderByIdForManagement(
-        [FromBody] GetPaginatedOrdersOrdersInListForManagementRequest request,
-        [FromServices] IQueryHandler<GetPaginatedOrdersInListForManagementQuery, PaginatedList<OrderInListReadModel>> handler,
+        [FromBody] GetPaginatedOrdersForManagementRequestBody requestBody,
+        [FromServices] IQueryHandler<GetPaginatedOrdersForManagementQuery, PaginatedList<OrderInListReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var paginatedOrdersInList = await handler.HandleAsync(request, cancellationToken);
+        var paginatedOrdersInList = await handler.HandleAsync(requestBody.ToQuery(), cancellationToken);
         return Results.Ok(paginatedOrdersInList);
     }
 
 
     public static async ValueTask<IResult> ChangeOrderLineQuantity(
         [FromRoute] long id,
-        [FromBody] ChangeOrderLineQuantityRequest request,
+        [FromBody] ChangeOrderLineQuantityRequestBody requestBody,
         [FromServices] ICommandHandler<ChangeOrderLineQuantityCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(request.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
     
     public static async ValueTask<IResult> SetOrderStatus(
         [FromRoute] long id,
-        [FromBody] SetOrderStatusRequestOrderStatus request,
+        [FromBody] SetOrderStatusRequestBody request,
         [FromServices] ICommandHandler<SetOrderStatusCommand> handler,
         CancellationToken cancellationToken)
     {

@@ -9,7 +9,7 @@ namespace ECommerce.ApplicationCore.Features.Orders.Queries;
 
 public record GetOrderByIdQuery(long Id) : IQuery<OrderReadModel>;
 
-public class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, OrderReadModel> {
+internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery, OrderReadModel> {
     
     private readonly IAppDbContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;

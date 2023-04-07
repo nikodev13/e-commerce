@@ -1,5 +1,4 @@
-﻿using ECommerce.ApplicationCore.Features.CustomerAccounts.ReadModels;
-using ECommerce.ApplicationCore.Features.Wishlist.ReadModels;
+﻿using ECommerce.ApplicationCore.Features.Wishlist.ReadModels;
 using ECommerce.ApplicationCore.Shared.Abstractions;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ namespace ECommerce.ApplicationCore.Features.Wishlist.Queries;
 
 public record GetAllProductsFromWishlistQuery : IQuery<List<WishlistProductReadModel>>;
 
-public class GetAllProductsFromWishlistQueryHandler : IQueryHandler<GetAllProductsFromWishlistQuery, List<WishlistProductReadModel>>
+internal sealed class GetAllProductsFromWishlistQueryHandler : IQueryHandler<GetAllProductsFromWishlistQuery, List<WishlistProductReadModel>>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;

@@ -9,7 +9,7 @@ namespace ECommerce.ApplicationCore.Features.Orders.Commands;
 
 public record SetOrderStatusCommand(long OrderId, OrderStatus OrderStatus) : ICommand;
 
-public class  SetOrderStatusCommandHandler : ICommandHandler<SetOrderStatusCommand>
+internal sealed class  SetOrderStatusCommandHandler : ICommandHandler<SetOrderStatusCommand>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;

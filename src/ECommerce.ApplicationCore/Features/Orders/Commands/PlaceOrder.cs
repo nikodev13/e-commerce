@@ -15,7 +15,7 @@ public record PlaceOrderCommand(List<PlaceOrderCommand.OrderLine> OrderLines, Pl
     public record Address(string Street, string PostalCode, string City);
 }
 
-public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
+internal sealed class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
 {
     private readonly IAppDbContext _appDbContext;
     private readonly IUserContextProvider _userContextProvider;
@@ -101,7 +101,7 @@ public class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
     }
 }
 
-public class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
+internal sealed class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
 {
     public PlaceOrderCommandValidator()
     {
@@ -109,7 +109,7 @@ public class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
         RuleForEach(x => x.OrderLines).SetValidator(new OrderLineValidator());
     }
     
-    public class OrderLineValidator : AbstractValidator<PlaceOrderCommand.OrderLine>
+    class OrderLineValidator : AbstractValidator<PlaceOrderCommand.OrderLine>
     {
         public OrderLineValidator()
         {
@@ -118,7 +118,7 @@ public class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderCommand>
         }
     }
     
-    public class AddressValidator : AbstractValidator<PlaceOrderCommand.Address>
+    class AddressValidator : AbstractValidator<PlaceOrderCommand.Address>
     {
         public AddressValidator()
         {

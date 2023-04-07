@@ -18,8 +18,7 @@ public class GetPaginatedCustomerProductsQuery : IQuery<PaginatedList<ProductRea
     public SortDirection? SortDirection { get; init; }
 }
 
-public class GetPaginatedCustomerProductsQueryHandler
-    : IQueryHandler<GetPaginatedCustomerProductsQuery, PaginatedList<ProductReadModel>>
+internal sealed class GetPaginatedCustomerProductsQueryHandler : IQueryHandler<GetPaginatedCustomerProductsQuery, PaginatedList<ProductReadModel>>
 {
     private readonly IAppDbContext _dbContext;
 

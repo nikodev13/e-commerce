@@ -11,7 +11,7 @@ namespace ECommerce.ApplicationCore.Features.Orders.Queries;
 public record GetPaginatedOrdersQuery(int PageSize, int PageNumber, OrderStatus? OrderStatus) 
     : IQuery<PaginatedList<OrderReadModel>>;
 
-public class GetPaginatedOrdersQueryHandler : IQueryHandler<GetPaginatedOrdersQuery, PaginatedList<OrderReadModel>>
+internal sealed class GetPaginatedOrdersQueryHandler : IQueryHandler<GetPaginatedOrdersQuery, PaginatedList<OrderReadModel>>
 {
     private readonly IAppDbContext _dbContext;
     private readonly IUserContextProvider _userContextProvider;

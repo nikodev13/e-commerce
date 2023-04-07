@@ -8,7 +8,7 @@ namespace ECommerce.ApplicationCore.Features.Categories.Queries;
 
 public record GetCategoryHistoryDataQuery(long Id) : IQuery<CategoryHistoryReadModel>;
 
-public class GetCategoryHistoryDataQueryHandler : IQueryHandler<GetCategoryHistoryDataQuery, CategoryHistoryReadModel>
+internal sealed class GetCategoryHistoryDataQueryHandler : IQueryHandler<GetCategoryHistoryDataQuery, CategoryHistoryReadModel>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -20,8 +20,7 @@ public class GetCategoryHistoryDataQueryHandler : IQueryHandler<GetCategoryHisto
     public async ValueTask<CategoryHistoryReadModel> HandleAsync(GetCategoryHistoryDataQuery query, CancellationToken cancellationToken)
     {
         var categoryHistoryReadModel = await _dbContext.Categories
-            .Select(x =>
-                new CategoryHistoryReadModel(x.Id, x.LastModifiedBy, x.LastModifiedAt, x.CreatedBy, x.CreatedAt))
+            .Select(x => new CategoryHistoryReadModel(x.Id, x.LastModifiedBy, x.LastModifiedAt, x.CreatedBy, x.CreatedAt))
             .FirstOrDefaultAsync(x => x.CategoryId == query.Id, cancellationToken);
 
         return categoryHistoryReadModel ?? throw new CategoryNotFoundException(query.Id);

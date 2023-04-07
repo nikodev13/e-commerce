@@ -1,4 +1,4 @@
-﻿using ECommerce.API.Endpoints.Requests;
+﻿using ECommerce.API.Endpoints.RequestBodies;
 using ECommerce.ApplicationCore.Features.Categories.Commands;
 using ECommerce.ApplicationCore.Features.Categories.Queries;
 using ECommerce.ApplicationCore.Features.Categories.ReadModels;
@@ -67,21 +67,21 @@ public static class CategoriesEndpoints
     }
     
     private static async ValueTask<IResult> Create(
-        [FromBody] CreateCategoryRequest request, 
+        [FromBody] CreateCategoryRequestBody requestBody, 
         [FromServices] ICommandHandler<CreateCategoryCommand, long> handler,
         CancellationToken cancellationToken)
     {
-        var id = await handler.HandleAsync(request.ToCommand(), cancellationToken);
+        var id = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
         return Results.Created($"api/products/categories/{id}", null);
     }
 
     private static async ValueTask<IResult> Update(
         [FromRoute] long id,
-        [FromBody] UpdateCategoryRequest request,
+        [FromBody] UpdateCategoryRequestBody requestBody,
         [FromServices] ICommandHandler<UpdateCategoryCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(request.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
 

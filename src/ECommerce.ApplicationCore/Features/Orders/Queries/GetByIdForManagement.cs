@@ -8,7 +8,7 @@ namespace ECommerce.ApplicationCore.Features.Orders.Queries;
 
 public record GetOrderByIdForManagementQuery(long OrderId) : IQuery<ManagementOrderReadModel>;
 
-public class GetByIdForManagementQueryHandler : IQueryHandler<GetOrderByIdForManagementQuery, ManagementOrderReadModel>
+internal sealed class GetByIdForManagementQueryHandler : IQueryHandler<GetOrderByIdForManagementQuery, ManagementOrderReadModel>
 {
     private readonly IAppDbContext _dbContext;
 

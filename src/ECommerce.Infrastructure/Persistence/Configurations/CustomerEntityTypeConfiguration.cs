@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ECommerce.Infrastructure.Persistence.Configurations;
 
-public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<CustomerAccount>
+public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
 {
-    public void Configure(EntityTypeBuilder<CustomerAccount> customerAccounts)
+    public void Configure(EntityTypeBuilder<Customer> customerAccounts)
     {
         customerAccounts.ToTable("CustomerAccounts");
         customerAccounts.HasKey(x => x.Id);
