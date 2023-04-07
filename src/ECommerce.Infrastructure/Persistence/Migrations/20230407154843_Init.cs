@@ -161,7 +161,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     DeliveryAddressPostalCode = table.Column<string>(name: "DeliveryAddress_PostalCode", type: "nvarchar(max)", nullable: false),
                     DeliveryAddressCity = table.Column<string>(name: "DeliveryAddress_City", type: "nvarchar(max)", nullable: false),
                     PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OperatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,6 +178,24 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         name: "FK_Orders_Payment_PaymentId",
                         column: x => x.PaymentId,
                         principalTable: "Payment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WishlistProducts",
+                columns: table => new
+                {
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WishlistProducts", x => new { x.CustomerId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_WishlistProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -248,6 +268,12 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 table: "Users",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishlistProducts_ProductId",
+                table: "WishlistProducts",
+                column: "ProductId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -264,6 +290,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "WishlistProducts");
 
             migrationBuilder.DropTable(
                 name: "Baskets");

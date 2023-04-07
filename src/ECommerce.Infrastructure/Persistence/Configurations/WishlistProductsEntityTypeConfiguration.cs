@@ -11,7 +11,7 @@ public class WishlistProductsEntityTypeConfiguration : IEntityTypeConfiguration<
         product.ToTable("WishlistProducts");
         product.HasKey(x => new { x.CustomerId, x.ProductId });
         product.Property(x => x.CustomerId).ValueGeneratedNever();
-        product.Property(x => x.Product).ValueGeneratedNever();
-        product.HasOne(x => x.Customer).WithOne();
+        product.Property(x => x.ProductId).ValueGeneratedNever();
+        product.HasOne(x => x.Product).WithOne();
     }
 }

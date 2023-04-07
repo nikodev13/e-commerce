@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230329083010_Init")]
+    [Migration("20230407154843_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -160,8 +160,14 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("OperatedBy")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("PaymentId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("SentAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -289,6 +295,22 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.WishlistProduct", b =>
+                {
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CustomerId", "ProductId");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("WishlistProducts", (string)null);
+                });
+
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.BasketItem", b =>
                 {
                     b.HasOne("ECommerce.ApplicationCore.Entities.Basket", null)
@@ -376,6 +398,17 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.WishlistProduct", b =>
+                {
+                    b.HasOne("ECommerce.ApplicationCore.Entities.Product", "Product")
+                        .WithOne()
+                        .HasForeignKey("ECommerce.ApplicationCore.Entities.WishlistProduct", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Basket", b =>
