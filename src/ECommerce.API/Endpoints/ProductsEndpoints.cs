@@ -26,7 +26,7 @@ public static class ProductsEndpoints
             .WithTags(groupName);
 
         const string managementGroupName = "Products Management";
-        endpoints.MapGet("api/products/{id:long}", GetProductHistoryData)
+        endpoints.MapGet("api/products/{id:long}/history", GetProductHistoryData)
             .Produces<ProductHistoryReadModel>()
             .Produces(StatusCodes.Status404NotFound)
             .WithTags(managementGroupName)

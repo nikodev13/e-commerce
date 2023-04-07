@@ -31,12 +31,12 @@ public static class OrderEndpoints
             .Produces(StatusCodes.Status201Created)
             .WithTags(groupName);
         
-        endpoints.MapPut("api/orders/{id:long}", ChangeOrderLineQuantity)
+        endpoints.MapPatch("api/orders/{id:long}/change-line", ChangeOrderLineQuantity)
             .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .WithTags(groupName);
         
-        endpoints.MapPatch("api/orders/{id:long}", SetOrderStatus)
+        endpoints.MapPatch("api/orders/{id:long}/change-status", SetOrderStatus)
             .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
