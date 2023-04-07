@@ -5,7 +5,7 @@ public class Order
     public required long Id { get; init; }
     public required Guid CustomerId { get; init; }
     public Customer Customer { get; init; } = default!;
-    public required DeliveryAddress DeliveryAddress { get; init; }
+    public required Delivery Delivery { get; init; }
     public required Guid PaymentId { get; init; }
     public Payment Payment { get; init; } = default!;
     public required List<OrderLine> OrderLines { get; init; }
@@ -24,11 +24,19 @@ public class OrderLine
     public required decimal UnitPrice { get; set; }
 }
 
-public class DeliveryAddress
+public enum DeliveryOperator
 {
-    public required string Street { get; init; }
-    public required string PostalCode { get; init; }
-    public required string City { get; init; }
+    DPD,
+    InPost
+}
+
+public class Delivery
+{
+    public required DeliveryOperator Operator { get; set; }
+    public string? TrackingNumber { get; set; }
+    public required string Street { get; set; }
+    public required string PostalCode { get; set; }
+    public required string City { get; set; }
 }
 
 public enum OrderStatus

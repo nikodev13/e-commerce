@@ -31,12 +31,24 @@ public static class OrderEndpoints
             .Produces(StatusCodes.Status201Created)
             .WithTags(groupName);
         
-        endpoints.MapPatch("api/orders/{id:long}/change-line", ChangeOrderLineQuantity)
+        endpoints.MapPatch("api/orders/{id:long}/change-line-quantity", ChangeOrderLineQuantity)
             .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .WithTags(groupName);
         
         endpoints.MapPatch("api/orders/{id:long}/change-status", SetOrderStatus)
+            .RequireAuthorization(AuthorizationPolicy.Admin)
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithTags(groupName);
+        
+        endpoints.MapPatch("api/orders/{id:long}/set-delivery-tracking-number", SetDeliveryTrackingNumber)
+            .RequireAuthorization(AuthorizationPolicy.Admin)
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithTags(groupName);
+        
+        endpoints.MapPatch("api/orders/{id:long}/change-delivery-address", ChangeDeliveryAddress)
             .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
@@ -55,50 +67,70 @@ public static class OrderEndpoints
     }
     
     private static async ValueTask<IResult> GetPaginatedOrders(
-        [AsParameters] GetPaginatedOrdersRequestParameters requestParameters,
+        [AsParameters] GetPaginatedOrdersRequestParameters parameters,
         [FromServices] IQueryHandler<GetPaginatedOrdersQuery, PaginatedList<OrderReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var orders = await handler.HandleAsync(requestParameters.ToQuery(), cancellationToken);
+        var orders = await handler.HandleAsync(parameters.ToQuery(), cancellationToken);
         return Results.Ok(orders);
     }
     
     private static async ValueTask<IResult> PlaceOrder(
-        [FromBody] PlaceOrderRequestBody requestBody,
+        [FromBody] PlaceOrderRequestBody body,
         [FromServices] ICommandHandler<PlaceOrderCommand, long> handler,
         CancellationToken cancellationToken)
     {
-        var orderId = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        var orderId = await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.Created($"api/orders/{orderId}", null);
     }
 
     private static async ValueTask<IResult> GetOrderByIdForManagement(
-        [FromBody] GetPaginatedOrdersForManagementRequestBody requestBody,
+        [FromBody] GetPaginatedOrdersForManagementRequestBody body,
         [FromServices] IQueryHandler<GetPaginatedOrdersForManagementQuery, PaginatedList<OrderInListReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var paginatedOrdersInList = await handler.HandleAsync(requestBody.ToQuery(), cancellationToken);
+        var paginatedOrdersInList = await handler.HandleAsync(body.ToQuery(), cancellationToken);
         return Results.Ok(paginatedOrdersInList);
     }
 
 
-    public static async ValueTask<IResult> ChangeOrderLineQuantity(
+    private static async ValueTask<IResult> ChangeOrderLineQuantity(
         [FromRoute] long id,
-        [FromBody] ChangeOrderLineQuantityRequestBody requestBody,
+        [FromBody] ChangeOrderLineQuantityRequestBody body,
         [FromServices] ICommandHandler<ChangeOrderLineQuantityCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
     
-    public static async ValueTask<IResult> SetOrderStatus(
+    private static async ValueTask<IResult> SetOrderStatus(
         [FromRoute] long id,
-        [FromBody] SetOrderStatusRequestBody request,
+        [FromBody] SetOrderStatusRequestBody body,
         [FromServices] ICommandHandler<SetOrderStatusCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(request.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
+        return Results.NoContent();
+    }
+    
+    private static async ValueTask<IResult> SetDeliveryTrackingNumber(
+        [FromRoute] long id,
+        [FromBody] SetDeliverTrackingNumberRequestBody body,
+        [FromServices] ICommandHandler<SetDeliveryTrackingNumberCommand> handler,
+        CancellationToken cancellationToken)
+    {
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
+        return Results.NoContent();
+    }
+    
+    private static async ValueTask<IResult> ChangeDeliveryAddress(
+        [FromRoute] long id,
+        [FromBody] ChangeOrderDeliveryAddressRequestBody body,
+        [FromServices] ICommandHandler<ChangeOrderDeliveryAddressCommand> handler,
+        CancellationToken cancellationToken)
+    {
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
 }

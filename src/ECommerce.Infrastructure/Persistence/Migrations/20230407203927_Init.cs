@@ -12,6 +12,21 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AddressBooks",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddressBooks", x => new { x.Id, x.CustomerId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Baskets",
                 columns: table => new
                 {
@@ -40,18 +55,19 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerAccounts",
+                name: "Customers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerAccounts", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +126,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(19,4)", precision: 19, scale: 4, nullable: false),
                     InStockQuantity = table.Column<long>(type: "bigint", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
@@ -131,35 +147,16 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerAddresses",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CustomerAccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CustomerAddresses", x => new { x.Id, x.CustomerId });
-                    table.ForeignKey(
-                        name: "FK_CustomerAddresses_CustomerAccounts_CustomerAccountId",
-                        column: x => x.CustomerAccountId,
-                        principalTable: "CustomerAccounts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DeliveryAddressStreet = table.Column<string>(name: "DeliveryAddress_Street", type: "nvarchar(max)", nullable: false),
-                    DeliveryAddressPostalCode = table.Column<string>(name: "DeliveryAddress_PostalCode", type: "nvarchar(max)", nullable: false),
-                    DeliveryAddressCity = table.Column<string>(name: "DeliveryAddress_City", type: "nvarchar(max)", nullable: false),
+                    DeliveryOperator = table.Column<int>(name: "Delivery_Operator", type: "int", nullable: false),
+                    DeliveryTrackingNumber = table.Column<string>(name: "Delivery_TrackingNumber", type: "nvarchar(max)", nullable: true),
+                    DeliveryStreet = table.Column<string>(name: "Delivery_Street", type: "nvarchar(max)", nullable: false),
+                    DeliveryPostalCode = table.Column<string>(name: "Delivery_PostalCode", type: "nvarchar(max)", nullable: false),
+                    DeliveryCity = table.Column<string>(name: "Delivery_City", type: "nvarchar(max)", nullable: false),
                     PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     SentAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -169,9 +166,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_CustomerAccounts_CustomerId",
+                        name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "CustomerAccounts",
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -183,7 +180,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WishlistProducts",
+                name: "Wishlists",
                 columns: table => new
                 {
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -191,9 +188,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishlistProducts", x => new { x.CustomerId, x.ProductId });
+                    table.PrimaryKey("PK_Wishlists", x => new { x.CustomerId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_WishlistProducts_Products_ProductId",
+                        name: "FK_Wishlists_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -207,7 +204,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     OrderId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    UnitPrice = table.Column<decimal>(type: "decimal(19,4)", precision: 19, scale: 4, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,11 +235,6 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerAddresses_CustomerAccountId",
-                table: "CustomerAddresses",
-                column: "CustomerAccountId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderLines_ProductId",
                 table: "OrderLines",
                 column: "ProductId");
@@ -270,8 +262,8 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WishlistProducts_ProductId",
-                table: "WishlistProducts",
+                name: "IX_Wishlists_ProductId",
+                table: "Wishlists",
                 column: "ProductId",
                 unique: true);
         }
@@ -280,10 +272,10 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BasketItems");
+                name: "AddressBooks");
 
             migrationBuilder.DropTable(
-                name: "CustomerAddresses");
+                name: "BasketItems");
 
             migrationBuilder.DropTable(
                 name: "OrderLines");
@@ -292,7 +284,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "WishlistProducts");
+                name: "Wishlists");
 
             migrationBuilder.DropTable(
                 name: "Baskets");
@@ -304,7 +296,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "CustomerAccounts");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Payment");

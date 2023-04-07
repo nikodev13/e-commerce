@@ -20,7 +20,7 @@ namespace ECommerce.Infrastructure.Persistence.Configurations
             product.HasOne(p => p.Category)
                 .WithMany().HasForeignKey(x => x.CategoryId);
 
-            product.Property(p => p.Price);
+            product.Property(p => p.Price).HasPrecision(19, 4);
 
             product.Property(p => p.InStockQuantity);
         }

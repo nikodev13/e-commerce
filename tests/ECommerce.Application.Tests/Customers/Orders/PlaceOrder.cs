@@ -28,7 +28,7 @@ public class PlaceOrder
             {
                 new(product.Id, 1)
             },
-            new PlaceOrderCommand.Address("any-street", "00-000", "Danzig"));
+            new PlaceOrderCommand.DeliveryOptions(DeliveryOperator.InPost, "any-street", "00-000", "Danzig"));
         // act
         var lastProductQuantity = DummyProducts.Data[0].InStockQuantity;
         var result = await _testing.ExecuteCommandAsync<PlaceOrderCommand, long>(command);

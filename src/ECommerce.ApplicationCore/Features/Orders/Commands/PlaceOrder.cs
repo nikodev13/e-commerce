@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.ApplicationCore.Features.Orders.Commands;
 
-public record PlaceOrderCommand(List<PlaceOrderCommand.OrderLine> OrderLines, PlaceOrderCommand.Address DeliveryAddress) 
+public record PlaceOrderCommand(List<PlaceOrderCommand.OrderLine> OrderLines, PlaceOrderCommand.DeliveryOptions Delivery) 
     : ICommand<long>
 {
     public record OrderLine(long ProductId, uint Quantity);
-    public record Address(string Street, string PostalCode, string City);
+    public record DeliveryOptions(DeliveryOperator Operator, string Street, string PostalCode, string City);
 }
 
 internal sealed class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderCommand, long>
@@ -79,11 +79,12 @@ internal sealed class PlaceOrderCommandHandler : ICommandHandler<PlaceOrderComma
             CustomerId = customerId,
             PaymentId = payment.Id,
             Payment = payment,
-            DeliveryAddress = new DeliveryAddress
+            Delivery = new Delivery
             {
-                Street = command.DeliveryAddress.Street,
-                PostalCode = command.DeliveryAddress.PostalCode,
-                City = command.DeliveryAddress.City
+                Operator = command.Delivery.Operator,
+                Street = command.Delivery.Street,
+                PostalCode = command.Delivery.PostalCode,
+                City = command.Delivery.City
             },
             OrderLines = orderLines,
         };
@@ -105,7 +106,7 @@ internal sealed class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderC
 {
     public PlaceOrderCommandValidator()
     {
-        RuleFor(x => x.DeliveryAddress).SetValidator(new AddressValidator());
+        RuleFor(x => x.Delivery).SetValidator(new AddressValidator());
         RuleForEach(x => x.OrderLines).SetValidator(new OrderLineValidator());
     }
     
@@ -118,7 +119,7 @@ internal sealed class PlaceOrderCommandValidator : AbstractValidator<PlaceOrderC
         }
     }
     
-    class AddressValidator : AbstractValidator<PlaceOrderCommand.Address>
+    class AddressValidator : AbstractValidator<PlaceOrderCommand.DeliveryOptions>
     {
         public AddressValidator()
         {

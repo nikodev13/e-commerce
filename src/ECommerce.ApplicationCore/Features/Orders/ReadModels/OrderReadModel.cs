@@ -5,7 +5,7 @@ namespace ECommerce.ApplicationCore.Features.Orders.ReadModels;
 public record OrderReadModel(long Id,
     string OrderStatus,
     PaymentReadModel Payment,
-    DeliveryAddressReadModel DeliveryAddress,
+    DeliveryReadModel Delivery,
     List<OrderLineReadModel> OrderLines,
     DateTime PlacedAt,
     DateTime? SentAt)
@@ -14,7 +14,7 @@ public record OrderReadModel(long Id,
         => new(order.Id,
             order.Status.ToString(),
             PaymentReadModel.From(order.Payment),
-            DeliveryAddressReadModel.From(order.DeliveryAddress),
+            DeliveryReadModel.From(order.Delivery),
             order.OrderLines.Select(OrderLineReadModel.From).ToList(),
             order.PlacedAt,
             order.SentAt);

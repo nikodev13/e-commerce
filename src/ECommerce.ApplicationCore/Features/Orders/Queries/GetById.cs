@@ -27,7 +27,7 @@ internal sealed class GetOrderByIdQueryHandler : IQueryHandler<GetOrderByIdQuery
         var order = await _dbContext.Orders
             .Where(x => x.CustomerId == customerId && x.Id == query.Id)
             .Include(x => x.Payment)
-            .Include(x => x.DeliveryAddress)
+            .Include(x => x.Delivery)
             .Include(x => x.OrderLines)
             .ThenInclude(x => x.Product)
             .Select(x => OrderReadModel.From(x))

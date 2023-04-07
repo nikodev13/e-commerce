@@ -10,8 +10,8 @@ public record GetPaginatedOrdersRequestParameters(int PageSize, int PageNumber, 
     public GetPaginatedOrdersQuery ToQuery() => this;
 }
 
-public record PlaceOrderRequestBody(List<PlaceOrderCommand.OrderLine> OrderLines, PlaceOrderCommand.Address DeliveryAddress)
-    : PlaceOrderCommand(OrderLines, DeliveryAddress)
+public record PlaceOrderRequestBody(List<PlaceOrderCommand.OrderLine> OrderLines, PlaceOrderCommand.DeliveryOptions DeliveryOptionsDeliveryOptions)
+    : PlaceOrderCommand(OrderLines, DeliveryOptionsDeliveryOptions)
 {
     public PlaceOrderCommand ToCommand() => this;
 }
@@ -30,4 +30,14 @@ public record ChangeOrderLineQuantityRequestBody(long ProductId, uint NewQuantit
 public record SetOrderStatusRequestBody(OrderStatus OrderStatus)
 {
     public SetOrderStatusCommand ToCommand(long orderId) => new(orderId, OrderStatus);
+}
+
+public record ChangeOrderDeliveryAddressRequestBody(string Street, string PostalCode, string City)
+{
+    public ChangeOrderDeliveryAddressCommand ToCommand(long orderId) => new(orderId, Street, PostalCode, City);
+}
+
+public record SetDeliverTrackingNumberRequestBody(string TrackingNumber)
+{
+    public SetDeliveryTrackingNumberCommand ToCommand(long orderId) => new(orderId, TrackingNumber);
 }

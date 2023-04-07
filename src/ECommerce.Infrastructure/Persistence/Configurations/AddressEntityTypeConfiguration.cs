@@ -8,12 +8,11 @@ public class AddressEntityTypeConfiguration : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> addresses)
     {
-        addresses.ToTable("CustomerAddresses");
+        addresses.ToTable("AddressBooks");
 
         addresses.HasKey(x => new { x.Id, x.CustomerId });
-        addresses.Property(x => x.Id);
-
-        addresses.Property(x => x.CustomerId);
+        addresses.Property(x => x.Id).ValueGeneratedNever();
+        addresses.Property(x => x.CustomerId).ValueGeneratedNever();
         
         addresses.Property(x => x.Street).HasMaxLength(100);
         addresses.Property(x => x.PostalCode).HasMaxLength(6);

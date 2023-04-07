@@ -22,6 +22,34 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Address", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id", "CustomerId");
+
+                    b.ToTable("AddressBooks", (string)null);
+                });
+
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Basket", b =>
                 {
                     b.Property<Guid>("CustomerId")
@@ -89,10 +117,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.ToTable("Categories", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAccount", b =>
+            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -111,42 +138,12 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("RegisteredAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerAccounts", (string)null);
-                });
-
-            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAddress", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("CustomerAccountId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id", "CustomerId");
-
-                    b.HasIndex("CustomerAccountId");
-
-                    b.ToTable("CustomerAddresses", (string)null);
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>
@@ -191,7 +188,8 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(19, 4)
+                        .HasColumnType("decimal(19,4)");
 
                     b.HasKey("OrderId", "ProductId");
 
@@ -255,7 +253,8 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(19, 4)
+                        .HasColumnType("decimal(19,4)");
 
                     b.HasKey("Id");
 
@@ -267,7 +266,6 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -305,7 +303,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("WishlistProducts", (string)null);
+                    b.ToTable("Wishlists", (string)null);
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.BasketItem", b =>
@@ -315,16 +313,9 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .HasForeignKey("BasketCustomerId");
                 });
 
-            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAddress", b =>
-                {
-                    b.HasOne("ECommerce.ApplicationCore.Entities.CustomerAccount", null)
-                        .WithMany("Addresses")
-                        .HasForeignKey("CustomerAccountId");
-                });
-
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>
                 {
-                    b.HasOne("ECommerce.ApplicationCore.Entities.CustomerAccount", "Customer")
+                    b.HasOne("ECommerce.ApplicationCore.Entities.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,7 +327,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("ECommerce.ApplicationCore.Entities.DeliveryAddress", "DeliveryAddress", b1 =>
+                    b.OwnsOne("ECommerce.ApplicationCore.Entities.Delivery", "Delivery", b1 =>
                         {
                             b1.Property<long>("OrderId")
                                 .HasColumnType("bigint");
@@ -345,12 +336,18 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
+                            b1.Property<int>("Operator")
+                                .HasColumnType("int");
+
                             b1.Property<string>("PostalCode")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("TrackingNumber")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("OrderId");
@@ -363,7 +360,7 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
 
                     b.Navigation("Customer");
 
-                    b.Navigation("DeliveryAddress")
+                    b.Navigation("Delivery")
                         .IsRequired();
 
                     b.Navigation("Payment");
@@ -411,11 +408,6 @@ namespace ECommerce.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Basket", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("ECommerce.ApplicationCore.Entities.CustomerAccount", b =>
-                {
-                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("ECommerce.ApplicationCore.Entities.Order", b =>

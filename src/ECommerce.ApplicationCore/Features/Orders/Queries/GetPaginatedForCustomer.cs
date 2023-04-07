@@ -27,7 +27,7 @@ internal sealed class GetPaginatedOrdersQueryHandler : IQueryHandler<GetPaginate
         var customerId = _userContextProvider.UserId!.Value;
         var baseQuery = _dbContext.Orders
             .Include(x => x.Payment)
-            .Include(x => x.DeliveryAddress)
+            .Include(x => x.Delivery)
             .Include(x => x.OrderLines)
                 .ThenInclude(x => x.Product)
             .Where(x => x.CustomerId == customerId);

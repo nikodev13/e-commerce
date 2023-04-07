@@ -38,7 +38,7 @@ public static class ProductsEndpoints
             .WithTags(managementGroupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
-        endpoints.MapPut("api/products/{id:long}/update-details", UpdateDetails)
+        endpoints.MapPatch("api/products/{id:long}/update-details", UpdateDetails)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
@@ -46,7 +46,7 @@ public static class ProductsEndpoints
             .WithTags(managementGroupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
-        endpoints.MapPut("api/products/{id:long}/update-sale-data",  UpdateSaleData)
+        endpoints.MapPatch("api/products/{id:long}/update-sale-data",  UpdateSaleData)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)

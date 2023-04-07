@@ -6,17 +6,16 @@ namespace ECommerce.Infrastructure.Persistence.Configurations;
 
 public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer>
 {
-    public void Configure(EntityTypeBuilder<Customer> customerAccounts)
+    public void Configure(EntityTypeBuilder<Customer> customer)
     {
-        customerAccounts.ToTable("CustomerAccounts");
-        customerAccounts.HasKey(x => x.Id);
-        customerAccounts.Property(x => x.Id);
+        customer.ToTable("Customers");
+        customer.HasKey(x => x.Id);
+        customer.Property(x => x.Id).ValueGeneratedNever();
 
-        customerAccounts.Property(x => x.FirstName).IsRequired();
-        customerAccounts.Property(x => x.LastName).IsRequired();
-        customerAccounts.Property(x => x.Email)
-            .IsRequired();
-        customerAccounts.Property(x => x.PhoneNumber)
-            .IsRequired();
+        customer.Property(x => x.FirstName).IsRequired();
+        customer.Property(x => x.LastName).IsRequired();
+        customer.Property(x => x.Email).IsRequired();
+        customer.Property(x => x.PhoneNumber).IsRequired();
+        customer.Property(x => x.RegisteredAt).IsRequired();
     }
 }
