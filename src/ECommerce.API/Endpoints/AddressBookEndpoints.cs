@@ -36,21 +36,21 @@ internal static class AddressBookEndpoints
     }
     
     private static async ValueTask<IResult> AddAddress(
-        [FromBody] AddAddressToAddressBookRequestBody toAddressBookRequestBody,
+        [FromBody] AddAddressToAddressBookRequestBody body,
         [FromServices] ICommandHandler<AddAddressToAddressBookCommand, long> handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(toAddressBookRequestBody.ToCommand(), cancellationToken);
+        var result = await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.Created($"api/address-book/", result);
     }
     
     private static async ValueTask<IResult> UpdateAddress(
         [FromRoute] long id,
-        [FromBody] UpdateAddressInAddressBookRequestBody inAddressBookRequestBody,
+        [FromBody] UpdateAddressInAddressBookRequestBody body,
         [FromServices] ICommandHandler<UpdateAddressInAddressBookCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(inAddressBookRequestBody.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
     

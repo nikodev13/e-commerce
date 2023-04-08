@@ -40,20 +40,20 @@ public static class WishlistEndpoints
     }
     
     private static async Task<IResult> AddProductToWishlist(
-        [FromBody] AddProductToWishlistRequestBody requestBody,
+        [FromBody] AddProductToWishlistRequestBody body,
         [FromServices] ICommandHandler<AddProductToWishlistCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody, cancellationToken);
+        await handler.HandleAsync(body, cancellationToken);
         return Results.NoContent();
     }
     
     private static async Task<IResult> RemoveProductFromWishlist(
-        [FromBody] RemoveProductFromWishlistRequestBody requestBody,
+        [FromBody] RemoveProductFromWishlistRequestBody body,
         [FromServices] ICommandHandler<RemoveProductFromWishlistCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody, cancellationToken);
+        await handler.HandleAsync(body, cancellationToken);
         return Results.NoContent();
     }
 }

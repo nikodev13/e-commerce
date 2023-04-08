@@ -67,21 +67,21 @@ public static class CategoriesEndpoints
     }
     
     private static async ValueTask<IResult> Create(
-        [FromBody] CreateCategoryRequestBody requestBody, 
+        [FromBody] CreateCategoryRequestBody body, 
         [FromServices] ICommandHandler<CreateCategoryCommand, long> handler,
         CancellationToken cancellationToken)
     {
-        var id = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        var id = await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.Created($"api/products/categories/{id}", null);
     }
 
     private static async ValueTask<IResult> Update(
         [FromRoute] long id,
-        [FromBody] UpdateCategoryRequestBody requestBody,
+        [FromBody] UpdateCategoryRequestBody body,
         [FromServices] ICommandHandler<UpdateCategoryCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
 

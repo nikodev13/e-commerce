@@ -49,29 +49,29 @@ public static class AccountEndpoints
     }
     
     private static async ValueTask<IResult> Register(
-        [FromBody] RegisterCustomerRequestBody requestBody,
+        [FromBody] RegisterCustomerRequestBody body,
         [FromServices] ICommandHandler<RegisterCustomerCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.NoContent();
     }
     
     private static async ValueTask<IResult> UpdateFullName(
-        [FromBody] UpdateCustomerFullNameRequestBody requestBody,
+        [FromBody] UpdateCustomerFullNameRequestBody body,
         [FromServices] ICommandHandler<UpdateCustomerFullNameCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.NoContent();
     }
     
     private static async ValueTask<IResult> UpdateContactData(
-        [FromBody] UpdateCustomerContactDataRequestBody requestBody,
+        [FromBody] UpdateCustomerContactDataRequestBody body,
         [FromServices] ICommandHandler<UpdateCustomerContactDataCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.NoContent();
     }
 }

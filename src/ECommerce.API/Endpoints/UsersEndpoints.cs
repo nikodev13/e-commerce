@@ -1,8 +1,10 @@
 using ECommerce.API.Endpoints.RequestBodies;
 using ECommerce.ApplicationCore.Features.Users;
 using ECommerce.ApplicationCore.Features.Users.Commands;
+using ECommerce.ApplicationCore.Features.Users.Queries;
 using ECommerce.ApplicationCore.Features.Users.ReadModels;
 using ECommerce.ApplicationCore.Shared.CQRS;
+using ECommerce.ApplicationCore.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Endpoints;
@@ -28,34 +30,57 @@ public static class UsersEndpoints
             .Produces<TokensReadModel>()
             .Produces(StatusCodes.Status400BadRequest)
             .WithTags(groupName);
+        
+        endpoints.MapPost("api/users", GetPaginatedUsers)
+            .Produces<PaginatedList<UserInListReadModel>>()
+            .WithTags(groupName)
+            .RequireAuthorization();
             
         return endpoints;
     }
 
+    private static async ValueTask<IResult> GetPaginatedUsers(
+        [AsParameters] GetPaginatedUsersRequestParameters parameters,
+        [FromServices] IQueryHandler<GetPaginatedUsersQuery, PaginatedList<UserInListReadModel>> handler,
+        CancellationToken cancellationToken)
+    {
+        var users = await handler.HandleAsync(parameters.ToQuery(), cancellationToken);
+        return Results.Ok(users);
+    }
+    
     private static async ValueTask<IResult> Register(
-        [FromBody] RegisterUserRequestBody requestBody,
+        [FromBody] RegisterUserRequestBody body,
         [FromServices] ICommandHandler<RegisterUserCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.NoContent();
     }
     
     private static async ValueTask<IResult> Login(
-        [FromBody] LoginUserRequestBody requestBody, 
+        [FromBody] LoginUserRequestBody body, 
         [FromServices] ICommandHandler<LoginUserCommand, TokensReadModel> handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        var result = await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.Ok(result);
     }
     
     private static async ValueTask<IResult> RefreshToken(
-        [FromBody] RefreshTokenRequestBody requestBody,
+        [FromBody] RefreshTokenRequestBody body,
         [FromServices] ICommandHandler<RefreshTokenCommand, TokensReadModel> handler,
         CancellationToken cancellationToken)
     {
-        var result = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        var result = await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.Ok(result);
+    }
+    
+    private static async ValueTask<IResult> ChangeUserEmail(
+        [FromBody] ChangeUserEmailRequestBody body,
+        [FromServices] ICommandHandler<ChangeUserEmailCommand> handler,
+        CancellationToken cancellationToken)
+    {
+        await handler.HandleAsync(body.ToCommand(), cancellationToken);
+        return Results.NoContent();
     }
 }

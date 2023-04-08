@@ -70,11 +70,11 @@ public static class ProductsEndpoints
     }
 
     private static async ValueTask<IResult> GetPaginated(
-        [AsParameters] GetPaginatedCustomerProductsRequestParameters requestParameters,
+        [AsParameters] GetPaginatedCustomerProductsRequestParameters parameters,
         [FromServices] IQueryHandler<GetPaginatedCustomerProductsQuery, PaginatedList<ProductReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var paginatedList = await handler.HandleAsync(requestParameters, cancellationToken);
+        var paginatedList = await handler.HandleAsync(parameters, cancellationToken);
         return Results.Ok(paginatedList);
     }
 
@@ -106,31 +106,31 @@ public static class ProductsEndpoints
     }
     
     private static async ValueTask<IResult> Create(
-        [FromBody] CreateProductRequestBody requestBody,
+        [FromBody] CreateProductRequestBody body,
         [FromServices] ICommandHandler<CreateProductCommand, long> handler,
         CancellationToken cancellationToken)
     {
-        var id = await handler.HandleAsync(requestBody.ToCommand(), cancellationToken);
+        var id = await handler.HandleAsync(body.ToCommand(), cancellationToken);
         return Results.Created($"api/products/{id}", null);
     }
     
     private static async ValueTask<IResult> UpdateDetails(
         [FromRoute] long id,
-        [FromBody] UpdateProductDetailsRequestBody requestBody,
+        [FromBody] UpdateProductDetailsRequestBody body,
         [FromServices] ICommandHandler<UpdateProductDetailsCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
 
     private static async ValueTask<IResult> UpdateSaleData(
         [FromRoute] long id,
-        [FromBody] UpdateProductSaleDataRequestBody requestBody,
+        [FromBody] UpdateProductSaleDataRequestBody body,
         [FromServices] ICommandHandler<UpdateProductSaleDataCommand> handler,
         CancellationToken cancellationToken)
     {
-        await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
+        await handler.HandleAsync(body.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
 
