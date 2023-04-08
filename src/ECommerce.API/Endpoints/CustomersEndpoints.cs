@@ -25,13 +25,13 @@ public static class AccountEndpoints
             .RequireAuthorization()
             .WithTags(groupName);
         
-        endpoints.MapPut("api/customers/account/update-fullname", UpdateFullName)
+        endpoints.MapPatch("api/customers/account/update-fullname", UpdateFullName)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .RequireAuthorization(AuthorizationPolicy.RegisteredCustomer)
             .WithTags(groupName);
 
-        endpoints.MapPost("api/customers/account/update-contact-data", UpdateContactData)
+        endpoints.MapPatch("api/customers/account/update-contact-data", UpdateContactData)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .RequireAuthorization(AuthorizationPolicy.RegisteredCustomer)

@@ -2,10 +2,12 @@
 using ECommerce.ApplicationCore.Features.Products.Commands;
 using ECommerce.ApplicationCore.Features.Products.Queries;
 using ECommerce.ApplicationCore.Features.Products.ReadModels;
+using ECommerce.ApplicationCore.Shared.Abstractions;
 using ECommerce.ApplicationCore.Shared.CQRS;
 using ECommerce.ApplicationCore.Shared.Models;
 using ECommerce.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.API.Endpoints;
 
@@ -46,13 +48,23 @@ public static class ProductsEndpoints
             .WithTags(managementGroupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
         
-        endpoints.MapPatch("api/products/{id:long}/update-sale-data",  UpdateSaleData)
+        endpoints.MapPatch("api/products/{id:long}/update-sale-data", UpdateSaleData)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .WithTags(managementGroupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
 
+        endpoints.MapGet("api/products/{productId:long}/image", GetProductImage)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithTags(groupName);
+        endpoints.MapPut("api/products/{productId:long}/image", SetProductImage)
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+        
         
         return endpoints;
     }
@@ -111,14 +123,50 @@ public static class ProductsEndpoints
         await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
         return Results.NoContent();
     }
-    
+
     private static async ValueTask<IResult> UpdateSaleData(
         [FromRoute] long id,
-        [FromBody] UpdateProductSaleDataRequestBody requestBody, 
-        [FromServices] ICommandHandler<UpdateProductSaleDataCommand> handler, 
+        [FromBody] UpdateProductSaleDataRequestBody requestBody,
+        [FromServices] ICommandHandler<UpdateProductSaleDataCommand> handler,
         CancellationToken cancellationToken)
     {
         await handler.HandleAsync(requestBody.ToCommand(id), cancellationToken);
+        return Results.NoContent();
+    }
+
+    private static IResult GetProductImage([FromRoute] long productId)
+    {
+        var rootPath = Directory.GetCurrentDirectory();
+
+        var imagePath = $"{rootPath}/wwwroot/ProductImages/{productId}.jpg";
+
+        var imageExists = File.Exists(imagePath);
+        if (!imageExists) return Results.NotFound($"Product image with id `{productId}` does not exists");
+
+        using var fileStream = new FileStream(imagePath, FileMode.Open);
+        
+        return Results.File(fileStream, "image/jpeg");
+    }
+
+    // TODO
+    private static async ValueTask<IResult> SetProductImage(
+        [FromRoute] long productId,
+        [FromForm] IFormFile? image,
+        [FromServices] IAppDbContext dbContext,
+        CancellationToken cancellationToken)
+    {
+        if (!await dbContext.Products.AnyAsync(x => x.Id == productId, cancellationToken)) 
+            return Results.BadRequest($"Product with id `{productId}` does not exist.");
+
+        if (image is not { Length: > 0, ContentType: "image/jpeg" })
+            return Results.BadRequest("The image must be JPEG file type.");
+        
+        var rootPath = Directory.GetCurrentDirectory();
+        var imagePath = $"{rootPath}/wwwroot/ProductImages/{productId}.jpg";
+
+        await using var fileStream = new FileStream(imagePath, FileMode.Create);
+        await image.CopyToAsync(fileStream, cancellationToken);
+            
         return Results.NoContent();
     }
 }

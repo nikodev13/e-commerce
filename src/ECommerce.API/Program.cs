@@ -23,15 +23,16 @@ builder.Services.ConfigureApplicationServices()
 
 var app = builder.Build();
 
+app.UseResponseCaching();
 app.UseMiddleware<ExceptionMiddleware>();
-
-app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger().UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
