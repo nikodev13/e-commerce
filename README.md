@@ -24,17 +24,14 @@
   - setting delivery tracking number (for admin)
 
 ### Tech stack
-- C# 11, .NET 7, ASP.NET Core
-  - The language and frameworks that we love are becoming faster and more modern.
-- CQRS
-  - We re-implemented this known pattern to improve performance and gain a better understanding of how it works.
-- FluentValidation for commands and queries validation
-  - Widely used and popular validation framework.
-- Entity Framework Core 7
+- [C# 11](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11), [.NET 7](https://dotnet.microsoft.com/en-us/), [ASP.NET Core](https://learn.microsoft.com/pl-pl/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-7.0) - The language and frameworks that we love are becoming faster and more modern.
+- [CQRS](https://cezarypiatek.github.io/post/why-i-dont-use-mediatr-for-cqrs/) - We re-implemented this known pattern to improve performance and gain a better understanding of how it works.
+- [FluentValidation](https://docs.fluentvalidation.net/en/latest/) for commands and queries validation and is widely used and popular validation framework.
+- [Entity Framework Core 7](https://learn.microsoft.com/en-us/ef/core/)
   - Object Relational Mapping tool that simplifies querying database.
-  - Used with Microsoft SQL Sever 2022.
-- BCrypt for hashing user password
-- Serilog for logging mechanism
+  - Used with [Microsoft SQL Sever 2022](https://www.microsoft.com/pl-pl/sql-server/).
+- [bcrypt.net](https://github.com/BcryptNet/bcrypt.net) for hashing user password
+- [Serilog](https://serilog.net/) for logging mechanism
 
 ### Onion Architecture
 - ApplicationCore
