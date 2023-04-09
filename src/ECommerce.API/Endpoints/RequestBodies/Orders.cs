@@ -16,7 +16,7 @@ public record PlaceOrderRequestBody(List<PlaceOrderCommand.OrderLine> OrderLines
     public PlaceOrderCommand ToCommand() => this;
 }
 
-public record GetPaginatedOrdersForManagementRequestBody(int PageSize, int PageNumber, OrderStatus OrderStatus = OrderStatus.Paid)
+public record GetPaginatedOrdersForManagementRequestParameters(int PageSize, int PageNumber, OrderStatus OrderStatus = OrderStatus.Paid)
     : GetPaginatedOrdersForManagementQuery(PageSize, PageNumber, OrderStatus)
 {
     public GetPaginatedOrdersForManagementQuery ToQuery() => this;

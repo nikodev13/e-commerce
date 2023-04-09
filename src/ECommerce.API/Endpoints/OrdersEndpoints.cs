@@ -14,55 +14,65 @@ public static class OrderEndpoints
     public static IEndpointRouteBuilder RegisterOrderEndpoints(this IEndpointRouteBuilder endpoints)
     {
         const string groupName = "Customer Orders";
+        const string managementGroupName = "Orders Management";
 
-        endpoints.MapGet("api/orders/{id:long}", GetOrderById)
+        endpoints.MapGet("api/orders/{id:long}", GetOrderByIdForManagement)
             .Produces<OrderReadModel>()
-            .WithTags(groupName);
-        
-        endpoints.MapGet("api/orders", GetPaginatedOrders)
-            .Produces<PaginatedList<OrderReadModel>>()
-            .WithTags(groupName);
-        
-        endpoints.MapPost("api/orders/{id:long}", GetOrderByIdForManagement)
-            .Produces(StatusCodes.Status201Created)
             .WithTags(groupName);
         
         endpoints.MapPost("api/orders/place", PlaceOrder)
             .Produces(StatusCodes.Status201Created)
             .WithTags(groupName);
         
-        endpoints.MapPatch("api/orders/{id:long}/change-line-quantity", ChangeOrderLineQuantity)
-            .RequireAuthorization(AuthorizationPolicy.Admin)
-            .Produces(StatusCodes.Status204NoContent)
+        endpoints.MapGet("api/orders", GetPaginatedOrders)
+            .Produces<PaginatedList<OrderReadModel>>()
             .WithTags(groupName);
         
+        endpoints.MapGet("api/orders/management", GePaginatedOrdersForManagement)
+            .Produces<OrderInListReadModel>()
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+        
+        endpoints.MapGet("api/orders/{id:long}/management", GetOrderByIdForManagement)
+            .Produces<ManagementOrderReadModel>()
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+
+        endpoints.MapPatch("api/orders/{id:long}/change-line-quantity", ChangeOrderLineQuantity)
+            .Produces(StatusCodes.Status204NoContent)
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+
         endpoints.MapPatch("api/orders/{id:long}/change-status", SetOrderStatus)
-            .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithTags(groupName);
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+
         
         endpoints.MapPatch("api/orders/{id:long}/set-delivery-tracking-number", SetDeliveryTrackingNumber)
-            .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithTags(groupName);
-        
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+
+
         endpoints.MapPatch("api/orders/{id:long}/change-delivery-address", ChangeDeliveryAddress)
-            .RequireAuthorization(AuthorizationPolicy.Admin)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
-            .WithTags(groupName);
+            .WithTags(managementGroupName)
+            .RequireAuthorization(AuthorizationPolicy.Admin);
+
 
         return endpoints;
     }
     
-    private static async ValueTask<IResult> GetOrderById(
+    private static async ValueTask<IResult> GetOrderByIdForManagement(
         [FromRoute] long id,
-        [FromServices] IQueryHandler<GetOrderByIdQuery, OrderReadModel> handler,
+        [FromServices] IQueryHandler<GetOrderByIdForManagementQuery, ManagementOrderReadModel> handler,
         CancellationToken cancellationToken)
     {
-        var order = await handler.HandleAsync(new GetOrderByIdQuery(id), cancellationToken);
+        var order = await handler.HandleAsync(new GetOrderByIdForManagementQuery(id), cancellationToken);
         return Results.Ok(order);
     }
     
@@ -84,16 +94,15 @@ public static class OrderEndpoints
         return Results.Created($"api/orders/{orderId}", null);
     }
 
-    private static async ValueTask<IResult> GetOrderByIdForManagement(
-        [FromBody] GetPaginatedOrdersForManagementRequestBody body,
+    private static async ValueTask<IResult> GePaginatedOrdersForManagement(
+        [AsParameters] GetPaginatedOrdersForManagementRequestParameters parameters,
         [FromServices] IQueryHandler<GetPaginatedOrdersForManagementQuery, PaginatedList<OrderInListReadModel>> handler,
         CancellationToken cancellationToken)
     {
-        var paginatedOrdersInList = await handler.HandleAsync(body.ToQuery(), cancellationToken);
+        var paginatedOrdersInList = await handler.HandleAsync(parameters.ToQuery(), cancellationToken);
         return Results.Ok(paginatedOrdersInList);
     }
-
-
+    
     private static async ValueTask<IResult> ChangeOrderLineQuantity(
         [FromRoute] long id,
         [FromBody] ChangeOrderLineQuantityRequestBody body,

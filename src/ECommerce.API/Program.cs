@@ -45,8 +45,8 @@ app.RegisterCategoriesEndpoints();
 app.RegisterOrderEndpoints();
 
 app.RegisterCustomersEndpoints();
-app.RegisterAddressBookEndpoints();
 app.RegisterWishlistEndpoints();
+app.RegisterAddressBookEndpoints();
 
 app.Run();
 

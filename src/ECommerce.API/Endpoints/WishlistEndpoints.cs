@@ -17,21 +17,21 @@ public static class WishlistEndpoints
         endpoints.MapGet("api/wishlist", GetAllProductsFromWishList)
             .Produces<List<WishlistProductReadModel>>()
             .RequireAuthorization(AuthorizationPolicy.RegisteredCustomer)
-            .WithGroupName(groupName);
+            .WithTags(groupName);
         endpoints.MapPost("api/wishlist", AddProductToWishlist)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .RequireAuthorization(AuthorizationPolicy.RegisteredCustomer)
-            .WithGroupName(groupName);
+            .WithTags(groupName);
         endpoints.MapDelete("api/wishlist", RemoveProductFromWishlist)
             .Produces(StatusCodes.Status400BadRequest)
             .RequireAuthorization(AuthorizationPolicy.RegisteredCustomer)
-            .WithGroupName(groupName);
+            .WithTags(groupName);
         
         return endpoints;
     }
 
-    private static async Task<IResult> GetAllProductsFromWishList(
+    private static async ValueTask<IResult> GetAllProductsFromWishList(
         [FromServices] IQueryHandler<GetAllProductsFromWishlistQuery, List<WishlistProductReadModel>> handler,
         CancellationToken cancellationToken)
     {
@@ -39,7 +39,7 @@ public static class WishlistEndpoints
         return Results.Ok(wishlist);
     }
     
-    private static async Task<IResult> AddProductToWishlist(
+    private static async ValueTask<IResult> AddProductToWishlist(
         [FromBody] AddProductToWishlistRequestBody body,
         [FromServices] ICommandHandler<AddProductToWishlistCommand> handler,
         CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ public static class WishlistEndpoints
         return Results.NoContent();
     }
     
-    private static async Task<IResult> RemoveProductFromWishlist(
+    private static async ValueTask<IResult> RemoveProductFromWishlist(
         [FromBody] RemoveProductFromWishlistRequestBody body,
         [FromServices] ICommandHandler<RemoveProductFromWishlistCommand> handler,
         CancellationToken cancellationToken)

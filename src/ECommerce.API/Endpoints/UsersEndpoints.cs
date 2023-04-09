@@ -31,7 +31,12 @@ public static class UsersEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .WithTags(groupName);
         
-        endpoints.MapPost("api/users", GetPaginatedUsers)
+        endpoints.MapPatch("api/users/change-email", ChangeUserEmail)
+            .Produces<PaginatedList<UserInListReadModel>>()
+            .WithTags(groupName)
+            .RequireAuthorization();
+        
+        endpoints.MapGet("api/users", GetPaginatedUsers)
             .Produces<PaginatedList<UserInListReadModel>>()
             .WithTags(groupName)
             .RequireAuthorization();
