@@ -37,7 +37,7 @@ public static class CategoriesEndpoints
             .WithTags(managementGroupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
 
-        endpoints.MapDelete("api/management/categories/{id:long}", Delete)
+        endpoints.MapDelete("api/categories/{id:long}", Delete)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)

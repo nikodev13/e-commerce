@@ -13,7 +13,7 @@ public static class OrderEndpoints
 {
     public static IEndpointRouteBuilder RegisterOrderEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        const string groupName = "Customer Orders";
+        const string groupName = "Customer orders";
         const string managementGroupName = "Orders Management";
 
         endpoints.MapGet("api/orders/{id:long}", GetOrderByIdForManagement)

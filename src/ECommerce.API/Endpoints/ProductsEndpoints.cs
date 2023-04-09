@@ -55,11 +55,11 @@ public static class ProductsEndpoints
             .WithTags(managementGroupName)
             .RequireAuthorization(AuthorizationPolicy.Admin);
 
-        endpoints.MapGet("api/products/{productId:long}/image", GetProductImage)
+        endpoints.MapGet("api/products/{id:long}/image", GetProductImage)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .WithTags(groupName);
-        endpoints.MapPut("api/products/{productId:long}/image", SetProductImage)
+        endpoints.MapPut("api/products/{id:long}/image", SetProductImage)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .WithTags(managementGroupName)
@@ -134,14 +134,14 @@ public static class ProductsEndpoints
         return Results.NoContent();
     }
 
-    private static IResult GetProductImage([FromRoute] long productId)
+    private static IResult GetProductImage([FromRoute] long id)
     {
         var rootPath = Directory.GetCurrentDirectory();
 
-        var imagePath = $"{rootPath}/wwwroot/ProductImages/{productId}.jpg";
+        var imagePath = $"{rootPath}/wwwroot/ProductImages/{id}.jpg";
 
         var imageExists = File.Exists(imagePath);
-        if (!imageExists) return Results.NotFound($"Product image with id `{productId}` does not exists");
+        if (!imageExists) return Results.NotFound($"Product image with id `{id}` does not exists");
 
         using var fileStream = new FileStream(imagePath, FileMode.Open);
         
@@ -150,19 +150,19 @@ public static class ProductsEndpoints
 
     // TODO
     private static async ValueTask<IResult> SetProductImage(
-        [FromRoute] long productId,
+        [FromRoute] long id,
         [FromForm] IFormFile? image,
         [FromServices] IAppDbContext dbContext,
         CancellationToken cancellationToken)
     {
-        if (!await dbContext.Products.AnyAsync(x => x.Id == productId, cancellationToken)) 
-            return Results.BadRequest($"Product with id `{productId}` does not exist.");
+        if (!await dbContext.Products.AnyAsync(x => x.Id == id, cancellationToken)) 
+            return Results.BadRequest($"Product with id `{id}` does not exist.");
 
         if (image is not { Length: > 0, ContentType: "image/jpeg" })
             return Results.BadRequest("The image must be JPEG file type.");
         
         var rootPath = Directory.GetCurrentDirectory();
-        var imagePath = $"{rootPath}/wwwroot/ProductImages/{productId}.jpg";
+        var imagePath = $"{rootPath}/wwwroot/ProductImages/{id}.jpg";
 
         await using var fileStream = new FileStream(imagePath, FileMode.Create);
         await image.CopyToAsync(fileStream, cancellationToken);
