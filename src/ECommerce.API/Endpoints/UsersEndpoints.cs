@@ -22,7 +22,7 @@ public static class UsersEndpoints
             .WithTags(groupName);
 
         endpoints.MapGet("api/users/{email}", GetUserRole)
-            .Produces<UserRoleReadModel>()
+            .Produces<RoleReadModel>()
             .WithTags(groupName);
         
         endpoints.MapPost("api/users/login", Login)
@@ -50,7 +50,7 @@ public static class UsersEndpoints
 
     private static async ValueTask<IResult> GetUserRole(
         [FromRoute] string email,
-        [FromServices] IQueryHandler<GetUserRoleQuery, UserRoleReadModel> handler,
+        [FromServices] IQueryHandler<GetUserRoleQuery, RoleReadModel> handler,
         CancellationToken cancellationToken)
     {
         var role = await handler.HandleAsync(new GetUserRoleQuery(email), cancellationToken);

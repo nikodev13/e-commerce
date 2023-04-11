@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.ApplicationCore.Features.Users.Queries;
 
-public record GetUserRoleQuery(string Email) : IQuery<UserRoleReadModel>;
+public record GetUserRoleQuery(string Email) : IQuery<RoleReadModel>;
 
-internal sealed class GetUserRoleQueryHandler : IQueryHandler<GetUserRoleQuery, UserRoleReadModel>
+internal sealed class GetUserRoleQueryHandler : IQueryHandler<GetUserRoleQuery, RoleReadModel>
 {
     private readonly IAppDbContext _dbContext;
 
@@ -17,12 +17,13 @@ internal sealed class GetUserRoleQueryHandler : IQueryHandler<GetUserRoleQuery, 
         _dbContext = dbContext;
     }
     
-    public async ValueTask<UserRoleReadModel> HandleAsync(GetUserRoleQuery query, CancellationToken cancellationToken)
+    public async ValueTask<RoleReadModel> HandleAsync(GetUserRoleQuery query, CancellationToken cancellationToken)
     {
         var userRoleReadModel = await _dbContext.Users
-            .Select(x => new UserRoleReadModel(x.Email, x.Role.ToString()))
+            .Where(x => x.Email == query.Email)
+            .Select(x => new RoleReadModel(x.Role.ToString()))
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Email == query.Email, cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         return userRoleReadModel ?? throw new UserNotFoundException(query.Email);
     }
