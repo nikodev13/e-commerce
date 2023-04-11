@@ -18,7 +18,7 @@ internal sealed class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategor
     
     public async ValueTask<List<CategoryReadModel>> HandleAsync(GetAllCategoriesQuery query, CancellationToken cancellationToken)
     {
-        var readModels = await _dbContext.Products
+        var readModels = await _dbContext.Categories
             .Select(x => new CategoryReadModel(x.Id, x.Name))
             .ToListAsync(cancellationToken);
 
