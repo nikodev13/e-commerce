@@ -20,6 +20,10 @@ public static class UsersEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict)
             .WithTags(groupName);
+
+        endpoints.MapGet("api/users/{email}", GetUserRole)
+            .Produces<UserRoleReadModel>()
+            .WithTags(groupName);
         
         endpoints.MapPost("api/users/login", Login)
             .Produces<TokensReadModel>()
@@ -44,6 +48,15 @@ public static class UsersEndpoints
         return endpoints;
     }
 
+    private static async ValueTask<IResult> GetUserRole(
+        [FromRoute] string email,
+        [FromServices] IQueryHandler<GetUserRoleQuery, UserRoleReadModel> handler,
+        CancellationToken cancellationToken)
+    {
+        var role = await handler.HandleAsync(new GetUserRoleQuery(email), cancellationToken);
+        return Results.Ok(role);
+    }
+    
     private static async ValueTask<IResult> GetPaginatedUsers(
         [AsParameters] GetPaginatedUsersRequestParameters parameters,
         [FromServices] IQueryHandler<GetPaginatedUsersQuery, PaginatedList<UserInListReadModel>> handler,
