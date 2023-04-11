@@ -20,6 +20,7 @@ internal sealed class GetAllCategoriesQueryHandler : IQueryHandler<GetAllCategor
     {
         var readModels = await _dbContext.Categories
             .Select(x => new CategoryReadModel(x.Id, x.Name))
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         return readModels;

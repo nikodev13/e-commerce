@@ -28,6 +28,7 @@ internal sealed class GetPaginatedForManagementQueryHandler : IQueryHandler<GetP
             .Skip(pageSize * pageNumber)
             .Take(pageNumber)
             .Select(x => OrderInListReadModel.From(x))
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
 
         var totalCount = await _dbContext.Orders.CountAsync(cancellationToken);

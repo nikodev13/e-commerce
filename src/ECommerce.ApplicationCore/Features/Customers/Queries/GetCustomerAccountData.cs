@@ -26,8 +26,11 @@ public class GetCustomerAccountQueryHandler : IQueryHandler<GetCustomerAccountQu
     {
         var customerId = _userContextProvider.UserId!.Value;
         var account = await _dbContext.Customers
-            .FirstOrDefaultAsync(x => x.Id == customerId, cancellationToken);
+            .Where(x => x.Id == customerId)
+            .Select(x => CustomerAccountReadModel.From(x))
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return CustomerAccountReadModel.From(account!);
+        return account!;
     }
 }

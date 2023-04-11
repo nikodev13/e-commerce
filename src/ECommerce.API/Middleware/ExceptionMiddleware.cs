@@ -39,10 +39,11 @@ public class ExceptionMiddleware : IMiddleware
             context.Response.StatusCode = 409;
             await context.Response.WriteAsync(exception.Message);
         }
-        catch (BadHttpRequestException) 
+        catch (BadHttpRequestException exception) 
         {
             context.Response.StatusCode = 400;
             await context.Response.WriteAsync("Invalid request.");
+            _logger.LogWarning(exception, exception.Message);
         }
         catch (Exception exception)
         {

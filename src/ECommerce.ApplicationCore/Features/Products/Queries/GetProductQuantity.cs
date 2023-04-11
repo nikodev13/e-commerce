@@ -20,9 +20,11 @@ internal sealed class GetProductQuantityQueryHandler : IQueryHandler<GetProductQ
     public async ValueTask<ProductQuantityReadModel> HandleAsync(GetProductQuantityQuery query, CancellationToken cancellationToken)
     {
         var product = await _dbContext.Products
+            .Where(x => x.Id == query.Id)
             .Select(x => new ProductQuantityReadModel(x.Id, x.InStockQuantity))
-            .FirstOrDefaultAsync(x => x.ProductId == query.Id, cancellationToken);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
         
-        return product ?? throw new CustomerProductNotFoundByIdException(query.Id);
+        return product ?? throw new ProductNotFoundByIdException(query.Id);
     }
 }

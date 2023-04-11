@@ -20,8 +20,10 @@ internal sealed class GetCategoryHistoryDataQueryHandler : IQueryHandler<GetCate
     public async ValueTask<CategoryHistoryReadModel> HandleAsync(GetCategoryHistoryDataQuery query, CancellationToken cancellationToken)
     {
         var categoryHistoryReadModel = await _dbContext.Categories
+            .Where(x => x.Id == query.Id)
             .Select(x => new CategoryHistoryReadModel(x.Id, x.LastModifiedBy, x.LastModifiedAt, x.CreatedBy, x.CreatedAt))
-            .FirstOrDefaultAsync(x => x.CategoryId == query.Id, cancellationToken);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         return categoryHistoryReadModel ?? throw new CategoryNotFoundException(query.Id);
     }

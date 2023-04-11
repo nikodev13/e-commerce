@@ -27,7 +27,8 @@ internal sealed class UpdateProductSaleDataCommandHandler : ICommandHandler<Upda
     
     public async ValueTask HandleAsync(UpdateProductSaleDataCommand request, CancellationToken cancellationToken)
     {
-        var product = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        var product = await _dbContext.Products
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (product is null)
             throw new ProductNotFoundException(request.Id);
 

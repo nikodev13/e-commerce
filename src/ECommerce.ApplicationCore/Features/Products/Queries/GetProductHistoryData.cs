@@ -20,9 +20,11 @@ internal sealed class GetProductHistoryDataQueryHandler : IQueryHandler<GetProdu
     public async ValueTask<ProductHistoryReadModel> HandleAsync(GetProductHistoryDataQuery query, CancellationToken cancellationToken)
     {
         var productHistoryReadModel = await _dbContext.Products
+            .Where(x => x.Id == query.Id)
             .Select(x =>
                 new ProductHistoryReadModel(x.Id, x.LastModifiedBy, x.LastModifiedAt, x.CreatedBy, x.CreatedAt))
-            .FirstOrDefaultAsync(x => x.ProductId == query.Id, cancellationToken);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         return productHistoryReadModel ?? throw new ProductNotFoundException(query.Id);
     }

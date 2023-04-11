@@ -20,11 +20,14 @@ internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQ
     public async ValueTask<ProductReadModel> HandleAsync(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
         var readModel = await _dbContext.Products
+            .Include(x => x.Category)
+            .Where(x => x.Id == query.Id)
             .Select(x => ProductReadModel.From(x))
-            .FirstOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (readModel is null)
-            throw new CustomerProductNotFoundByIdException(query.Id);
+            throw new ProductNotFoundByIdException(query.Id);
 
         return readModel;
     }

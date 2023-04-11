@@ -19,7 +19,7 @@ public static class CategoriesEndpoints
 
         const string managementGroupName = "Categories Management";
 
-        endpoints.MapGet("api/categories/{id:long}", GetCategoryHistoryData)
+        endpoints.MapGet("api/categories/{id:long}/history", GetCategoryHistoryData)
             .Produces<CategoryHistoryReadModel>()
             .Produces(StatusCodes.Status404NotFound)
             .WithTags(managementGroupName)
@@ -72,7 +72,7 @@ public static class CategoriesEndpoints
         CancellationToken cancellationToken)
     {
         var id = await handler.HandleAsync(body.ToCommand(), cancellationToken);
-        return Results.Created($"api/products/categories/{id}", null);
+        return Results.Created("api/categories", null);
     }
 
     private static async ValueTask<IResult> Update(
