@@ -54,14 +54,14 @@ internal sealed class GetPaginatedCustomerProductsQueryHandler : IQueryHandler<G
                 : queryBase.OrderByDescending(sortByColumn);
         }
         
-        var result = await queryBase.Skip(query.PageSize * query.PageNumber)
+        var totalItems = await queryBase.CountAsync(cancellationToken);
+        
+        var result = await queryBase.Skip(query.PageSize * (query.PageNumber - 1))
             .Take(query.PageSize)
             .Select(x => ProductReadModel.From(x))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
-
-        var totalItems = await _dbContext.Products.CountAsync(cancellationToken);
-
+        
         return new PaginatedList<ProductReadModel>(result, query.PageSize, query.PageNumber, totalItems);
     }
 }

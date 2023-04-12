@@ -59,7 +59,5 @@ internal sealed class UpdateProductSaleDataCommandValidator : AbstractValidator<
         RuleFor(x => x.Quantity)
             .NotEmpty()
             .GreaterThanOrEqualTo(0u);
-        RuleFor(x => x.IsActive)
-            .NotEmpty();
     }
 }

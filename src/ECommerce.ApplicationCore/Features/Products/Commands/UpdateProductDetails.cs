@@ -32,7 +32,7 @@ internal sealed class UpdateProductDetailsCommandHandler : ICommandHandler<Updat
         if (product is null)
             throw new ProductNotFoundException(request.Id);
 
-        if (await _dbContext.Categories.AnyAsync(x => x.Id == request.CategoryId, cancellationToken))
+        if (!await _dbContext.Categories.AnyAsync(x => x.Id == request.CategoryId, cancellationToken))
             throw new CategoryNotFoundException(request.CategoryId);
 
         var userId = _userContextProvider.UserId!.Value;
